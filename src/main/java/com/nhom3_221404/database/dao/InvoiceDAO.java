@@ -13,4 +13,6 @@ public interface InvoiceDAO {
     void insert(InvoiceCritea critea);
         
     void delete(String id);
+
+    void deleteAll();
 }
