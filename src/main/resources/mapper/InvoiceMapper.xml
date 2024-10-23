@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="${ibatis.dao}.InvoiceDAO">
+    <resultMap id="invoiceRM" type="Invoice">
+        <id property="id" column="id"/>
+        <result property="roomId" column="roomId"/>
+        <result property="price" column="price"/>
+        <result property="customerName" column="customerName"/>
+        <result property="billedDate" column="billedDate"/>
+        <discriminator javaType="String" column="invoiceType">
+            <case value="dl" resultMap="invoiceDailyRM"/>
+            <case value="hl" resultMap="invoiceHourlyRM"/>
+        </discriminator>
+    </resultMap>
+
+    <resultMap id="invoiceDailyRM" type="InvoiceDaily" extends="invoiceRM">
+        <result property="rentalDays" column="rentalDays"/>
+    </resultMap>
+
+    <resultMap id="invoiceHourlyRM" type="InvoiceHourly" extends="invoiceRM">
+        <result property="rentalHours" column="rentalHours" />
+    </resultMap>
+
+    <select 
+        id="selectAll"
+        resultMap="invoiceRM"
+        timeout="60000"
+        resultSetType="FORWARD_ONLY" 
+    >
+        select i.*, d.rentalDays, h.rentalHours
+        from invoice i
+        left outer join invoiceDaily d 
+        on i.id = d.invoiceId
+        left outer join invoiceHourly h
+        on i.id = h.invoiceId
+        order by billedDate desc
+    </select>
+
+    <select 
+        id="selectById"
+        resultMap="invoiceRM"
+        timeout="60000"
+        resultSetType="FORWARD_ONLY" 
+    >
+        select i.*, d.rentalDays, h.rentalHours
+        from invoice i
+        left outer join invoiceDaily d 
+        on i.id = d.invoiceId
+        left outer join invoiceHourly h
+        on i.id = h.invoiceId
+        where i.id = #{id}
+    </select>
+
+    <select 
+        id="checkExists" 
+        timeout="60000"
+        resultSetType="FORWARD_ONLY" 
+    >
+        select 1 from invoice where id = #{id} limit 1
+    </select>
+
+    <insert id="insert" parameterType="InvoiceCritea"> 
+        insert into Invoice(id, invoiceType, roomId, price, customerName, billedDate) 
+        values(#{data.id}, #{type}, #{data.roomId}, #{data.price}, #{data.customerName}, #{data.billedDate});
+    </insert>
+
+    <!-- <update id="update" parameterType="Invoice">
+        update Invoice
+        set
+            invoiceType = #{type}
+            roomId = #{roomId}, 
+            price = #{price}, 
+            customerName = #{customerName}, 
+            billedDate = #{billedDate}
+        where id = #{id}
+    </update> -->
+
+    <delete id="delete">
+        delete from invoice where id = #{id}
+    </delete>
+</mapper>

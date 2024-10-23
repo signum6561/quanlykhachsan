@@ -1,0 +1,24 @@
+services:
+  mysql8:
+    image: mysql:8.4.3
+    restart: always
+    environment:
+      - MYSQL_USER=admin
+      - MYSQL_PASSWORD=dat789qu
+      - MYSQL_DATABASE=quanlykhachsan
+      - MYSQL_ROOT_PASSWORD=dat789qu
+    volumes:
+      - ./mysql-data:/var/lib/mysql
+    ports:
+      - 3308:3306
+  phpmyadmin:
+    image: phpmyadmin
+    restart: always
+    ports:
+      - 8100:80
+    environment:
+      PMA_HOST: mysql8
+    depends_on:
+      - mysql8
+volumes:
+  mysql-data:
