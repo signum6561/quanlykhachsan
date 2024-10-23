@@ -30,4 +30,6 @@ public interface InvoiceRepository {
     boolean isExists(String id);
 
     void delete(String id);
+
+    void deleteAll();
 }

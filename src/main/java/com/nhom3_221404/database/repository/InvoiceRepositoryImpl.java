@@ -152,4 +152,18 @@ public class InvoiceRepositoryImpl implements InvoiceRepository {
     public boolean isExists(String id) {
         return invoiceDAO.selectById(id) != null;
     }
+
+    @Override
+    public void deleteAll() {
+        sessionManager.startManagedSession();
+        try {
+            invoiceDAO.deleteAll();
+            sessionManager.commit();
+        } catch(Throwable t) {
+            sessionManager.rollback();
+            throw t;
+        } finally {
+            sessionManager.close();
+        }
+    }
 }

@@ -80,4 +80,8 @@
     <delete id="delete">
         delete from invoice where id = #{id}
     </delete>
+
+    <delete id="deleteAll">
+        delete from invoice
+    </delete>
 </mapper>

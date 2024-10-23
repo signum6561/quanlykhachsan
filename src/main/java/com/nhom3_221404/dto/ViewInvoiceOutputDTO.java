@@ -10,69 +10,18 @@ public class ViewInvoiceOutputDTO {
     protected LocalDateTime billedDate;
     protected Double total;
 
-    // #region builder
-    public static class Builder {
-        private String id;
-        private String roomId;
-        private Double price;
-        private String customerName;
-        private LocalDateTime billedDate;
-        private Double total;
-
-        public Builder() {
-        }
-
-        public Builder id(String id) {
-            this.id = id;
-            return this;
-        }
-
-        public Builder roomId(String roomId) {
-            this.roomId = roomId;
-            return this;
-        }
-
-        public Builder price(Double price) {
-            this.price = price;
-            return this;
-        }
-
-        public Builder customerName(String customerName) {
-            this.customerName = customerName;
-            return this;
-        }
-
-        public Builder billedDate(LocalDateTime billedDate) {
-            this.billedDate = billedDate;
-            return this;
-        }
-
-        public Builder total(Double total) {
-            this.total = total;
-            return this;
-        }
-
-        public ViewInvoiceOutputDTO build() {
-            return new ViewInvoiceOutputDTO(this);
-        }
-    }
-
-    private ViewInvoiceOutputDTO(Builder builder) {
-        this.id = builder.id;
-        this.roomId = builder.roomId;
-        this.price = builder.price;
-        this.customerName = builder.customerName;
-        this.billedDate = builder.billedDate;
-        this.total = builder.total;
-    }
-
-    public static Builder builder() {
-        return new Builder();
-    }
-
     public ViewInvoiceOutputDTO() {
     }
-    // #endregion
+
+    public ViewInvoiceOutputDTO(String id, String roomId, double price, String customerName, LocalDateTime billedDate,
+            Double total) {
+        this.id = id;
+        this.roomId = roomId;
+        this.price = price;
+        this.customerName = customerName;
+        this.billedDate = billedDate;
+        this.total = total;
+    }
 
     // #region getters and setters
     public String getId() {

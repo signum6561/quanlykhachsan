@@ -1,5 +1,6 @@
 package com.nhom3_221404.usecase.ViewInvoiceList;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -23,16 +24,19 @@ public class ViewInvoiceListUseCase implements ViewInvoiceListInputBoundary {
         List<ViewInvoiceOutputDTO> outputDTOList = new ArrayList<>();
 
         invoiceList.forEach(invoice -> {
-            ViewInvoiceOutputDTO viewInvoiceOutputDTO = ViewInvoiceOutputDTO.builder()
-                .id(invoice.getId())
-                .roomId(invoice.getRoomId())
-                .price(invoice.getPrice())
-                .customerName(invoice.getCustomerName())
-                .billedDate(invoice.getBilledDate())
-                .build();
+            String id = invoice.getId();
+            String customerName = invoice.getCustomerName();
+            Double price = invoice.getPrice();
+            String roomId = invoice.getRoomId();
+            Double total = invoice.getTotal();
+            LocalDateTime billedDate = invoice.getBilledDate();
 
-                outputDTOList.add(viewInvoiceOutputDTO);
-            });
-            viewILOutputB.present(outputDTOList);
+            ViewInvoiceOutputDTO viewInvoiceOutputDTO = 
+                new ViewInvoiceOutputDTO(id, roomId, price, customerName, billedDate, total);
+
+            outputDTOList.add(viewInvoiceOutputDTO);
+        });
+
+        viewILOutputB.present(outputDTOList);
     }
 }
