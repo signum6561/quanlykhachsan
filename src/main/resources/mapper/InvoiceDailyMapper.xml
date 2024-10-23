@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+    PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+    "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="${ibatis.dao}.InvoiceDailyDAO">
+    <resultMap 
+        id="invoiceDailyRM" 
+        type="InvoiceDaily" 
+        extends="${ibatis.dao}.InvoiceDAO.invoiceDailyRM" 
+    />
+
+    <select 
+        id="selectAll" 
+        resultMap="invoiceDailyRM" 
+        timeout="60000"
+    >
+        select i.*, d.rentalDays
+        from Invoice i
+        join invoiceDaily d 
+        on i.id = d.invoiceId
+    </select>
+
+    <insert id="insert" parameterType="InvoiceDaily">
+        insert into InvoiceDaily(invoiceId, rentalDays) 
+        values(#{id}, #{rentalDays});
+    </insert>
+
+    <!-- <update id="update" parameterType="InvoiceDaily">
+        update InvoiceDaily 
+        set rentalDays = #{rentalDays}
+        where invoiceId = #{id}
+    </update> -->
+</mapper>

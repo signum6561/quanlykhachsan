@@ -2,35 +2,35 @@ package com.nhom3_221404.entity;
 
 import com.nhom3_221404.database.repository.InvoiceRepository;
 
-public class InvoiceHourly extends Invoice {
+public class InvoiceDaily extends Invoice {
 
-    private Integer rentalHours;
+    private Integer rentalDays;
 
-    public InvoiceHourly() {
+    public InvoiceDaily() {
     }
 
     @Override
     public Double getTotal() {
-        if (rentalHours > 24 && rentalHours < 30) {
-            return 24 * price;
+        if (rentalDays - 7 < 0) {
+            return rentalDays * price;
         }
-        return rentalHours * price;
+        return (1.4 + 0.8 * rentalDays) * price;
     }
 
     // #region getters and setters
-    public Integer getRentalHours() {
-        return rentalHours;
+    public Integer getRentalDays() {
+        return rentalDays;
     }
 
-    public void setRentalHours(Integer rentalHours) {
-        this.rentalHours = rentalHours;
+    public void setRentalDays(Integer rentalDays) {
+        this.rentalDays = rentalDays;
     }
     // #endregion
 
     @Override
     public String toString() {
-        return "InvoiceHourly [id=" + id
-                + ", rentalHours=" + rentalHours
+        return "InvocieDaily [id=" + id
+                + ", rentalDays=" + rentalDays
                 + ", roomId=" + roomId
                 + ", price=" + price
                 + ", customerName=" + customerName
