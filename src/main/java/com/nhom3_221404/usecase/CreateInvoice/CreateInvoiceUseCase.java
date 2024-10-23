@@ -13,6 +13,37 @@ public abstract class CreateInvoiceUseCase implements CreateInvoiceInputBoundary
     private CreateInvoiceOutputBoundary CreateIOutputB;
     private CreateInvoiceDatabaseBoundary CreateIDatabaseB;
 
+    public static class Builder {
+        private CreateInvoiceOutputBoundary CreateIOutputB;
+        private CreateInvoiceDatabaseBoundary CreateIDatabaseB;
+
+        public Builder() {
+        }
+
+        public Builder CreateIOutputB(CreateInvoiceOutputBoundary CreateIOutputB) {
+            this.CreateIOutputB = CreateIOutputB;
+            return this;
+        }
+
+        public Builder CreateIDatabaseB(CreateInvoiceDatabaseBoundary CreateIDatabaseB) {
+            this.CreateIDatabaseB = CreateIDatabaseB;
+            return this;
+        }
+
+        public CreateInvoiceUseCase build() {
+            return new CreateInvoiceUseCase(this);
+        }
+    }
+
+    private CreateInvoiceUseCase(Builder builder) {
+        this.CreateIOutputB = builder.CreateIOutputB;
+        this.CreateIDatabaseB = builder.CreateIDatabaseB;
+    }
+
+    public static Builder builder() {
+        return new Builder();
+    }
+
     public CreateInvoiceUseCase(CreateInvoiceOutputBoundary createIOutputB,
             CreateInvoiceDatabaseBoundary createIDatabaseB) {
         CreateIOutputB = createIOutputB;
@@ -26,9 +57,6 @@ public abstract class CreateInvoiceUseCase implements CreateInvoiceInputBoundary
         Double price = createInvoiceInputDTO.getPrice();
         String customerName = createInvoiceInputDTO.getCustomerName();
         LocalDateTime billedDate = createInvoiceInputDTO.getBilledDate();
-        if (createInvoiceInputDTO.getInvoiceType() == InvoiceType.Daily) {
-
-        }
 
     }
 
