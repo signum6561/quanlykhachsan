@@ -27,7 +27,7 @@ public abstract class CreateInvoiceUseCase implements CreateInvoiceInputBoundary
         String customerName = createInvoiceInputDTO.getCustomerName();
         LocalDateTime billedDate = createInvoiceInputDTO.getBilledDate();
         if (createInvoiceInputDTO.getInvoiceType() == InvoiceType.Daily) {
-            
+
         }
 
     }
