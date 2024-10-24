@@ -2,8 +2,11 @@ package com.nhom3_221404.dto;
 
 import java.time.LocalDateTime;
 
+import com.nhom3_221404.common.InvoiceType;
+
 public class ViewInvoiceOutputDTO {
     protected String id;
+    protected InvoiceType invoiceType;
     protected String roomId;
     protected Double price;
     protected String customerName;
@@ -13,9 +16,10 @@ public class ViewInvoiceOutputDTO {
     public ViewInvoiceOutputDTO() {
     }
 
-    public ViewInvoiceOutputDTO(String id, String roomId, double price, String customerName, LocalDateTime billedDate,
-            Double total) {
+    public ViewInvoiceOutputDTO(String id, InvoiceType invoiceType, String roomId, Double price, String customerName,
+            LocalDateTime billedDate, Double total) {
         this.id = id;
+        this.invoiceType = invoiceType;
         this.roomId = roomId;
         this.price = price;
         this.customerName = customerName;
