@@ -4,6 +4,9 @@ public class Result<T> {
     private T value;
     private RuntimeException error;
 
+    public Result() {
+    }
+
     public Result(T value, RuntimeException error) {
         this.value = value;
         this.error = error;

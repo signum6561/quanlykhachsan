@@ -20,7 +20,7 @@ public class ViewInvoiceListPresenter implements ViewInvoiceListOutputBoundary {
         result = Result.failure(error);
     }
 
-    public List<ViewInvoiceOutputDTO> getOutputDTOList() throws RuntimeException {
+    public List<ViewInvoiceOutputDTO> getOutputDTOList() {
         if(!result.isSuccess()) {
             throw result.getError();
         }
