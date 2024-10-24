@@ -2,9 +2,9 @@ package com.nhom3_221404.common;
 
 public class Result<T> {
     private T value;
-    private Exception error;
+    private RuntimeException error;
 
-    public Result(T value, Exception error) {
+    public Result(T value, RuntimeException error) {
         this.value = value;
         this.error = error;
     }
@@ -13,7 +13,7 @@ public class Result<T> {
         return new Result<>(value, null);
     }
 
-    public static <T> Result<T> failure(Exception error) {
+    public static <T> Result<T> failure(RuntimeException error) {
         return new Result<>(null, error);
     }
 
@@ -27,10 +27,10 @@ public class Result<T> {
     public void setValue(T value) {
         this.value = value;
     }
-    public Exception getError() {
+    public RuntimeException getError() {
         return error;
     }
-    public void setError(Exception error) {
+    public void setError(RuntimeException error) {
         this.error = error;
     }
 }

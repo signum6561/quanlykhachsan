@@ -15,6 +15,11 @@ public class ViewInvoiceListDAOMySql implements ViewInvoiceListDatabaseBoundary 
 
     @Override
     public List<Invoice> getInvoiceList() {
-        return invoiceRepository.findAll();
+        try {
+            return invoiceRepository.findAll();
+        } catch(Exception e) {
+            e.printStackTrace();
+        }
+        return null;
     }
 }

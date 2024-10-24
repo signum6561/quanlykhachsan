@@ -8,8 +8,7 @@ import com.nhom3_221404.usecase.ViewInvoiceList.ViewInvoiceListOutputBoundary;
 
 public class ViewInvoiceListPresenter implements ViewInvoiceListOutputBoundary {
     
-    private List<ViewInvoiceOutputDTO> outputDTOList;
-    private Result<?> result;
+    private Result<List<ViewInvoiceOutputDTO>> result;
 
     @Override
     public void presentResult(List<ViewInvoiceOutputDTO> data) {
@@ -21,10 +20,10 @@ public class ViewInvoiceListPresenter implements ViewInvoiceListOutputBoundary {
         result = Result.failure(error);
     }
 
-    public List<ViewInvoiceOutputDTO> getOutputDTOList() throws Exception {
+    public List<ViewInvoiceOutputDTO> getOutputDTOList() throws RuntimeException {
         if(!result.isSuccess()) {
             throw result.getError();
         }
-        return outputDTOList;
+        return result.getValue();
     }
 }
