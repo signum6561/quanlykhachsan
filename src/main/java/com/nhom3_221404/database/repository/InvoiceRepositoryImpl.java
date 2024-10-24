@@ -5,7 +5,6 @@ import java.util.List;
 import org.apache.ibatis.session.SqlSessionFactory;
 import org.apache.ibatis.session.SqlSessionManager;
 
-import com.nhom3_221404.common.InvoiceType;
 import com.nhom3_221404.database.dao.InvoiceDAO;
 import com.nhom3_221404.database.dao.InvoiceDailyDAO;
 import com.nhom3_221404.database.dao.InvoiceHourlyDAO;
@@ -51,18 +50,10 @@ public class InvoiceRepositoryImpl implements InvoiceRepository {
     }
 
     @Override
-    public Invoice insert(Invoice invoice) {
-        return invoice.acceptInsert(this);
-    }
-
-    @Override
     public Invoice insert(InvoiceDaily invoice) {
         sessionManager.startManagedSession();
         try {
-            invoiceDAO.insert(new InvoiceCritea(
-                InvoiceType.Daily.getCode(),
-                invoice
-            ));
+            invoiceDAO.insert(invoice);
             invoiceDailyDAO.insert(invoice);
             Invoice result = invoiceDAO.selectById(invoice.getId());
             sessionManager.commit();
@@ -78,10 +69,7 @@ public class InvoiceRepositoryImpl implements InvoiceRepository {
     public Invoice insert(InvoiceHourly invoice) {
         sessionManager.startManagedSession();
         try {
-            invoiceDAO.insert(new InvoiceCritea(
-                InvoiceType.Hourly.getCode(),
-                invoice
-            ));
+            invoiceDAO.insert(invoice);
             invoiceHourlyDAO.insert(invoice);
             Invoice result = invoiceDAO.selectById(invoice.getId());
             sessionManager.commit();
@@ -95,15 +83,10 @@ public class InvoiceRepositoryImpl implements InvoiceRepository {
     }
 
     @Override
-    public Invoice save(Invoice invoice) {
-        return invoice.acceptSave(this);
-    }
-
-    @Override
     public Invoice save(InvoiceDaily invoice) {
         try {
             String id = invoice.getId();
-            delete(id);
+            invoiceDAO.delete(id);
             invoiceDailyDAO.insert(invoice);
             Invoice result = findById(invoice.getId());
             sessionManager.commit();
@@ -165,5 +148,27 @@ public class InvoiceRepositoryImpl implements InvoiceRepository {
         } finally {
             sessionManager.close();
         }
+    }
+
+    @Override
+    public Invoice insert(Invoice invoice) {
+        switch (invoice.getInvoiceType()) {
+            case Daily:
+                return insert((InvoiceDaily) invoice);
+            case Hourly:
+                return insert((InvoiceHourly) invoice);
+        }
+        return null;
+    }
+
+    @Override
+    public Invoice save(Invoice invoice) {
+        switch (invoice.getInvoiceType()) {
+            case Daily:
+                return insert((InvoiceDaily) invoice);
+            case Hourly:
+                return insert((InvoiceHourly) invoice);
+        }
+        return null;
     }
 }

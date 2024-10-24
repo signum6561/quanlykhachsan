@@ -1,12 +1,20 @@
 package com.nhom3_221404.entity;
 
-import com.nhom3_221404.database.repository.InvoiceRepository;
+import java.time.LocalDateTime;
+
+import com.nhom3_221404.common.InvoiceType;
 
 public class InvoiceDaily extends Invoice {
 
     private Integer rentalDays;
 
     public InvoiceDaily() {
+    }
+
+    public InvoiceDaily(String id, String roomId, InvoiceType invoiceType, Double price, String customerName,
+            LocalDateTime billedDate, Integer rentalDays) {
+        super(id, roomId, invoiceType, price, customerName, billedDate);
+        this.rentalDays = rentalDays;
     }
 
     @Override
@@ -35,15 +43,5 @@ public class InvoiceDaily extends Invoice {
                 + ", price=" + price
                 + ", customerName=" + customerName
                 + ", billedDate=" + billedDate + "]";
-    }
-
-    @Override
-    public Invoice acceptInsert(InvoiceRepository invoiceRepository) {
-        return invoiceRepository.insert(this);
-    }
-
-    @Override
-    public Invoice acceptSave(InvoiceRepository invoiceRepository) {
-        return invoiceRepository.save(this);
     }
 }

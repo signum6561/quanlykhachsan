@@ -36,15 +36,19 @@ public class ViewInvoiceListUseCaseTest {
         database = new ViewInvoiceListDAOMySql(invoiceRepository);
         viewInvoiceListUC = new ViewInvoiceListUseCase(presenter, database);
 
-        invoiceRepository.deleteAll();
-        for(int i = 0; i < 10; i++) {
-            Invoice invoice = invoiceFactory.seedRandomInvoice();
-            invoiceRepository.insert(invoice);
+        try {
+            invoiceRepository.deleteAll();
+            for(int i = 0; i < 10; i++) {
+                Invoice invoice = invoiceFactory.seedRandomInvoice();
+                invoiceRepository.insert(invoice);
+            }
+        } catch(Exception e) {
+            e.printStackTrace();
         }
     }
 
     @Test
-    void testViewInvoices() {
+    void testViewInvoices() throws Exception {
         viewInvoiceListUC.execute();
         List<ViewInvoiceOutputDTO> invoices = presenter.getOutputDTOList();
         assertEquals(invoices.size(), 10);
