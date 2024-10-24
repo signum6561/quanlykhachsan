@@ -27,7 +27,7 @@ public class InvoiceFactory {
         invoice.setId(NanoIdUtils.randomNanoId());
         invoice.setCustomerName(faker.name().fullName());
         invoice.setRoomId(options.nextElement(roomIds));
-        invoice.setPrice(10000d);
+        invoice.setPrice(faker.number().randomDouble(2, 1000000, 5000000));
         invoice.setBilledDate(LocalDateTime.now());
         return invoice;
     }

@@ -17,6 +17,8 @@ import com.nhom3_221404.usecase.ViewInvoiceList.ViewInvoiceListUseCase;
 import com.nhom3_221404.util.IBatisUtil;
 import com.nhom3_221404.util.TableUtil;
 
+import java.time.format.DateTimeFormatter;
+
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
@@ -56,6 +58,8 @@ public class ViewInvoiceListController implements Initializable {
     ViewInvoiceListInputBoundary viewILInputB;
     ViewInvoiceListPresenter viewILPresenter;
     ViewInvoiceListDAOMySql viewILDAOMySql;
+
+    DateTimeFormatter formatter;
     
 
     @Override
@@ -64,6 +68,7 @@ public class ViewInvoiceListController implements Initializable {
         viewILDAOMySql = new ViewInvoiceListDAOMySql(invoiceRepository);
         viewILPresenter = new ViewInvoiceListPresenter();
         viewILInputB = new ViewInvoiceListUseCase(viewILPresenter, viewILDAOMySql);
+        formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm:ss");
 
         col_maHD.setCellValueFactory(new PropertyValueFactory<>("id"));
         col_hoTenKhachHang.setCellValueFactory(new PropertyValueFactory<>("customerName"));
@@ -101,7 +106,7 @@ public class ViewInvoiceListController implements Initializable {
                     .customerName(dto.getCustomerName())
                     .price(String.format("%.2f", dto.getPrice()))
                     .invoiceType(localizeInvoiceType(dto.getInvoiceType()))
-                    .billedDate(dto.getBilledDate().toString())
+                    .billedDate(dto.getBilledDate().format(formatter))
                     .roomId(dto.getRoomId())
                     .total(String.format("%.2f", dto.getTotal()))
                     .build();

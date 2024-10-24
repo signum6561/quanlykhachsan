@@ -1,21 +1,99 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.DatePicker?>
+<?import javafx.scene.control.Label?>
 <?import javafx.scene.control.TableColumn?>
 <?import javafx.scene.control.TableView?>
+<?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="500.0" prefWidth="1000.0" xmlns="http://javafx.com/javafx/20.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.nhom3_221404.ui.controller.ViewInvoiceListController">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="1000.0" xmlns="http://javafx.com/javafx/20.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.nhom3_221404.ui.controller.ViewInvoiceListController">
   <children>
-    <TableView fx:id="tb_invoice" layoutX="200.0" layoutY="132.0" prefHeight="200.0" prefWidth="200.0" AnchorPane.bottomAnchor="20.0" AnchorPane.leftAnchor="20.0" AnchorPane.rightAnchor="20.0" AnchorPane.topAnchor="100.0">
-      <columns>
-        <TableColumn fx:id="col_maHD" prefWidth="75.0" text="Mã HĐ" />
-        <TableColumn fx:id="col_hoTenKhachHang" prefWidth="150.4000244140625" text="Họ tên khách hàng" />
-            <TableColumn fx:id="col_maPhong" prefWidth="75.0" text="Mã phòng" />
-        <TableColumn fx:id="col_loaiHoaDon" prefWidth="98.4000244140625" text="Loại hóa đơn" />
-        <TableColumn fx:id="col_donGia" prefWidth="75.0" text="Đơn giá" />
-        <TableColumn fx:id="col_thanhTien" prefWidth="75.0" text="Thành tiền" />
-        <TableColumn fx:id="col_ngayThanhToan" prefWidth="137.5999755859375" text="Ngày thanh toán" />
-      </columns>
-    </TableView>
+      <VBox alignment="TOP_CENTER" layoutX="20.0" layoutY="250.0" AnchorPane.bottomAnchor="20.0" AnchorPane.leftAnchor="20.0" AnchorPane.rightAnchor="20.0" AnchorPane.topAnchor="20.0">
+         <children>
+            <HBox alignment="CENTER">
+               <VBox.margin>
+                  <Insets bottom="20.0" />
+               </VBox.margin>
+               <children>
+                  <AnchorPane>
+                     <children>
+                        <TextField layoutX="133.0" prefHeight="26.0" prefWidth="487.0" />
+                        <TextField layoutX="133.0" layoutY="53.0" />
+                        <Label layoutY="3.0" text="Họ tên khách hàng">
+                           <font>
+                              <Font name="System Bold" size="13.0" />
+                           </font>
+                        </Label>
+                        <Label layoutX="53.0" layoutY="56.0" text="Mã phòng">
+                           <font>
+                              <Font name="System Bold" size="13.0" />
+                           </font>
+                        </Label>
+                        <Label layoutX="36.0" layoutY="111.0" text="Loại hóa đơn">
+                           <font>
+                              <Font name="System Bold" size="13.0" />
+                           </font>
+                        </Label>
+                        <ComboBox layoutX="132.0" layoutY="108.0" prefWidth="150.0" />
+                        <TextField layoutX="446.0" layoutY="51.0" prefHeight="26.0" prefWidth="175.0" />
+                        <DatePicker layoutX="446.0" layoutY="110.0" />
+                        <Label layoutX="385.0" layoutY="55.0" text="Đơn giá">
+                           <font>
+                              <Font name="System Bold" size="13.0" />
+                           </font>
+                        </Label>
+                        <Label layoutX="330.0" layoutY="113.0" text="Ngày thanh toán">
+                           <font>
+                              <Font name="System Bold" size="13.0" />
+                           </font>
+                        </Label>
+                     </children>
+                  </AnchorPane>
+               </children>
+            </HBox>
+            <HBox alignment="CENTER" prefHeight="50.0" prefWidth="200.0" spacing="50.0">
+               <children>
+                  <Button mnemonicParsing="false" prefWidth="120.0" text="Add">
+                     <font>
+                        <Font name="System Bold" size="13.0" />
+                     </font>
+                  </Button>
+                  <Button mnemonicParsing="false" prefWidth="120.0" text="Save">
+                     <font>
+                        <Font name="System Bold" size="13.0" />
+                     </font>
+                  </Button>
+                  <Button mnemonicParsing="false" prefWidth="120.0" text="Delete">
+                     <font>
+                        <Font name="System Bold" size="13.0" />
+                     </font>
+                  </Button>
+                  <Button mnemonicParsing="false" prefWidth="120.0" text="Clear">
+                     <font>
+                        <Font name="System Bold" size="13.0" />
+                     </font>
+                  </Button>
+               </children>
+            </HBox>
+          <TableView fx:id="tb_invoice" prefHeight="200.0" prefWidth="200.0" VBox.vgrow="ALWAYS">
+            <columns>
+              <TableColumn fx:id="col_maHD" prefWidth="75.0" text="Mã HĐ" />
+              <TableColumn fx:id="col_hoTenKhachHang" prefWidth="150.4000244140625" text="Họ tên khách hàng" />
+                  <TableColumn fx:id="col_maPhong" prefWidth="75.0" text="Mã phòng" />
+              <TableColumn fx:id="col_loaiHoaDon" prefWidth="98.4000244140625" text="Loại hóa đơn" />
+              <TableColumn fx:id="col_donGia" prefWidth="75.0" text="Đơn giá" />
+              <TableColumn fx:id="col_thanhTien" prefWidth="75.0" text="Thành tiền" />
+              <TableColumn fx:id="col_ngayThanhToan" prefWidth="137.5999755859375" text="Ngày thanh toán" />
+            </columns>
+          </TableView>
+         </children>
+      </VBox>
   </children>
 </AnchorPane>
