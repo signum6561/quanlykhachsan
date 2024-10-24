@@ -6,6 +6,7 @@ import java.util.List;
 
 import com.nhom3_221404.dto.ViewInvoiceOutputDTO;
 import com.nhom3_221404.entity.Invoice;
+import com.nhom3_221404.exceptions.InternalDataAccessException;
 
 public class ViewInvoiceListUseCase implements ViewInvoiceListInputBoundary {
 
@@ -21,6 +22,12 @@ public class ViewInvoiceListUseCase implements ViewInvoiceListInputBoundary {
     @Override
     public void execute() {
         List<Invoice> invoiceList = viewILDatabaseB.getInvoiceList();
+        if(invoiceList == null) {
+            viewILOutputB.presentError(
+                new InternalDataAccessException()
+            );
+            return;
+        }
         List<ViewInvoiceOutputDTO> outputDTOList = new ArrayList<>();
 
         invoiceList.forEach(invoice -> {
@@ -37,6 +44,6 @@ public class ViewInvoiceListUseCase implements ViewInvoiceListInputBoundary {
             outputDTOList.add(viewInvoiceOutputDTO);
         });
 
-        viewILOutputB.present(outputDTOList);
+        viewILOutputB.presentResult(outputDTOList);
     }
 }

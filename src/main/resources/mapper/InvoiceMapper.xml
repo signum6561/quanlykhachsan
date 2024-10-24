@@ -61,9 +61,9 @@
         select 1 from invoice where id = #{id} limit 1
     </select>
 
-    <insert id="insert" parameterType="InvoiceCritea"> 
+    <insert id="insert" parameterType="Invoice"> 
         insert into Invoice(id, invoiceType, roomId, price, customerName, billedDate) 
-        values(#{data.id}, #{type}, #{data.roomId}, #{data.price}, #{data.customerName}, #{data.billedDate});
+        values(#{id}, #{invoiceType}, #{roomId}, #{price}, #{customerName}, #{billedDate});
     </insert>
 
     <!-- <update id="update" parameterType="Invoice">
