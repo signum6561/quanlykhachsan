@@ -1,4 +1,4 @@
-package com.nhom3_221404;
+package com.nhom3_221404.usecase.ViewInvoiceList;
 
 import java.io.IOException;
 
@@ -8,12 +8,9 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 
-/**
- * Hello world!
- *
- */
-public class App extends Application
-{
+public class ViewInvoiceListMain extends Application {
+
+
     @Override
     public void start(Stage stage) throws IOException {
         Parent root = FXMLLoader.load(getClass().getResource("./viewInvoiceUI.fxml"));

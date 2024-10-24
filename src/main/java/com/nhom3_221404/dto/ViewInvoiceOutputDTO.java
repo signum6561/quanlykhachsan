@@ -75,5 +75,13 @@ public class ViewInvoiceOutputDTO {
     public void setTotal(Double total) {
         this.total = total;
     }
+
+    public InvoiceType getInvoiceType() {
+        return this.invoiceType;
+    }
+
+    public void setInvoiceType(InvoiceType invoiceType) {
+        this.invoiceType = invoiceType;
+    }
     // #endregion
 }

@@ -7,10 +7,10 @@
     <typeAlias type="com.nhom3_221404.entity.Invoice" alias="Invoice"/>
     <typeAlias type="com.nhom3_221404.entity.InvoiceHourly" alias="InvoiceHourly" />
     <typeAlias type="com.nhom3_221404.entity.InvoiceDaily" alias="InvoiceDaily" />
-    <typeAlias type="com.nhom3_221404.database.repository.InvoiceCritea" alias="InvoiceCritea" />
   </typeAliases>
   <typeHandlers>
     <typeHandler javaType="java.time.LocalDateTime" handler="org.apache.ibatis.type.LocalDateTimeTypeHandler"/>
+    <typeHandler javaType="com.nhom3_221404.common.InvoiceType" handler="com.nhom3_221404.database.handler.InvoiceTypeHandler"/>
   </typeHandlers>
   <environments default="development">
     <environment id="development">

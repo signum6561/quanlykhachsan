@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.layout.AnchorPane?>
+
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="500.0" prefWidth="1000.0" xmlns="http://javafx.com/javafx/20.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.nhom3_221404.ui.controller.ViewInvoiceListController">
+  <children>
+    <TableView fx:id="tb_invoice" layoutX="200.0" layoutY="132.0" prefHeight="200.0" prefWidth="200.0" AnchorPane.bottomAnchor="20.0" AnchorPane.leftAnchor="20.0" AnchorPane.rightAnchor="20.0" AnchorPane.topAnchor="100.0">
+      <columns>
+        <TableColumn fx:id="col_maHD" prefWidth="75.0" text="Mã HĐ" />
+        <TableColumn fx:id="col_hoTenKhachHang" prefWidth="150.4000244140625" text="Họ tên khách hàng" />
+            <TableColumn fx:id="col_maPhong" prefWidth="75.0" text="Mã phòng" />
+        <TableColumn fx:id="col_loaiHoaDon" prefWidth="98.4000244140625" text="Loại hóa đơn" />
+        <TableColumn fx:id="col_donGia" prefWidth="75.0" text="Đơn giá" />
+        <TableColumn fx:id="col_thanhTien" prefWidth="75.0" text="Thành tiền" />
+        <TableColumn fx:id="col_ngayThanhToan" prefWidth="137.5999755859375" text="Ngày thanh toán" />
+      </columns>
+    </TableView>
+  </children>
+</AnchorPane>
