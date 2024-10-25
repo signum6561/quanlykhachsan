@@ -13,6 +13,11 @@ public class ViewInvoiceListDAOMySql {
     }
 
     public List<Invoice> getInvoiceList() {
-        return invoiceRepository.findAll();
+        try {
+            return invoiceRepository.findAll();
+        } catch (Exception e) {
+            e.printStackTrace(); 
+            return null; 
+        }
     }
 }

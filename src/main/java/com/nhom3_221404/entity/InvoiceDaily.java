@@ -46,4 +46,6 @@ public class InvoiceDaily extends Invoice {
     public Invoice acceptSave(InvoiceRepository invoiceRepository) {
         return invoiceRepository.save(this);
     }
+
+
 }

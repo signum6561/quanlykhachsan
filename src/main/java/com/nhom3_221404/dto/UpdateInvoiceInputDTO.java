@@ -1,27 +1,24 @@
-package com.nhom3_221404.entity;
+package com.nhom3_221404.dto;
 
 import java.time.LocalDateTime;
 
-import com.nhom3_221404.common.InvocieDataModel;
+public class UpdateInvoiceInputDTO {
+    private String id;
+    private String roomId;
+    private Double price;
+    private String customerName;
+    private LocalDateTime billedDate;
 
-public abstract class Invoice implements InvocieDataModel {
-
-    protected String id;
-
-    protected String roomId;
-
-    protected Double price;
-
-    protected String customerName;
-
-    protected LocalDateTime billedDate;
-
-    public Invoice() {
+    public UpdateInvoiceInputDTO(String id, String roomId, Double price, 
+                                String customerName, LocalDateTime billedDate) {
+        this.id = id;
+        this.roomId = roomId;
+        this.price = price;
+        this.customerName = customerName;
+        this.billedDate = billedDate;
     }
 
-    public abstract Double getTotal();
-
-    // #region getters and setters
+    // Getters and Setters
     public String getId() {
         return id;
     }
@@ -61,7 +58,4 @@ public abstract class Invoice implements InvocieDataModel {
     public void setBilledDate(LocalDateTime billedDate) {
         this.billedDate = billedDate;
     }
-    // #endregion
-
-
 }
