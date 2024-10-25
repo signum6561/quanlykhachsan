@@ -1,10 +1,8 @@
 package com.nhom3_221404.usecase.ViewInvoiceList;
 
-import java.util.List;
-
-import com.nhom3_221404.dto.ViewInvoiceOutputDTO;
+import com.nhom3_221404.dto.ViewInvoiceListResponse;
 
 public interface ViewInvoiceListOutputBoundary {
-    void presentResult(List<ViewInvoiceOutputDTO> data);
+    void presentResult(ViewInvoiceListResponse response);
     void presentError(RuntimeException error);
 }

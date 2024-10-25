@@ -28,11 +28,12 @@ public class InvoiceRepositoryTest {
     void setUp() throws SQLException {
         invoiceFactory = new InvoiceFactory(new Faker());
         invoiceRepository = new InvoiceRepositoryImpl(IBatisUtil.buildSqlSessionFactoryTest());
+        invoiceRepository.deleteAll();
     }
 
     @Test
     void insertInvoices() {
-        for(int i = 0; i < 10; i++) {
+        for(int i = 0; i < 30; i++) {
             Invoice invoice = invoiceFactory.seedRandomInvoice();
             assertNotNull(invoiceRepository.insert(invoice));
         }

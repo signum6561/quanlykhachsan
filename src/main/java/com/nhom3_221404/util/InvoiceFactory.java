@@ -27,7 +27,7 @@ public class InvoiceFactory {
         invoice.setId(NanoIdUtils.randomNanoId());
         invoice.setCustomerName(faker.name().fullName());
         invoice.setRoomId(options.nextElement(roomIds));
-        invoice.setPrice(10000d);
+        invoice.setPrice(faker.number().randomDouble(2, 1000000, 5000000));
         invoice.setBilledDate(LocalDateTime.now());
         return invoice;
     }
@@ -48,12 +48,14 @@ public class InvoiceFactory {
 
     public InvoiceDaily seedInvoiceDaily() {
         InvoiceDaily invoiceDaily = new InvoiceDaily();
+        invoiceDaily.setInvoiceType(InvoiceType.Daily);
         invoiceDaily.setRentalDays(faker.random().nextInt(0, 20));
         return (InvoiceDaily) seedInvoice(invoiceDaily);
     }
 
     public InvoiceHourly seedInvoiceHourly() {
         InvoiceHourly invoiceHourly = new InvoiceHourly();
+        invoiceHourly.setInvoiceType(InvoiceType.Hourly);
         invoiceHourly.setRentalHours(faker.random().nextInt(0, 30));
         return (InvoiceHourly) seedInvoice(invoiceHourly);
     }
