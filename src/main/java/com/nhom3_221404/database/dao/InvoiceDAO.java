@@ -10,7 +10,7 @@ public interface InvoiceDAO {
     Invoice selectById(String id);
 
     void insert(Invoice invoice);
-        
+
     void delete(String id);
 
     void deleteAll();

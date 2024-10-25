@@ -4,9 +4,8 @@ import com.nhom3_221404.entity.Invoice;
 
 public interface CreateInvoiceDatabaseBoundary {
 
-    int createInvoiceID(Invoice invoice);
-    
-    Invoice findInvoiceID(int newInvoiceID);
-    
+    String createInvoiceID(Invoice invoice);
+
+    Invoice findInvoiceID(String invoiceID);
 
 }

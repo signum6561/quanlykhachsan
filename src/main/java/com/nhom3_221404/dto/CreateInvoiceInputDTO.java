@@ -11,6 +11,10 @@ public class CreateInvoiceInputDTO {
     private LocalDateTime billedDate;
     private InvoiceType invoiceType;
 
+    private Integer rentalDays;
+
+    private Integer rentalHours;
+
     public CreateInvoiceInputDTO(InvoiceType invoiceType, String roomId, Double price, String customerName,
             LocalDateTime billedDate) {
         this.invoiceType = invoiceType;
@@ -18,6 +22,26 @@ public class CreateInvoiceInputDTO {
         this.price = price;
         this.customerName = customerName;
         this.billedDate = billedDate;
+    }
+
+    public CreateInvoiceInputDTO(String roomId, Double price, String customerName, LocalDateTime billedDate,
+            InvoiceType invoiceType, Integer rentalDays) {
+        this(invoiceType, roomId, price, customerName, billedDate);
+        this.rentalDays = rentalDays;
+    }
+
+    public CreateInvoiceInputDTO(String roomId, String customerName, Double price, LocalDateTime billedDate,
+            InvoiceType invoiceType, Integer rentalHours) {
+        this(invoiceType, roomId, price, customerName, billedDate);
+        this.rentalHours = rentalHours;
+    }
+
+    public Integer getRentalHours() {
+        return rentalHours;
+    }
+
+    public void setRentalHours(Integer rentalHours) {
+        this.rentalHours = rentalHours;
     }
 
     public InvoiceType getInvoiceType() {
@@ -58,5 +82,13 @@ public class CreateInvoiceInputDTO {
 
     public void setBilledDate(LocalDateTime billedDate) {
         this.billedDate = billedDate;
+    }
+
+    public Integer getRentalDays() {
+        return rentalDays;
+    }
+
+    public void setRentalDays(Integer rentalDays) {
+        this.rentalDays = rentalDays;
     }
 }

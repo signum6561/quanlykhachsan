@@ -31,7 +31,7 @@ public class InvoiceRepositoryImpl implements InvoiceRepository {
 
     @Override
     public List<Invoice> findAll() {
-        return invoiceDAO.selectAll(); 
+        return invoiceDAO.selectAll();
     }
 
     @Override
@@ -41,12 +41,12 @@ public class InvoiceRepositoryImpl implements InvoiceRepository {
 
     @Override
     public List<InvoiceDaily> findAllDaily() {
-        return invoiceDailyDAO.selectAll(); 
+        return invoiceDailyDAO.selectAll();
     }
 
     @Override
     public Invoice findById(String id) {
-        return invoiceDAO.selectById(id); 
+        return invoiceDAO.selectById(id);
     }
 
     @Override
@@ -57,14 +57,15 @@ public class InvoiceRepositoryImpl implements InvoiceRepository {
             invoiceDailyDAO.insert(invoice);
             Invoice result = invoiceDAO.selectById(invoice.getId());
             sessionManager.commit();
-            return result;    
-        } catch(Throwable t) {
+            return result;
+        } catch (Throwable t) {
             sessionManager.rollback();
             throw t;
         } finally {
             sessionManager.close();
         }
     }
+
     @Override
     public Invoice insert(InvoiceHourly invoice) {
         sessionManager.startManagedSession();
@@ -73,8 +74,8 @@ public class InvoiceRepositoryImpl implements InvoiceRepository {
             invoiceHourlyDAO.insert(invoice);
             Invoice result = invoiceDAO.selectById(invoice.getId());
             sessionManager.commit();
-            return result;    
-        } catch(Throwable t) {
+            return result;
+        } catch (Throwable t) {
             sessionManager.rollback();
             throw t;
         } finally {
@@ -91,7 +92,7 @@ public class InvoiceRepositoryImpl implements InvoiceRepository {
             Invoice result = findById(invoice.getId());
             sessionManager.commit();
             return result;
-        } catch(Throwable t) {
+        } catch (Throwable t) {
             sessionManager.rollback();
             throw t;
         } finally {
@@ -109,7 +110,7 @@ public class InvoiceRepositoryImpl implements InvoiceRepository {
             Invoice result = invoiceDAO.selectById(id);
             sessionManager.commit();
             return result;
-        } catch(Throwable t) {
+        } catch (Throwable t) {
             sessionManager.rollback();
             throw t;
         } finally {
@@ -123,7 +124,7 @@ public class InvoiceRepositoryImpl implements InvoiceRepository {
         try {
             invoiceDAO.delete(id);
             sessionManager.commit();
-        } catch(Throwable t) {
+        } catch (Throwable t) {
             sessionManager.rollback();
             throw t;
         } finally {
@@ -142,7 +143,7 @@ public class InvoiceRepositoryImpl implements InvoiceRepository {
         try {
             invoiceDAO.deleteAll();
             sessionManager.commit();
-        } catch(Throwable t) {
+        } catch (Throwable t) {
             sessionManager.rollback();
             throw t;
         } finally {

@@ -1,12 +1,11 @@
 package com.nhom3_221404.ui.presenter;
 
 import com.nhom3_221404.dto.CreateInvoiceOutDTO;
-import com.nhom3_221404.dto.ResponseError;
 import com.nhom3_221404.usecase.CreateInvoice.CreateInvoiceOutputBoundary;
 
-public abstract class CreateInvoicePresenter implements CreateInvoiceOutputBoundary {
+public class CreateInvoicePresenter implements CreateInvoiceOutputBoundary {
     private CreateInvoiceOutDTO createInvoiceOutDTO;
-    private ResponseError responseError;
+    private RuntimeException error;
 
     @Override
     public void presentData(CreateInvoiceOutDTO createInvoiceOutDTO) {
@@ -18,12 +17,13 @@ public abstract class CreateInvoicePresenter implements CreateInvoiceOutputBound
     }
 
     @Override
-    public void presentError(ResponseError responseError) {
-        this.responseError = responseError;
+    public void presentError(RuntimeException error) {
+        this.error = error;
+        System.err.println("Error: " + error.getMessage());
     }
 
-    public ResponseError getResponseError() {
-        return responseError;
+    public RuntimeException getError() {
+        return error;
     }
 
 }

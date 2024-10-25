@@ -22,9 +22,9 @@ public interface InvoiceRepository {
     Invoice insert(InvoiceHourly invoice);
 
     Invoice save(Invoice invoice);
-    
+
     Invoice save(InvoiceDaily invoice);
-    
+
     Invoice save(InvoiceHourly invoice);
 
     boolean isExists(String id);
