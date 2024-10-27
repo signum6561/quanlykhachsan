@@ -49,7 +49,6 @@ public class InvoiceRepositoryImpl implements InvoiceRepository {
         return invoiceDAO.selectById(id);
     }
 
-    @Override
     public Invoice insert(InvoiceDaily invoice) {
         sessionManager.startManagedSession();
         try {
@@ -66,7 +65,6 @@ public class InvoiceRepositoryImpl implements InvoiceRepository {
         }
     }
 
-    @Override
     public Invoice insert(InvoiceHourly invoice) {
         sessionManager.startManagedSession();
         try {
@@ -83,7 +81,6 @@ public class InvoiceRepositoryImpl implements InvoiceRepository {
         }
     }
 
-    @Override
     public Invoice save(InvoiceDaily invoice) {
         try {
             String id = invoice.getId();
@@ -100,7 +97,6 @@ public class InvoiceRepositoryImpl implements InvoiceRepository {
         }
     }
 
-    @Override
     public Invoice save(InvoiceHourly invoice) {
         sessionManager.startManagedSession();
         try {

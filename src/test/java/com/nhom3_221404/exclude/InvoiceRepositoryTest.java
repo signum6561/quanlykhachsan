@@ -1,10 +1,12 @@
 package com.nhom3_221404.exclude;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.sql.SQLException;
 import java.util.List;
+import java.util.Locale;
 
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
@@ -26,7 +28,7 @@ public class InvoiceRepositoryTest {
 
     @BeforeAll
     void setUp() throws SQLException {
-        invoiceFactory = new InvoiceFactory(new Faker());
+        invoiceFactory = new InvoiceFactory(new Faker(new Locale("vi")));
         invoiceRepository = new InvoiceRepositoryImpl(IBatisUtil.buildSqlSessionFactoryTest());
         invoiceRepository.deleteAll();
     }
@@ -58,5 +60,12 @@ public class InvoiceRepositoryTest {
         Invoice inserted = invoiceRepository.insert(invoiceDaily);
         invoiceRepository.delete(inserted.getId());
         assertTrue(!invoiceRepository.isExists(inserted.getId()));
+    }
+
+    @Test
+    void deleteAll() {
+        invoiceRepository.deleteAll();
+        List<Invoice> invoices = invoiceRepository.findAll();
+        assertEquals(invoices.size(), 0);
     }
 }

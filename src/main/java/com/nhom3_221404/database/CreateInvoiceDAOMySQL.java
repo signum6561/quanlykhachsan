@@ -20,5 +20,4 @@ public class CreateInvoiceDAOMySQL implements CreateInvoiceDatabaseBoundary {
     public Invoice findInvoiceID(String newInvoiceID) {
         return invoiceRepository.findById(newInvoiceID);
     }
-
 }
