@@ -12,12 +12,12 @@ public class CreateInvoiceDAOMySQL implements CreateInvoiceDatabaseBoundary {
     }
 
     @Override
-    public String createInvoiceID(Invoice invoice) {
-        return invoiceRepository.insert(invoice).getId();
-    }
-
-    @Override
-    public Invoice findInvoiceID(String newInvoiceID) {
-        return invoiceRepository.findById(newInvoiceID);
+    public Invoice addInvoice(Invoice invoice) {
+        try {
+            invoiceRepository.insert(invoice);
+        } catch(Exception e) {
+            e.printStackTrace();
+        }
+        return null;
     }
 }

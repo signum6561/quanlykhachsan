@@ -1,24 +1,14 @@
 package com.nhom3_221404.dto;
 
-import java.time.LocalDateTime;
+import java.time.LocalDate;
 
-public class CreateInvoiceOutDTO {
+public class CreateInvoiceOutputDTO {
     private String id;
     private String roomId;
     private Double price;
     private String customerName;
-    private LocalDateTime billedDate;
+    private LocalDate billedDate;
     private Double total;
-
-    public CreateInvoiceOutDTO(String id, String roomId, Double price, String customerName, LocalDateTime billedDate,
-            Double total) {
-        this.id = id;
-        this.roomId = roomId;
-        this.price = price;
-        this.customerName = customerName;
-        this.billedDate = billedDate;
-        this.total = total;
-    }
 
     public String getId() {
         return id;
@@ -52,11 +42,11 @@ public class CreateInvoiceOutDTO {
         this.customerName = customerName;
     }
 
-    public LocalDateTime getBilledDate() {
+    public LocalDate getBilledDate() {
         return billedDate;
     }
 
-    public void setBilledDate(LocalDateTime billedDate) {
+    public void setBilledDate(LocalDate billedDate) {
         this.billedDate = billedDate;
     }
 

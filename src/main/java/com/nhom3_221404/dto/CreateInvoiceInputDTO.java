@@ -1,6 +1,7 @@
 package com.nhom3_221404.dto;
 
-import java.time.LocalDateTime;
+
+import java.time.LocalDate;
 
 import com.nhom3_221404.common.InvoiceType;
 
@@ -8,40 +9,12 @@ public class CreateInvoiceInputDTO {
     private String roomId;
     private Double price;
     private String customerName;
-    private LocalDateTime billedDate;
+    private LocalDate billedDate;
     private InvoiceType invoiceType;
-
-    private Integer rentalDays;
-
-    private Integer rentalHours;
-
-    public CreateInvoiceInputDTO(InvoiceType invoiceType, String roomId, Double price, String customerName,
-            LocalDateTime billedDate) {
-        this.invoiceType = invoiceType;
-        this.roomId = roomId;
-        this.price = price;
-        this.customerName = customerName;
-        this.billedDate = billedDate;
-    }
-
-    public CreateInvoiceInputDTO(String roomId, Double price, String customerName, LocalDateTime billedDate,
-            InvoiceType invoiceType, Integer rentalDays) {
-        this(invoiceType, roomId, price, customerName, billedDate);
-        this.rentalDays = rentalDays;
-    }
-
-    public CreateInvoiceInputDTO(String roomId, String customerName, Double price, LocalDateTime billedDate,
-            InvoiceType invoiceType, Integer rentalHours) {
-        this(invoiceType, roomId, price, customerName, billedDate);
-        this.rentalHours = rentalHours;
-    }
-
-    public Integer getRentalHours() {
-        return rentalHours;
-    }
-
-    public void setRentalHours(Integer rentalHours) {
-        this.rentalHours = rentalHours;
+    private int rentalDays;
+    private int rentalHours;
+  
+    public CreateInvoiceInputDTO() {
     }
 
     public InvoiceType getInvoiceType() {
@@ -76,19 +49,27 @@ public class CreateInvoiceInputDTO {
         this.customerName = customerName;
     }
 
-    public LocalDateTime getBilledDate() {
+    public LocalDate getBilledDate() {
         return billedDate;
     }
 
-    public void setBilledDate(LocalDateTime billedDate) {
+    public void setBilledDate(LocalDate billedDate) {
         this.billedDate = billedDate;
     }
 
-    public Integer getRentalDays() {
+    public int getRentalDays() {
         return rentalDays;
     }
 
-    public void setRentalDays(Integer rentalDays) {
+    public void setRentalDays(int rentalDays) {
         this.rentalDays = rentalDays;
+    }
+
+    public int getRentalHours() {
+        return rentalHours;
+    }
+
+    public void setRentalHours(int rentalHours) {
+        this.rentalHours = rentalHours;
     }
 }

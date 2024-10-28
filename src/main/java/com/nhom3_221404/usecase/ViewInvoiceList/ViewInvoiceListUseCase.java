@@ -1,6 +1,6 @@
 package com.nhom3_221404.usecase.ViewInvoiceList;
 
-import java.time.LocalDateTime;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -39,7 +39,7 @@ public class ViewInvoiceListUseCase implements ViewInvoiceListInputBoundary {
             String roomId = invoice.getRoomId();
             Double total = invoice.getTotal();
             InvoiceType invoiceType = invoice.getInvoiceType();
-            LocalDateTime billedDate = invoice.getBilledDate();
+            LocalDate billedDate = invoice.getBilledDate();
 
             ViewInvoiceOutputDTO viewInvoiceOutputDTO = 
                 new ViewInvoiceOutputDTO(id, invoiceType, roomId, price, customerName, billedDate, total);

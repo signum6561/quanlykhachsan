@@ -12,12 +12,14 @@ public class Result<T> {
         this.error = error;
     }
 
-    public static <T> Result<T> success(T value) {
-        return new Result<>(value, null);
+    public void setSuccess(T value) {
+        setValue(value);
+        setError(null);
     }
 
-    public static <T> Result<T> failure(RuntimeException error) {
-        return new Result<>(null, error);
+    public void setFailure(RuntimeException error) {
+        setValue(null);
+        setError(error);
     }
 
     public boolean isSuccess() {

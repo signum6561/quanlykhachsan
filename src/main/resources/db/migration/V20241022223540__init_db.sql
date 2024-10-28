@@ -7,7 +7,7 @@ CREATE TABLE Invoice (
     roomId VARCHAR(255) NOT NULL,
     price DECIMAL(12, 2) NOT NULL,
     customerName VARCHAR(255) NOT NULL,
-    billedDate DATETIME NOT NULL
+    billedDate DATE NOT NULL
 );
 
 CREATE TABLE InvoiceHourly (

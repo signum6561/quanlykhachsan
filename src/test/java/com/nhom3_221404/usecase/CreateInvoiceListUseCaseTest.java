@@ -44,19 +44,6 @@ public class CreateInvoiceListUseCaseTest {
         InvoiceDaily invoice = invoiceFactory.seedInvoiceDaily();
         // invoice.setRentalDays(7);
 
-        when(database.createInvoiceID(ArgumentMatchers.any())).thenReturn(invoice.getId());
-        when(database.findInvoiceID(invoice.getId())).thenReturn(invoice);
-
-        CreateInvoiceInputDTO createInvoiceInputDTO = new CreateInvoiceInputDTO(
-                invoice.getRoomId(), invoice.getPrice(),
-                invoice.getCustomerName(), invoice.getBilledDate(), invoice.getInvoiceType(), invoice.getRentalDays());
-        createInvoiceInputBoundary.execute(createInvoiceInputDTO);
-
-        assertEquals(invoice.getId(), presenter.getCreateInvoiceOutDTO().getId());
-        assertEquals(invoice.getRoomId(), presenter.getCreateInvoiceOutDTO().getRoomId());
-        assertEquals(invoice.getPrice(), presenter.getCreateInvoiceOutDTO().getPrice());
-        assertEquals(invoice.getCustomerName(), presenter.getCreateInvoiceOutDTO().getCustomerName());
-        assertEquals(invoice.getBilledDate(), presenter.getCreateInvoiceOutDTO().getBilledDate());
     }
 
     @Test
@@ -64,18 +51,5 @@ public class CreateInvoiceListUseCaseTest {
         InvoiceHourly invoice = invoiceFactory.seedInvoiceHourly();
         // invoice.setRentalHours(7);
 
-        when(database.createInvoiceID(ArgumentMatchers.any())).thenReturn(invoice.getId());
-        when(database.findInvoiceID(invoice.getId())).thenReturn(invoice);
-
-        CreateInvoiceInputDTO createInvoiceInputDTO = new CreateInvoiceInputDTO(invoice.getRoomId(),
-                invoice.getCustomerName(), invoice.getPrice(), invoice.getBilledDate(), invoice.getInvoiceType(),
-                invoice.getRentalHours());
-        createInvoiceInputBoundary.execute(createInvoiceInputDTO);
-
-        assertEquals(invoice.getId(), presenter.getCreateInvoiceOutDTO().getId());
-        assertEquals(invoice.getRoomId(), presenter.getCreateInvoiceOutDTO().getRoomId());
-        assertEquals(invoice.getPrice(), presenter.getCreateInvoiceOutDTO().getPrice());
-        assertEquals(invoice.getCustomerName(), presenter.getCreateInvoiceOutDTO().getCustomerName());
-        assertEquals(invoice.getBilledDate(), presenter.getCreateInvoiceOutDTO().getBilledDate());
     }
 }

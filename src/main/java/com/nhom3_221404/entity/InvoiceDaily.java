@@ -1,19 +1,24 @@
 package com.nhom3_221404.entity;
 
-import java.time.LocalDateTime;
+import java.time.LocalDate;
 
 import com.nhom3_221404.common.InvoiceType;
 
 public class InvoiceDaily extends Invoice {
 
     private Integer rentalDays;
-
+  
     public InvoiceDaily() {
+        invoiceType = InvoiceType.Daily;
     }
 
-    public InvoiceDaily(String id, String roomId, InvoiceType invoiceType, Double price, String customerName,
-            LocalDateTime billedDate, Integer rentalDays) {
-        super(id, roomId, invoiceType, price, customerName, billedDate);
+    public InvoiceDaily(Integer rentalDays) {
+        this.rentalDays = rentalDays;
+    }
+
+    public InvoiceDaily(String id, String roomId, Double price, String customerName,
+            LocalDate billedDate, Integer rentalDays) {
+        super(id, roomId, InvoiceType.Daily, price, customerName, billedDate);
         this.rentalDays = rentalDays;
     }
 
