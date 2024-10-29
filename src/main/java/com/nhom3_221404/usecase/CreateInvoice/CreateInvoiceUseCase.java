@@ -43,7 +43,6 @@ public class CreateInvoiceUseCase implements CreateInvoiceInputBoundary {
         invoice.setPrice(price);
         invoice.setCustomerName(customerName);
         invoice.setBilledDate(billedDate);
-        invoice.getTotal();
 
         String InvoiceID = createIDatabaseB.createInvoiceID(invoice);
 
