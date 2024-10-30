@@ -6,8 +6,9 @@ import java.util.List;
 import java.util.Map;
 
 import com.nhom3_221404.entity.Invoice;
+import com.nhom3_221404.usecase.UpdateInvoice.UpdateInvoiceDatabaseBoundary;
 
-public class InvoiceDatabaseMemory {
+public class InvoiceDatabaseMemory implements UpdateInvoiceDatabaseBoundary {
     private Map<String, Invoice> database;
 
     public InvoiceDatabaseMemory() {
@@ -18,12 +19,19 @@ public class InvoiceDatabaseMemory {
         return new ArrayList<>(database.values());
     }
 
-    public Invoice findById(String id) {
+    @Override
+    public Invoice findInvoiceById(String id) {
         return database.get(id);
     }
 
     public void save(Invoice invoice) {
         database.put(invoice.getId(), invoice);
+    }
+
+    @Override
+    public Invoice updateInvoice(Invoice invoice) {
+        database.put(invoice.getId(), invoice);
+        return invoice;
     }
 
     public void delete(String id) {
@@ -33,5 +41,4 @@ public class InvoiceDatabaseMemory {
     public void deleteAll() {
         database.clear();
     }
-
 }
