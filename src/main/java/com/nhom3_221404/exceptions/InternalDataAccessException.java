@@ -2,7 +2,7 @@ package com.nhom3_221404.exceptions;
 
 import com.nhom3_221404.constant.StringConst;
 
-public class InternalDataAccessException extends RuntimeException {
+public class InternalDataAccessException extends Exception {
     public InternalDataAccessException() {
         super(StringConst.INTERNAL_DATA_ACCESS_ERROR);
     }

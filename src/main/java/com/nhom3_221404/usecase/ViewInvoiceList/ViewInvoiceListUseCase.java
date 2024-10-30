@@ -4,11 +4,11 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.nhom3_221404.common.Errors;
 import com.nhom3_221404.common.InvoiceType;
 import com.nhom3_221404.dto.ViewInvoiceListResponse;
 import com.nhom3_221404.dto.ViewInvoiceOutputDTO;
 import com.nhom3_221404.entity.Invoice;
-import com.nhom3_221404.exceptions.InternalDataAccessException;
 
 public class ViewInvoiceListUseCase implements ViewInvoiceListInputBoundary {
 
@@ -25,9 +25,7 @@ public class ViewInvoiceListUseCase implements ViewInvoiceListInputBoundary {
     public void execute() {
         List<Invoice> invoiceList = viewILDatabaseB.getInvoiceList();
         if(invoiceList == null) {
-            viewILOutputB.presentError(
-                new InternalDataAccessException()
-            );
+            viewILOutputB.presentError(Errors.InternalDataAccess);
             return;
         }
         List<ViewInvoiceOutputDTO> outputDTOList = new ArrayList<>();
