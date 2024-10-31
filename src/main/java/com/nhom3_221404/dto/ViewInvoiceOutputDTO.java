@@ -5,15 +5,30 @@ import java.time.LocalDate;
 import com.nhom3_221404.common.InvoiceType;
 
 public class ViewInvoiceOutputDTO {
-    protected String id;
-    protected InvoiceType invoiceType;
-    protected String roomId;
-    protected Double price;
-    protected String customerName;
-    protected LocalDate billedDate;
-    protected Double total;
+    private String id;
+    private InvoiceType invoiceType;
+    private String roomId;
+    private Double price;
+    private String customerName;
+    private LocalDate billedDate;
+    private Double total;
+    private Integer rentalDays;
+    private Integer rentalHours;
+
 
     public ViewInvoiceOutputDTO() {
+    }
+
+    public ViewInvoiceOutputDTO(String id, InvoiceType invoiceType, String roomId, Double price, String customerName, LocalDate billedDate, Double total, Integer rentalDays, Integer rentalHours) {
+        this.id = id;
+        this.invoiceType = invoiceType;
+        this.roomId = roomId;
+        this.price = price;
+        this.customerName = customerName;
+        this.billedDate = billedDate;
+        this.total = total;
+        this.rentalDays = rentalDays;
+        this.rentalHours = rentalHours;
     }
 
     public ViewInvoiceOutputDTO(String id, InvoiceType invoiceType, String roomId, Double price, String customerName,
@@ -83,5 +98,22 @@ public class ViewInvoiceOutputDTO {
     public void setInvoiceType(InvoiceType invoiceType) {
         this.invoiceType = invoiceType;
     }
+
+    public Integer getRentalDays() {
+        return this.rentalDays;
+    }
+
+    public void setRentalDays(Integer rentalDays) {
+        this.rentalDays = rentalDays;
+    }
+
+    public Integer getRentalHours() {
+        return this.rentalHours;
+    }
+
+    public void setRentalHours(Integer rentalHours) {
+        this.rentalHours = rentalHours;
+    }
+
     // #endregion
 }
