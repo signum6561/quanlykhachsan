@@ -16,7 +16,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 
 import com.github.javafaker.Faker;
 import com.nhom3_221404.common.InvoiceType;
-import com.nhom3_221404.database.CreateInvoiceDAOMySql;
+import com.nhom3_221404.database.CreateInvoiceDAOMySQL;
 import com.nhom3_221404.dto.CreateInvoiceInputDTO;
 import com.nhom3_221404.dto.CreateInvoiceOutputDTO;
 import com.nhom3_221404.entity.Invoice;
@@ -39,7 +39,7 @@ public class CreateInvoiceListUseCaseTest {
     Faker faker;
 
     @Mock
-    CreateInvoiceDAOMySql database;
+    CreateInvoiceDAOMySQL database;
 
     @BeforeEach
     void setUp() {
