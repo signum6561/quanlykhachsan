@@ -1,6 +1,6 @@
 package com.nhom3_221404.dto;
 
-import java.time.LocalDateTime;
+import java.time.LocalDate;
 
 import com.nhom3_221404.common.InvoiceType;
 
@@ -10,14 +10,14 @@ public class ViewInvoiceOutputDTO {
     protected String roomId;
     protected Double price;
     protected String customerName;
-    protected LocalDateTime billedDate;
+    protected LocalDate billedDate;
     protected Double total;
 
     public ViewInvoiceOutputDTO() {
     }
 
     public ViewInvoiceOutputDTO(String id, InvoiceType invoiceType, String roomId, Double price, String customerName,
-            LocalDateTime billedDate, Double total) {
+            LocalDate billedDate, Double total) {
         this.id = id;
         this.invoiceType = invoiceType;
         this.roomId = roomId;
@@ -60,11 +60,11 @@ public class ViewInvoiceOutputDTO {
         this.customerName = customerName;
     }
 
-    public LocalDateTime getBilledDate() {
+    public LocalDate getBilledDate() {
         return billedDate;
     }
 
-    public void setBilledDate(LocalDateTime billedDate) {
+    public void setBilledDate(LocalDate billedDate) {
         this.billedDate = billedDate;
     }
 

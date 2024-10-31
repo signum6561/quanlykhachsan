@@ -52,7 +52,7 @@ public class ViewInvoiceListUseCaseTest {
     }
 
     @Test
-    void testViewInvoices_valid() {
+    void testViewInvoices_valid() throws Exception {
         when(database.getInvoiceList()).thenReturn(getMockData());
         viewInvoiceListUC.execute();
         List<ViewInvoiceOutputDTO> invoices = presenter.getOutputDTOList();
@@ -60,7 +60,7 @@ public class ViewInvoiceListUseCaseTest {
     }
 
     @Test
-    void testViewInvoices_throwsInternalDataAccessException() {
+    void testViewInvoices_dataAccessError() {
         assertThrows(InternalDataAccessException.class, () -> {
             when(database.getInvoiceList()).thenReturn(null);
             viewInvoiceListUC.execute();

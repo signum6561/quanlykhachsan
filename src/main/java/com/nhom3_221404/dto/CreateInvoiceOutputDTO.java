@@ -1,23 +1,34 @@
 package com.nhom3_221404.dto;
 
-import java.time.LocalDateTime;
+import java.time.LocalDate;
 
-public class CreateInvoiceOutDTO {
+import com.nhom3_221404.common.InvoiceType;
+
+public class CreateInvoiceOutputDTO {
     private String id;
     private String roomId;
+    private InvoiceType invoiceType;
     private Double price;
     private String customerName;
-    private LocalDateTime billedDate;
+    private LocalDate billedDate;
     private Double total;
+    private Integer rentalHours;
+    private Integer rentalDays;
 
-    public CreateInvoiceOutDTO(String id, String roomId, Double price, String customerName, LocalDateTime billedDate,
-            Double total) {
-        this.id = id;
-        this.roomId = roomId;
-        this.price = price;
-        this.customerName = customerName;
-        this.billedDate = billedDate;
-        this.total = total;
+    public Integer getRentalHours() {
+        return rentalHours;
+    }
+
+    public void setRentalHours(Integer rentalHours) {
+        this.rentalHours = rentalHours;
+    }
+
+    public Integer getRentalDays() {
+        return rentalDays;
+    }
+
+    public void setRentalDays(Integer rentalDays) {
+        this.rentalDays = rentalDays;
     }
 
     public String getId() {
@@ -52,11 +63,11 @@ public class CreateInvoiceOutDTO {
         this.customerName = customerName;
     }
 
-    public LocalDateTime getBilledDate() {
+    public LocalDate getBilledDate() {
         return billedDate;
     }
 
-    public void setBilledDate(LocalDateTime billedDate) {
+    public void setBilledDate(LocalDate billedDate) {
         this.billedDate = billedDate;
     }
 
@@ -66,6 +77,14 @@ public class CreateInvoiceOutDTO {
 
     public void setTotal(Double total) {
         this.total = total;
+    }
+
+    public InvoiceType getInvoiceType() {
+        return invoiceType;
+    }
+
+    public void setInvoiceType(InvoiceType invoiceType) {
+        this.invoiceType = invoiceType;
     }
 
 }

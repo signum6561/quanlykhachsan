@@ -2,22 +2,24 @@ package com.nhom3_221404.common;
 
 public class Result<T> {
     private T value;
-    private RuntimeException error;
+    private Errors error;
 
     public Result() {
     }
 
-    public Result(T value, RuntimeException error) {
+    public Result(T value, Errors error) {
         this.value = value;
         this.error = error;
     }
 
-    public static <T> Result<T> success(T value) {
-        return new Result<>(value, null);
+    public void setSuccess(T value) {
+        setValue(value);
+        setError(null);
     }
 
-    public static <T> Result<T> failure(RuntimeException error) {
-        return new Result<>(null, error);
+    public void setFailure(Errors error) {
+        setValue(null);
+        setError(error);
     }
 
     public boolean isSuccess() {
@@ -30,10 +32,10 @@ public class Result<T> {
     public void setValue(T value) {
         this.value = value;
     }
-    public RuntimeException getError() {
+    public Errors getError() {
         return error;
     }
-    public void setError(RuntimeException error) {
+    public void setError(Errors error) {
         this.error = error;
     }
 }

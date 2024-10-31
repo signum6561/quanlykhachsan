@@ -1,6 +1,7 @@
 package com.nhom3_221404.ui.controller;
 
 import java.net.URL;
+import java.text.SimpleDateFormat;
 import java.util.List;
 import java.util.ResourceBundle;
 
@@ -17,8 +18,7 @@ import com.nhom3_221404.usecase.ViewInvoiceList.ViewInvoiceListUseCase;
 import com.nhom3_221404.util.IBatisUtil;
 import com.nhom3_221404.util.TableUtil;
 
-import java.time.format.DateTimeFormatter;
-
+import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
@@ -27,7 +27,9 @@ import javafx.scene.control.Alert;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.Alert.AlertType;
+import javafx.scene.control.ButtonType;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.stage.Stage;
 
 public class ViewInvoiceListController implements Initializable {
 
@@ -59,8 +61,7 @@ public class ViewInvoiceListController implements Initializable {
     ViewInvoiceListPresenter viewILPresenter;
     ViewInvoiceListDAOMySql viewILDAOMySql;
 
-    DateTimeFormatter formatter;
-    
+    SimpleDateFormat dateFormatter;
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
@@ -68,7 +69,7 @@ public class ViewInvoiceListController implements Initializable {
         viewILDAOMySql = new ViewInvoiceListDAOMySql(invoiceRepository);
         viewILPresenter = new ViewInvoiceListPresenter();
         viewILInputB = new ViewInvoiceListUseCase(viewILPresenter, viewILDAOMySql);
-        formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm:ss");
+        dateFormatter = new SimpleDateFormat("yyyy-MM-dd");
 
         col_maHD.setCellValueFactory(new PropertyValueFactory<>("id"));
         col_hoTenKhachHang.setCellValueFactory(new PropertyValueFactory<>("customerName"));
@@ -88,9 +89,18 @@ public class ViewInvoiceListController implements Initializable {
             ObservableList<InvoiceVM> invoiceList = FXCollections.observableList(invoiceVMs);
             tb_invoice.setItems(invoiceList);
             TableUtil.autoResizeColumns(tb_invoice);
-        } catch(InternalDataAccessException e) {
+        } catch (InternalDataAccessException e) {
             Alert alert = new Alert(AlertType.ERROR);
             alert.setContentText(e.getMessage());
+            Stage alertStage = (Stage) alert.getDialogPane().getScene().getWindow();
+            alertStage.setAlwaysOnTop(true);
+            alert.setOnCloseRequest(event -> {
+                ButtonType result = alert.getResult();
+                if (result == ButtonType.OK) {
+                    Platform.exit();
+                }
+            });
+            alert.showAndWait();
         }
     }
 
@@ -102,24 +112,23 @@ public class ViewInvoiceListController implements Initializable {
 
     private InvoiceVM convertToInvoiceVM(ViewInvoiceOutputDTO dto) {
         return InvoiceVM.builder()
-                    .id(dto.getId())
-                    .customerName(dto.getCustomerName())
-                    .price(String.format("%.2f", dto.getPrice()))
-                    .invoiceType(localizeInvoiceType(dto.getInvoiceType()))
-                    .billedDate(dto.getBilledDate().format(formatter))
-                    .roomId(dto.getRoomId())
-                    .total(String.format("%.2f", dto.getTotal()))
-                    .build();
+                .id(dto.getId())
+                .customerName(dto.getCustomerName())
+                .price(String.format("%.2f", dto.getPrice()))
+                .invoiceType(localizeInvoiceType(dto.getInvoiceType()))
+                .billedDate(dateFormatter.format(dto.getBilledDate()))
+                .roomId(dto.getRoomId())
+                .total(String.format("%.2f", dto.getTotal()))
+                .build();
     }
 
     private String localizeInvoiceType(InvoiceType type) {
         switch (type) {
             case Daily:
                 return "Theo ngày";
-            case Hourly:    
+            case Hourly:
                 return "Theo giờ";
         }
         return null;
     }
 }
-

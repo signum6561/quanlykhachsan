@@ -1,6 +1,6 @@
 package com.nhom3_221404.entity;
 
-import java.time.LocalDateTime;
+import java.time.LocalDate;
 
 import com.nhom3_221404.common.InvoiceType;
 
@@ -9,10 +9,15 @@ public class InvoiceHourly extends Invoice {
     private Integer rentalHours;
 
     public InvoiceHourly() {
+        invoiceType = InvoiceType.Hourly;
+    }
+
+    public InvoiceHourly(Integer rentalHours) {
+        this.rentalHours = rentalHours;
     }
 
     public InvoiceHourly(String id, String roomId, InvoiceType invoiceType, Double price, String customerName,
-            LocalDateTime billedDate, Integer rentalHours) {
+            LocalDate billedDate, Integer rentalHours) {
         super(id, roomId, invoiceType, price, customerName, billedDate);
         this.rentalHours = rentalHours;
     }

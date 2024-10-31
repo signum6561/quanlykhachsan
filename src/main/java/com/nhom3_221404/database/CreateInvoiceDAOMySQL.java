@@ -4,21 +4,20 @@ import com.nhom3_221404.database.repository.InvoiceRepository;
 import com.nhom3_221404.entity.Invoice;
 import com.nhom3_221404.usecase.CreateInvoice.CreateInvoiceDatabaseBoundary;
 
-public class CreateInvoiceDAOMySQL implements CreateInvoiceDatabaseBoundary {
+public class CreateInvoiceDAOMySql implements CreateInvoiceDatabaseBoundary {
     InvoiceRepository invoiceRepository;
 
-    public CreateInvoiceDAOMySQL(InvoiceRepository invoiceRepository) {
+    public CreateInvoiceDAOMySql(InvoiceRepository invoiceRepository) {
         this.invoiceRepository = invoiceRepository;
     }
 
     @Override
-    public String createInvoiceID(Invoice invoice) {
-        return invoiceRepository.insert(invoice).getId();
+    public Invoice addInvoice(Invoice invoice) {
+        try {
+            invoiceRepository.insert(invoice);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return null;
     }
-
-    @Override
-    public Invoice findInvoiceID(String newInvoiceID) {
-        return invoiceRepository.findById(newInvoiceID);
-    }
-
 }

@@ -9,7 +9,7 @@
     <typeAlias type="com.nhom3_221404.entity.InvoiceDaily" alias="InvoiceDaily" />
   </typeAliases>
   <typeHandlers>
-    <typeHandler javaType="java.time.LocalDateTime" handler="org.apache.ibatis.type.LocalDateTimeTypeHandler"/>
+    <typeHandler javaType="java.time.LocalDate" handler="org.apache.ibatis.type.LocalDateTypeHandler"/>
     <typeHandler javaType="com.nhom3_221404.common.InvoiceType" handler="com.nhom3_221404.database.handler.InvoiceTypeHandler"/>
   </typeHandlers>
   <environments default="development">

@@ -1,6 +1,6 @@
 package com.nhom3_221404.entity;
 
-import java.time.LocalDateTime;
+import java.time.LocalDate;
 
 import com.nhom3_221404.common.InvoiceType;
 
@@ -16,13 +16,12 @@ public abstract class Invoice {
 
     protected String customerName;
 
-    protected LocalDateTime billedDate;
+    protected LocalDate billedDate;
 
     public Invoice() {
     }
 
-    public Invoice(String id, String roomId, InvoiceType invoiceType, Double price, String customerName,
-            LocalDateTime billedDate) {
+    public Invoice(String id, String roomId, InvoiceType invoiceType, Double price, String customerName, LocalDate billedDate) {
         this.id = id;
         this.roomId = roomId;
         this.invoiceType = invoiceType;
@@ -66,20 +65,16 @@ public abstract class Invoice {
         this.customerName = customerName;
     }
 
-    public LocalDateTime getBilledDate() {
+    public LocalDate getBilledDate() {
         return billedDate;
     }
 
-    public void setBilledDate(LocalDateTime billedDate) {
+    public void setBilledDate(LocalDate billedDate) {
         this.billedDate = billedDate;
     }
 
     public InvoiceType getInvoiceType() {
         return invoiceType;
-    }
-
-    public void setInvoiceType(InvoiceType invoiceType) {
-        this.invoiceType = invoiceType;
     }
 
     // #endregion
