@@ -1,8 +1,9 @@
 package com.nhom3_221404.util;
 
 import java.time.LocalDate;
+import java.util.concurrent.TimeUnit;
+import java.time.ZoneId;
 
-import com.aventrix.jnanoid.jnanoid.NanoIdUtils;
 import com.github.javafaker.Faker;
 import com.github.javafaker.Options;
 import com.github.javafaker.service.RandomService;
@@ -15,11 +16,13 @@ public class InvoiceFactory {
     Faker faker;
     RandomService randomService;
     Options options;
+    InvoiceIdGenerator idGenerator;
 
     public InvoiceFactory(Faker faker) {
         this.faker = faker;
         randomService = faker.random();
         options = faker.options();
+        idGenerator = new InvoiceIdGenerator();
     }
 
     public static final Invoice createInvoice(InvoiceType invoiceType) {
@@ -33,12 +36,18 @@ public class InvoiceFactory {
     }
 
     public Invoice seedInvoice(Invoice invoice) {
+        LocalDate randomDate = faker
+            .date()
+            .past(730, TimeUnit.DAYS)
+            .toInstant()
+            .atZone(ZoneId.systemDefault())
+            .toLocalDate();
         String[] roomIds = {"B103", "B104", "B607", "B504", "B303"};
-        invoice.setId(NanoIdUtils.randomNanoId());
+        invoice.setId(idGenerator.generate());
         invoice.setCustomerName(faker.name().fullName());
         invoice.setRoomId(options.nextElement(roomIds));
         invoice.setPrice(faker.number().randomDouble(2, 1000000, 5000000));
-        invoice.setBilledDate(LocalDate.now());
+        invoice.setBilledDate(randomDate);
         return invoice;
     }
 

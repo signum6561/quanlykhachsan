@@ -10,8 +10,6 @@ public abstract class Invoice {
 
     protected String roomId;
 
-    protected InvoiceType invoiceType;
-
     protected Double price;
 
     protected String customerName;
@@ -21,16 +19,17 @@ public abstract class Invoice {
     public Invoice() {
     }
 
-    public Invoice(String id, String roomId, InvoiceType invoiceType, Double price, String customerName, LocalDate billedDate) {
+    public Invoice(String id, String roomId, Double price, String customerName, LocalDate billedDate) {
         this.id = id;
         this.roomId = roomId;
-        this.invoiceType = invoiceType;
         this.price = price;
         this.customerName = customerName;
         this.billedDate = billedDate;
     }
 
     public abstract Double getTotal();
+
+    public abstract InvoiceType getInvoiceType();
 
     // #region getters and setters
     public String getId() {
@@ -71,10 +70,6 @@ public abstract class Invoice {
 
     public void setBilledDate(LocalDate billedDate) {
         this.billedDate = billedDate;
-    }
-
-    public InvoiceType getInvoiceType() {
-        return invoiceType;
     }
 
     // #endregion

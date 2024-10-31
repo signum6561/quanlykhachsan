@@ -7,7 +7,6 @@
         <id property="id" column="id"/>
         <result property="roomId" column="roomId"/>
         <result property="price" column="price"/>
-        <result property="invoiceType" column="invoiceType"/>
         <result property="customerName" column="customerName"/>
         <result property="billedDate" column="billedDate"/>
         <discriminator javaType="String" column="invoiceType">
@@ -52,14 +51,6 @@
         left outer join invoiceHourly h
         on i.id = h.invoiceId
         where i.id = #{id}
-    </select>
-
-    <select 
-        id="checkExists" 
-        timeout="60000"
-        resultSetType="FORWARD_ONLY" 
-    >
-        select 1 from invoice where id = #{id} limit 1
     </select>
 
     <insert id="insert" parameterType="Invoice"> 
