@@ -22,7 +22,7 @@ public class UpdateInvoiceDAOMySQL implements UpdateInvoiceDatabaseBoundary {
     }
 
     @Override
-    public Invoice findInvoiceById(String id) {
+    public Invoice getInvoiceById(String id) {
         try {
             return invoiceRepository.findById(id); 
         } catch (Exception e) {

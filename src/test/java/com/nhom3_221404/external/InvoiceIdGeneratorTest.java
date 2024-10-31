@@ -1,5 +1,8 @@
 package com.nhom3_221404.external;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -16,6 +19,7 @@ public class InvoiceIdGeneratorTest {
     @Test
     void testGenerateId() {
         String res = idGenerator.generate();
-        System.out.println(res);
+        assertEquals(res.length(), 16);
+        assertTrue(res.startsWith("IV"));
     }
 }

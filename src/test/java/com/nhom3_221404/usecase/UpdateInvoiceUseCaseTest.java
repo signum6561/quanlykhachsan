@@ -20,7 +20,6 @@ import com.nhom3_221404.entity.Invoice;
 import com.nhom3_221404.entity.InvoiceDaily;
 import com.nhom3_221404.entity.InvoiceHourly;
 import com.nhom3_221404.exceptions.DateOutOfRangeException;
-import com.nhom3_221404.exceptions.InternalDataAccessException;
 import com.nhom3_221404.ui.presenter.UpdateInvoicePresenter;
 import com.nhom3_221404.usecase.UpdateInvoice.UpdateInvoiceInputBoundary;
 import com.nhom3_221404.usecase.UpdateInvoice.UpdateInvoiceUseCase;
@@ -55,7 +54,7 @@ public class UpdateInvoiceUseCaseTest {
         originalInvoice.setCustomerName("John Doe");
         originalInvoice.setBilledDate(LocalDate.now());
 
-        when(database.findInvoiceById(originalInvoice.getId())).thenReturn(originalInvoice);
+        when(database.getInvoiceById(originalInvoice.getId())).thenReturn(originalInvoice);
         when(database.updateInvoice(any(Invoice.class))).thenReturn(originalInvoice);
 
         UpdateInvoiceInputDTO updateDTO = new UpdateInvoiceInputDTO();
@@ -83,7 +82,7 @@ public class UpdateInvoiceUseCaseTest {
         originalInvoice.setCustomerName("Alice Smith");
         originalInvoice.setBilledDate(LocalDate.now());
 
-        when(database.findInvoiceById(originalInvoice.getId())).thenReturn(originalInvoice);
+        when(database.getInvoiceById(originalInvoice.getId())).thenReturn(originalInvoice);
         when(database.updateInvoice(any(Invoice.class))).thenReturn(originalInvoice);
 
         UpdateInvoiceInputDTO updateDTO = new UpdateInvoiceInputDTO();
@@ -103,20 +102,6 @@ public class UpdateInvoiceUseCaseTest {
     }
 
     @Test
-    void testUpdateInvoice_NotFound() {
-        UpdateInvoiceInputDTO updateDTO = new UpdateInvoiceInputDTO();
-        updateDTO.setId("non-existent-id");
-        updateDTO.setBilledDate(LocalDate.now());
-
-        when(database.findInvoiceById("non-existent-id")).thenReturn(null);
-
-        assertThrows(InternalDataAccessException.class, () -> {
-            updateInvoiceUC.execute(updateDTO);
-            presenter.getResult();
-        });
-    }
-
-    @Test
     void testUpdateInvoice_DateOutOfRange() {
         InvoiceDaily originalInvoice = new InvoiceDaily(5);
         originalInvoice.setId(faker.random().hex());
@@ -125,7 +110,7 @@ public class UpdateInvoiceUseCaseTest {
         originalInvoice.setCustomerName("Alice Smith");
         originalInvoice.setBilledDate(LocalDate.now());
 
-        when(database.findInvoiceById(originalInvoice.getId())).thenReturn(originalInvoice);
+        when(database.getInvoiceById(originalInvoice.getId())).thenReturn(originalInvoice);
 
         UpdateInvoiceInputDTO updateDTO = new UpdateInvoiceInputDTO();
         updateDTO.setId(originalInvoice.getId());

@@ -19,12 +19,11 @@ public class UpdateInvoiceUseCase implements UpdateInvoiceInputBoundary {
         this.updateOutputBoundary = updateOutputBoundary;
         this.updateDatabaseBoundary = updateDatabaseBoundary;
     }
-
     @Override
     public void execute(UpdateInvoiceInputDTO updateInvoiceInputDTO) {
         InvoiceType invoiceType = updateInvoiceInputDTO.getInvoiceType();
         String id = updateInvoiceInputDTO.getId();
-        Invoice existingInvoice = updateDatabaseBoundary.findInvoiceById(id);
+        Invoice existingInvoice = updateDatabaseBoundary.getInvoiceById(id);
 
         
         LocalDate billedDate = updateInvoiceInputDTO.getBilledDate();
@@ -33,7 +32,7 @@ public class UpdateInvoiceUseCase implements UpdateInvoiceInputBoundary {
             return;
         }
         if (existingInvoice == null) {
-            updateOutputBoundary.presentError(Errors.InternalDataAccess);
+            updateOutputBoundary.presentError(Errors.InvoiceNotFound);
             return;
         }
 
