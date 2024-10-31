@@ -28,13 +28,14 @@ import com.nhom3_221404.util.InvoiceFactory;
 
 @ExtendWith(MockitoExtension.class)
 public class UpdateInvoiceUseCaseTest {
-    private InvoiceFactory invoiceFactory;
-    private UpdateInvoicePresenter presenter;
-    private UpdateInvoiceInputBoundary updateInvoiceUC;
-    
+    UpdateInvoicePresenter presenter;
+    UpdateInvoiceInputBoundary updateInvoiceUC;
+    InvoiceFactory invoiceFactory;
+
+
     @Mock
     private UpdateInvoiceDAOMySQL database;
-    
+
     private Faker faker;
 
     @BeforeEach
@@ -49,7 +50,7 @@ public class UpdateInvoiceUseCaseTest {
     void testUpdateHourlyInvoice_Success() throws Exception {
         InvoiceHourly originalInvoice = new InvoiceHourly(20);
         originalInvoice.setId(faker.random().hex());
-        originalInvoice.setRoomId("Room101");
+        originalInvoice.setRoomId("B103");
         originalInvoice.setPrice(50.0);
         originalInvoice.setCustomerName("John Doe");
         originalInvoice.setBilledDate(LocalDate.now());
@@ -59,7 +60,7 @@ public class UpdateInvoiceUseCaseTest {
 
         UpdateInvoiceInputDTO updateDTO = new UpdateInvoiceInputDTO();
         updateDTO.setId(originalInvoice.getId());
-        updateDTO.setRoomId("Room102");
+        updateDTO.setRoomId("B103");
         updateDTO.setPrice(60.0);
         updateDTO.setCustomerName("Jane Doe");
         updateDTO.setBilledDate(LocalDate.now());
@@ -67,12 +68,10 @@ public class UpdateInvoiceUseCaseTest {
 
         updateInvoiceUC.execute(updateDTO);
 
-        verify(database).updateInvoice(argThat(invoice -> 
-            invoice.getRoomId().equals("Room102") &&
-            invoice.getPrice() == 60.0 &&
-            invoice.getCustomerName().equals("Jane Doe") &&
-            ((InvoiceHourly)invoice).getRentalHours() == 25
-        ));
+        verify(database).updateInvoice(argThat(invoice -> invoice.getRoomId().equals("B103") &&
+                invoice.getPrice() == 60.0 &&
+                invoice.getCustomerName().equals("Jane Doe") &&
+                ((InvoiceHourly) invoice).getRentalHours() == 25));
     }
 
     @Test
@@ -97,12 +96,10 @@ public class UpdateInvoiceUseCaseTest {
 
         updateInvoiceUC.execute(updateDTO);
 
-        verify(database).updateInvoice(argThat(invoice -> 
-            invoice.getRoomId().equals("Room202") &&
-            invoice.getPrice() == 120.0 &&
-            invoice.getCustomerName().equals("Bob Johnson") &&
-            ((InvoiceDaily)invoice).getRentalDays() == 7
-        ));
+        verify(database).updateInvoice(argThat(invoice -> invoice.getRoomId().equals("Room202") &&
+                invoice.getPrice() == 120.0 &&
+                invoice.getCustomerName().equals("Bob Johnson") &&
+                ((InvoiceDaily) invoice).getRentalDays() == 7));
     }
 
     @Test

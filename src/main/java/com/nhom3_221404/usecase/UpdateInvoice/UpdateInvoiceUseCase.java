@@ -2,39 +2,47 @@ package com.nhom3_221404.usecase.UpdateInvoice;
 
 import java.time.LocalDate;
 
+import com.nhom3_221404.common.Errors;
 import com.nhom3_221404.common.InvoiceType;
 import com.nhom3_221404.dto.UpdateInvoiceInputDTO;
 import com.nhom3_221404.dto.UpdateInvoiceOutputDTO;
 import com.nhom3_221404.entity.Invoice;
 import com.nhom3_221404.entity.InvoiceDaily;
 import com.nhom3_221404.entity.InvoiceHourly;
-import com.nhom3_221404.exceptions.DateOutOfRangeException;
-import com.nhom3_221404.exceptions.InternalDataAccessException;
 
 public class UpdateInvoiceUseCase implements UpdateInvoiceInputBoundary {
     private UpdateInvoiceOutputBoundary updateOutputBoundary;
     private UpdateInvoiceDatabaseBoundary updateDatabaseBoundary;
 
     public UpdateInvoiceUseCase(UpdateInvoiceOutputBoundary updateOutputBoundary,
-                                UpdateInvoiceDatabaseBoundary updateDatabaseBoundary) {
+            UpdateInvoiceDatabaseBoundary updateDatabaseBoundary) {
         this.updateOutputBoundary = updateOutputBoundary;
         this.updateDatabaseBoundary = updateDatabaseBoundary;
     }
 
     @Override
     public void execute(UpdateInvoiceInputDTO updateInvoiceInputDTO) {
+        InvoiceType invoiceType = updateInvoiceInputDTO.getInvoiceType();
         String id = updateInvoiceInputDTO.getId();
         Invoice existingInvoice = updateDatabaseBoundary.findInvoiceById(id);
 
+        
+        LocalDate billedDate = updateInvoiceInputDTO.getBilledDate();
+        if (!isWithinTwelveMonths(billedDate)) {
+            updateOutputBoundary.presentError(Errors.DateOutOfRange);
+            return;
+        }
         if (existingInvoice == null) {
-            updateOutputBoundary.presentError(new InternalDataAccessException());
+            updateOutputBoundary.presentError(Errors.InternalDataAccess);
             return;
         }
 
-        LocalDate billedDate = updateInvoiceInputDTO.getBilledDate();
-        if (!isWithinTwelveMonths(billedDate)) {
-            updateOutputBoundary.presentError(new DateOutOfRangeException());
-            return;
+         if (invoiceType == InvoiceType.Hourly) {
+            int rentalHours = updateInvoiceInputDTO.getRentalHours();
+            if(rentalHours > 30) {
+                updateOutputBoundary.presentError(Errors.RentalHoursOutOfRange);
+                return;
+            }
         }
 
         existingInvoice.setRoomId(updateInvoiceInputDTO.getRoomId());
@@ -42,20 +50,13 @@ public class UpdateInvoiceUseCase implements UpdateInvoiceInputBoundary {
         existingInvoice.setCustomerName(updateInvoiceInputDTO.getCustomerName());
         existingInvoice.setBilledDate(billedDate);
 
-        // Cập nhật số giờ hoặc số ngày thuê tùy theo loại hóa đơn
         if (existingInvoice instanceof InvoiceHourly) {
             ((InvoiceHourly) existingInvoice).setRentalHours(updateInvoiceInputDTO.getRentalHours());
         } else if (existingInvoice instanceof InvoiceDaily) {
             ((InvoiceDaily) existingInvoice).setRentalDays(updateInvoiceInputDTO.getRentalDays());
         }
 
-        // Lưu hóa đơn đã cập nhật
         Invoice updatedInvoice = updateDatabaseBoundary.updateInvoice(existingInvoice);
-        if (updatedInvoice == null) {
-            updateOutputBoundary.presentError(new InternalDataAccessException());
-            return;
-        }
-
         UpdateInvoiceOutputDTO response = new UpdateInvoiceOutputDTO();
         response.setId(updatedInvoice.getId());
         response.setRoomId(updatedInvoice.getRoomId());

@@ -32,7 +32,7 @@ public class InvoiceFactory {
         return null;
     }
 
-    private Invoice seedInvoice(Invoice invoice) {
+    public Invoice seedInvoice(Invoice invoice) {
         String[] roomIds = {"B103", "B104", "B607", "B504", "B303"};
         invoice.setId(NanoIdUtils.randomNanoId());
         invoice.setCustomerName(faker.name().fullName());

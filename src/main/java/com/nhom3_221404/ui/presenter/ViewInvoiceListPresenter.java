@@ -2,6 +2,7 @@ package com.nhom3_221404.ui.presenter;
 
 import java.util.List;
 
+import com.nhom3_221404.common.Errors;
 import com.nhom3_221404.common.Result;
 import com.nhom3_221404.dto.ViewInvoiceListResponse;
 import com.nhom3_221404.dto.ViewInvoiceOutputDTO;
@@ -17,13 +18,18 @@ public class ViewInvoiceListPresenter implements ViewInvoiceListOutputBoundary {
     }
 
     @Override
-    public void presentError(RuntimeException error) {
+    public void presentError(Errors error) {
         result.setFailure(error);
     }
 
     public List<ViewInvoiceOutputDTO> getOutputDTOList() throws InternalDataAccessException {
         if(!result.isSuccess()) {
-            throw result.getError();
+            switch (result.getError()) {
+                case InternalDataAccess:
+                    throw new InternalDataAccessException();
+                default:
+                    return null;
+            }
         }
         return result.getValue().getData();
     }

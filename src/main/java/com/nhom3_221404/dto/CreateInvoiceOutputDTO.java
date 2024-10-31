@@ -2,13 +2,34 @@ package com.nhom3_221404.dto;
 
 import java.time.LocalDate;
 
+import com.nhom3_221404.common.InvoiceType;
+
 public class CreateInvoiceOutputDTO {
     private String id;
     private String roomId;
+    private InvoiceType invoiceType;
     private Double price;
     private String customerName;
     private LocalDate billedDate;
     private Double total;
+    private Integer rentalHours;
+    private Integer rentalDays;
+
+    public Integer getRentalHours() {
+        return rentalHours;
+    }
+
+    public void setRentalHours(Integer rentalHours) {
+        this.rentalHours = rentalHours;
+    }
+
+    public Integer getRentalDays() {
+        return rentalDays;
+    }
+
+    public void setRentalDays(Integer rentalDays) {
+        this.rentalDays = rentalDays;
+    }
 
     public String getId() {
         return id;
@@ -56,6 +77,14 @@ public class CreateInvoiceOutputDTO {
 
     public void setTotal(Double total) {
         this.total = total;
+    }
+
+    public InvoiceType getInvoiceType() {
+        return invoiceType;
+    }
+
+    public void setInvoiceType(InvoiceType invoiceType) {
+        this.invoiceType = invoiceType;
     }
 
 }
