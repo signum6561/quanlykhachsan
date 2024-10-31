@@ -2,9 +2,9 @@ package com.nhom3_221404.database;
 
 import com.nhom3_221404.database.repository.InvoiceRepository;
 import com.nhom3_221404.entity.Invoice;
-import com.nhom3_221404.usecase.SearchInvoice.SearchInvoiceDatabaseBoundary;
+import com.nhom3_221404.usecase.ViewInvoice.ViewInvoiceDatabaseBoundary;
 
-public class ViewInvoiceDAOMySQL implements SearchInvoiceDatabaseBoundary {
+public class ViewInvoiceDAOMySQL implements ViewInvoiceDatabaseBoundary {
     InvoiceRepository invoiceRepository;
 
     public ViewInvoiceDAOMySQL(InvoiceRepository invoiceRepository) {
@@ -12,7 +12,7 @@ public class ViewInvoiceDAOMySQL implements SearchInvoiceDatabaseBoundary {
     }
 
     @Override
-    public Invoice searchInvoice(String searchInvoiceInputDTO) {
-        return invoiceRepository.findById(searchInvoiceInputDTO);
+    public Invoice viewInvoice(String viewInvoiceInputDTO) {
+        return invoiceRepository.findById(viewInvoiceInputDTO);
     }
 }

@@ -1,15 +1,15 @@
-package com.nhom3_221404.usecase.SearchInvoice;
+package com.nhom3_221404.usecase.ViewInvoice;
 
 import com.nhom3_221404.dto.ViewInvoiceInputDTO;
-import com.nhom3_221404.dto.ViewInvoiceDailyDTO;
+import com.nhom3_221404.dto.ViewInvoiceOutputDTO;
 import com.nhom3_221404.entity.Invoice;
 
-public class SearchInvoiceUseCase {
-    private SearchInvoiceDatabaseBoundary searchInvoiceDatabaseBoundary;
-    private SearchInvoiceOutputBoundary searchInvoiceOutputBoundary;
+public class ViewInvoiceUseCase {
+    private ViewInvoiceDatabaseBoundary searchInvoiceDatabaseBoundary;
+    private ViewInvoiceOutputBoundary searchInvoiceOutputBoundary;
 
-    public SearchInvoiceUseCase(SearchInvoiceDatabaseBoundary searchInvoiceDatabaseBoundary,
-            SearchInvoiceOutputBoundary searchInvoiceOutputBoundary) {
+    public ViewInvoiceUseCase(ViewInvoiceDatabaseBoundary searchInvoiceDatabaseBoundary,
+            ViewInvoiceOutputBoundary searchInvoiceOutputBoundary) {
         this.searchInvoiceDatabaseBoundary = searchInvoiceDatabaseBoundary;
         this.searchInvoiceOutputBoundary = searchInvoiceOutputBoundary;
     }
@@ -18,10 +18,11 @@ public class SearchInvoiceUseCase {
 
         String searchInvoice = searchInvoiceInputDTO.getId();
 
-        Invoice invoice = searchInvoiceDatabaseBoundary.searchInvoice(searchInvoice);
+        Invoice invoice = searchInvoiceDatabaseBoundary.viewInvoice(searchInvoice);
 
-        ViewInvoiceDailyDTO sOutputDTO = new ViewInvoiceDailyDTO(
+        ViewInvoiceOutputDTO sOutputDTO = new ViewInvoiceOutputDTO(
                 invoice.getId(),
+                invoice.getInvoiceType(),
                 invoice.getRoomId(),
                 invoice.getPrice(),
                 invoice.getCustomerName(),
