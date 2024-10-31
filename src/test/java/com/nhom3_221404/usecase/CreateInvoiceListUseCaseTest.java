@@ -16,7 +16,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 
 import com.github.javafaker.Faker;
 import com.nhom3_221404.common.InvoiceType;
-import com.nhom3_221404.database.CreateInvoiceDAOMySQL;
+import com.nhom3_221404.database.CreateInvoiceDAOMySql;
 import com.nhom3_221404.dto.CreateInvoiceInputDTO;
 import com.nhom3_221404.dto.CreateInvoiceOutputDTO;
 import com.nhom3_221404.entity.Invoice;
@@ -39,7 +39,7 @@ public class CreateInvoiceListUseCaseTest {
     Faker faker;
 
     @Mock
-    CreateInvoiceDAOMySQL database;
+    CreateInvoiceDAOMySql database;
 
     @BeforeEach
     void setUp() {
@@ -91,10 +91,7 @@ public class CreateInvoiceListUseCaseTest {
             request.setRentalHours(31);
     
             createInvoiceUC.execute(request);
-    
-            CreateInvoiceOutputDTO result = presenter.getInsertedInvoice();
-            assertNotNull(result.getId());
-            assertEquals(result.getInvoiceType(), InvoiceType.Daily);
+            presenter.getInsertedInvoice();
         });
     }
 

@@ -4,4 +4,5 @@ public enum Errors {
     InternalDataAccess,
     DateOutOfRange,
     RentalHoursOutOfRange,
+    InvoiceNotFound,
 }
