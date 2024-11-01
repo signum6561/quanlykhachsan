@@ -24,16 +24,12 @@ public class InvoiceHourly extends Invoice {
 
     @Override
     public Double getTotal() {
-        if (price == null) {
-            throw new IllegalStateException("Price must be set before calculating total.");
-        }
         if (rentalHours > 24 && rentalHours < 30) {
-            return 24 * price; // Tính giá cho 24 giờ
+            return 24 * price; 
         }
-        return rentalHours * price; // Tính giá theo số giờ thuê
+        return rentalHours * price; 
     }
 
-    // #region getters and setters
     public Integer getRentalHours() {
         return rentalHours;
     }
