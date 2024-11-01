@@ -35,13 +35,8 @@ public class InvoiceRepositoryImpl implements InvoiceRepository {
     }
 
     @Override
-    public List<InvoiceHourly> findAllHourly() {
-        return invoiceHourlyDAO.selectAll();
-    }
-
-    @Override
-    public List<InvoiceDaily> findAllDaily() {
-        return invoiceDailyDAO.selectAll();
+    public List<Invoice> findByPattern(String pattern) {
+        return invoiceDAO.selectByPattern(pattern);
     }
 
     @Override

@@ -32,10 +32,28 @@
         select i.*, d.rentalDays, h.rentalHours
         from invoice i
         left outer join invoiceDaily d 
-        on i.id = d.invoiceId
+            on i.id = d.invoiceId
         left outer join invoiceHourly h
-        on i.id = h.invoiceId
+            on i.id = h.invoiceId
         order by billedDate desc
+    </select>
+
+    <select 
+        id="selectByPattern"
+        resultMap="invoiceRM"
+        timeout="60000"
+        resultSetType="FORWARD_ONLY" 
+    >
+        select i.*, d.rentalDays, h.rentalHours
+        from invoice i
+        left outer join invoiceDaily d 
+            on i.id = d.invoiceId
+        left outer join invoiceHourly h
+            on i.id = h.invoiceId
+        where i.id like '%${pattern}%'
+            or i.customerName like '%${pattern}%'
+            or i.roomId like '%${pattern}%'
+            or i.billedDate like '%${pattern}%'
     </select>
 
     <select 
