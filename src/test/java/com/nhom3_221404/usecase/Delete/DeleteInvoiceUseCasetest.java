@@ -22,6 +22,7 @@ public class DeleteInvoiceUseCasetest {
         assertTrue(presenter.getViewDelete().isSuccess());
         assertEquals("invoice delete success", presenter.getViewDelete().getMessage());
     }
+
     @Test
     public void testDeleteInvoiceFailure() {
         TestDeleteInvoiceDatabase database = new TestDeleteInvoiceDatabase(false);
@@ -33,6 +34,7 @@ public class DeleteInvoiceUseCasetest {
         assertFalse(presenter.getViewDelete().isSuccess());
         assertEquals("failure delete invoice", presenter.getViewDelete().getMessage());
     }
+    
     private static class TestDeleteInvoiceDatabase implements DeleteInvoiceDatabaseBoundary {
         private final boolean shouldSuccess;
         public TestDeleteInvoiceDatabase(boolean shouldSuccess) {

@@ -16,7 +16,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 
 import com.github.javafaker.Faker;
 import com.nhom3_221404.common.InvoiceType;
-import com.nhom3_221404.database.CreateInvoiceDAOMySQL;
+import com.nhom3_221404.database.CreateInvoiceDAOMySql;
 import com.nhom3_221404.dto.CreateInvoiceInputDTO;
 import com.nhom3_221404.dto.CreateInvoiceOutputDTO;
 import com.nhom3_221404.entity.Invoice;
@@ -39,7 +39,7 @@ public class CreateInvoiceListUseCaseTest {
     Faker faker;
 
     @Mock
-    CreateInvoiceDAOMySQL database;
+    CreateInvoiceDAOMySql database;
 
     @BeforeEach
     void setUp() {
@@ -70,13 +70,14 @@ public class CreateInvoiceListUseCaseTest {
     @Test
     void testCreateInvoice_valid() throws Exception {
         Invoice mockI = invoiceFactory.seedRandomInvoice();
+        mockI.setBilledDate(LocalDate.now());
         CreateInvoiceInputDTO request = convertToMockRequest(mockI);
 
         when(database.addInvoice(ArgumentMatchers.any(Invoice.class)))
             .thenReturn(mockI);
 
         createInvoiceUC.execute(request);
-
+        
         CreateInvoiceOutputDTO result = presenter.getInsertedInvoice();
         assertNotNull(result.getId());
         assertEquals(request.getCustomerName(), result.getCustomerName());
@@ -86,6 +87,7 @@ public class CreateInvoiceListUseCaseTest {
     void testCreateInvoice_invoiceMoreThan30RentalHours() {
         assertThrows(RentalHoursOutOfRangeException.class, () -> {
             Invoice mockI = invoiceFactory.seedRandomInvoice();
+            mockI.setBilledDate(LocalDate.now());
             CreateInvoiceInputDTO request = convertToMockRequest(mockI);
             request.setInvoiceType(InvoiceType.Hourly);
             request.setRentalHours(31);
@@ -111,6 +113,7 @@ public class CreateInvoiceListUseCaseTest {
     void testCreateInvoice_dataAccessError() {
         assertThrows(InternalDataAccessException.class, () -> {
             Invoice mockI = invoiceFactory.seedRandomInvoice();
+            mockI.setBilledDate(LocalDate.now());
             CreateInvoiceInputDTO request = convertToMockRequest(mockI);
 
             when(database.addInvoice(ArgumentMatchers.any(Invoice.class)))
