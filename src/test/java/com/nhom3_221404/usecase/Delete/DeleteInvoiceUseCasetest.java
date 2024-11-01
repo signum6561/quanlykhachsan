@@ -19,8 +19,8 @@ public class DeleteInvoiceUseCasetest {
         DeleteInvoiceInputDTO input = new DeleteInvoiceInputDTO();
         input.setInvoiceId("001");
         useCase.execute(input);
-        assertTrue(presenter.getViewModel().isSuccess());
-        assertEquals("invoice delete success", presenter.getViewModel().getMessage());
+        assertTrue(presenter.getViewDelete().isSuccess());
+        assertEquals("invoice delete success", presenter.getViewDelete().getMessage());
     }
     @Test
     public void testDeleteInvoiceFailure() {
@@ -30,8 +30,8 @@ public class DeleteInvoiceUseCasetest {
         DeleteInvoiceInputDTO input = new DeleteInvoiceInputDTO();
         input.setInvoiceId("002");
         useCase.execute(input);
-        assertFalse(presenter.getViewModel().isSuccess());
-        assertEquals("failure delete invoice", presenter.getViewModel().getMessage());
+        assertFalse(presenter.getViewDelete().isSuccess());
+        assertEquals("failure delete invoice", presenter.getViewDelete().getMessage());
     }
     private static class TestDeleteInvoiceDatabase implements DeleteInvoiceDatabaseBoundary {
         private final boolean shouldSuccess;

@@ -4,20 +4,20 @@ import com.nhom3_221404.dto.DeleteInvoiceOutputDTO;
 import com.nhom3_221404.usecase.DeleteInvoice.DeleteInvoiceOutputBoundary;
 
 public class DeleteInvoicePresenter implements DeleteInvoiceOutputBoundary {
-    private DeleteInvoiceOutputDTO viewModel;
+    private DeleteInvoiceOutputDTO viewDelete;
     @Override
     public void presentSuccess(String message) {
-        viewModel = new DeleteInvoiceOutputDTO();
-        viewModel.setSuccess(true);
-        viewModel.setMessage(message);
+        viewDelete = new DeleteInvoiceOutputDTO();
+        viewDelete.setSuccess(true);
+        viewDelete.setMessage(message);
     }
     @Override
     public void presentFailure(String message) {
-        viewModel = new DeleteInvoiceOutputDTO();
-        viewModel.setSuccess(false);
-        viewModel.setMessage(message);
+        viewDelete = new DeleteInvoiceOutputDTO();
+        viewDelete.setSuccess(false);
+        viewDelete.setMessage(message);
     }
-    public DeleteInvoiceOutputDTO getViewModel() {
-        return viewModel;
+    public DeleteInvoiceOutputDTO getViewDelete() {
+        return viewDelete;
     }
 }
