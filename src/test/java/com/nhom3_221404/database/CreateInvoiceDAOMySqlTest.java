@@ -18,13 +18,13 @@ import com.nhom3_221404.util.InvoiceFactory;
 public class CreateInvoiceDAOMySqlTest {
     InvoiceRepository invoiceRepository;
     InvoiceFactory invoiceFactory;
-    CreateInvoiceDAOMySql createInvoiceDB;
+    CreateInvoiceDAOMySQL createInvoiceDB;
 
     @BeforeEach
     void setUp() {
         invoiceFactory = new InvoiceFactory(new Faker(new Locale("vi")));
         invoiceRepository = new InvoiceRepositoryImpl(IBatisUtil.buildSqlSessionFactoryTest());
-        createInvoiceDB = new CreateInvoiceDAOMySql(invoiceRepository);
+        createInvoiceDB = new CreateInvoiceDAOMySQL(invoiceRepository);
     }
 
     @AfterEach
