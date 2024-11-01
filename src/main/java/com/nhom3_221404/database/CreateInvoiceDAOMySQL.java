@@ -15,7 +15,7 @@ public class CreateInvoiceDAOMySql implements CreateInvoiceDatabaseBoundary {
     public Invoice addInvoice(Invoice invoice) {
         try {
             invoiceRepository.insert(invoice);
-        } catch(Exception e) {
+        } catch (Exception e) {
             e.printStackTrace();
         }
         return null;
