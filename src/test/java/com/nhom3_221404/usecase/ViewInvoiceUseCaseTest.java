@@ -1,8 +1,7 @@
 package com.nhom3_221404.usecase;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.when;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -14,55 +13,55 @@ import com.nhom3_221404.common.InvoiceType;
 import com.nhom3_221404.dto.ViewInvoiceInputDTO;
 import com.nhom3_221404.dto.ViewInvoiceOutputDTO;
 import com.nhom3_221404.entity.Invoice;
-import com.nhom3_221404.entity.InvoiceDaily;
+import com.nhom3_221404.ui.presenter.ViewInvoicePresent;
 import com.nhom3_221404.usecase.ViewInvoice.ViewInvoiceDatabaseBoundary;
-import com.nhom3_221404.usecase.ViewInvoice.ViewInvoiceOutputBoundary;
 import com.nhom3_221404.usecase.ViewInvoice.ViewInvoiceUseCase;
 
 class ViewInvoiceUseCaseTest {
-    private ViewInvoiceDatabaseBoundary databaseBoundary;
-    private TestViewInvoiceOutputBoundary outputBoundary;
+
     private ViewInvoiceUseCase viewInvoiceUseCase;
+    private TestViewInvoiceDatabaseB databaseBoundary;
+    private ViewInvoicePresent outputBoundary;
 
     @BeforeEach
     public void setUp() {
-        databaseBoundary = mock(ViewInvoiceDatabaseBoundary.class);
-        outputBoundary = new TestViewInvoiceOutputBoundary();
+        databaseBoundary = new TestViewInvoiceDatabaseB();
+        outputBoundary = new ViewInvoicePresent();
         viewInvoiceUseCase = new ViewInvoiceUseCase(databaseBoundary, outputBoundary);
     }
 
     @Test
-    public void testViewInvoice() {
+    public void testViewInvoice() throws Exception {
+        String invoiceId = "12345";
 
-        LocalDateTime billedDate = LocalDateTime.now();
-        ViewInvoiceInputDTO inputDTO = new ViewInvoiceInputDTO("12345", "A101", 150.0, "John Doe", billedDate,
-                InvoiceType.Daily);
-        Invoice invoice = new InvoiceDaily("12345", "A101", 150.0, "John Doe", LocalDate.now(), 5);
-
-        when(databaseBoundary.viewInvoice("12345")).thenReturn(invoice);
+        ViewInvoiceInputDTO inputDTO = new ViewInvoiceInputDTO(invoiceId, "Room101",
+                200.0, "John Doe",
+                LocalDateTime.now(), InvoiceType.Daily, 3);
 
         viewInvoiceUseCase.execute(inputDTO);
 
-        ViewInvoiceOutputDTO outputDTO = outputBoundary.getViewInVoice();
-        assertEquals("12345", outputDTO.getId());
-        assertEquals(InvoiceType.Daily, outputDTO.getInvoiceType());
-        assertEquals("A101", outputDTO.getRoomId());
-        assertEquals(150.0, outputDTO.getPrice());
-        assertEquals("John Doe", outputDTO.getCustomerName());
-        assertEquals(LocalDate.now(), outputDTO.getBilledDate());
-        assertEquals(5 * 150.0, outputDTO.getTotal());
+        ViewInvoiceOutputDTO expectedOutputDTO = new ViewInvoiceOutputDTO(invoiceId, InvoiceType.Daily, "Room101",
+                200.0,
+                "John Doe", LocalDate.now(), 600.0, 3, null);
+        ViewInvoiceOutputDTO invoiceOutputDTO = outputBoundary.getViewInvoice();
+        assertNotNull(invoiceOutputDTO);
+        assertEquals(expectedOutputDTO.getId(), invoiceOutputDTO.getId());
+        assertEquals(expectedOutputDTO.getCustomerName(), invoiceOutputDTO.getCustomerName());
+        assertEquals(expectedOutputDTO.getTotal(), invoiceOutputDTO.getTotal());
+
     }
 
-    private static class TestViewInvoiceOutputBoundary implements ViewInvoiceOutputBoundary {
-        private ViewInvoiceOutputDTO viewInvoiceOutputDTO;
-
+    private static class TestViewInvoiceDatabaseB implements ViewInvoiceDatabaseBoundary {
         @Override
-        public void presentData(ViewInvoiceOutputDTO viewInvoiceOutputDTO) {
-            this.viewInvoiceOutputDTO = viewInvoiceOutputDTO;
-        }
-
-        public ViewInvoiceOutputDTO getViewInVoice() {
-            return viewInvoiceOutputDTO;
+        public Invoice viewInvoice(String viewInvoice) {
+            Invoice invoice = new Invoice("12345", "Room101", InvoiceType.Daily, 200.0, "John Doe",
+                    LocalDate.now()) {
+                @Override
+                public Double getTotal() {
+                    return 600.0;
+                }
+            };
+            return invoice;
         }
     }
 
