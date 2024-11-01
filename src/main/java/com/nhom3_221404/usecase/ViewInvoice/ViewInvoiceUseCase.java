@@ -5,22 +5,22 @@ import com.nhom3_221404.dto.ViewInvoiceOutputDTO;
 import com.nhom3_221404.entity.Invoice;
 
 public class ViewInvoiceUseCase {
-    private ViewInvoiceDatabaseBoundary searchInvoiceDatabaseBoundary;
-    private ViewInvoiceOutputBoundary searchInvoiceOutputBoundary;
+    private ViewInvoiceDatabaseBoundary viewInvoiceDatabaseBoundary;
+    private ViewInvoiceOutputBoundary viewInvoiceOutputBoundary;
 
-    public ViewInvoiceUseCase(ViewInvoiceDatabaseBoundary searchInvoiceDatabaseBoundary,
-            ViewInvoiceOutputBoundary searchInvoiceOutputBoundary) {
-        this.searchInvoiceDatabaseBoundary = searchInvoiceDatabaseBoundary;
-        this.searchInvoiceOutputBoundary = searchInvoiceOutputBoundary;
+    public ViewInvoiceUseCase(ViewInvoiceDatabaseBoundary viewInvoiceDatabaseBoundary,
+            ViewInvoiceOutputBoundary viewInvoiceOutputBoundary) {
+        this.viewInvoiceDatabaseBoundary = viewInvoiceDatabaseBoundary;
+        this.viewInvoiceOutputBoundary = viewInvoiceOutputBoundary;
     }
 
-    public void execute(ViewInvoiceInputDTO searchInvoiceInputDTO) {
+    public void execute(ViewInvoiceInputDTO viewInvoiceInputDTO) {
 
-        String searchInvoice = searchInvoiceInputDTO.getId();
+        String viewInvoice = viewInvoiceInputDTO.getId();
 
-        Invoice invoice = searchInvoiceDatabaseBoundary.viewInvoice(searchInvoice);
+        Invoice invoice = viewInvoiceDatabaseBoundary.viewInvoice(viewInvoice);
 
-        ViewInvoiceOutputDTO sOutputDTO = new ViewInvoiceOutputDTO(
+        ViewInvoiceOutputDTO vInvoiceOutputDTO = new ViewInvoiceOutputDTO(
                 invoice.getId(),
                 invoice.getInvoiceType(),
                 invoice.getRoomId(),
@@ -29,6 +29,6 @@ public class ViewInvoiceUseCase {
                 invoice.getBilledDate(),
                 invoice.getTotal());
 
-        searchInvoiceOutputBoundary.presentData(sOutputDTO);
+        viewInvoiceOutputBoundary.presentData(vInvoiceOutputDTO);
     }
 }
