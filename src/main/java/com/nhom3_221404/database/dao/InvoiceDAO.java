@@ -15,5 +15,7 @@ public interface InvoiceDAO {
 
     void delete(String id);
 
+    void update(Invoice invoice);
+
     void deleteAll();
 }

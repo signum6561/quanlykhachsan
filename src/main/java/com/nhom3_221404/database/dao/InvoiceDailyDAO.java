@@ -8,4 +8,6 @@ public interface InvoiceDailyDAO {
     List<InvoiceDaily> selectAll();
 
     void insert(InvoiceDaily invoice);
+
+    void update(InvoiceDaily invoice);
 }

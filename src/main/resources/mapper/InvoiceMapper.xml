@@ -64,9 +64,9 @@
     >
         select i.*, d.rentalDays, h.rentalHours
         from invoice i
-        left outer join invoiceDaily d 
+        left outer join InvoiceDaily d 
         on i.id = d.invoiceId
-        left outer join invoiceHourly h
+        left outer join InvoiceHourly h
         on i.id = h.invoiceId
         where i.id = #{id}
     </select>
@@ -76,16 +76,15 @@
         values(#{id}, #{invoiceType}, #{roomId}, #{price}, #{customerName}, #{billedDate});
     </insert>
 
-    <!-- <update id="update" parameterType="Invoice">
+    <update id="update" parameterType="Invoice">
         update Invoice
         set
-            invoiceType = #{type}
             roomId = #{roomId}, 
             price = #{price}, 
             customerName = #{customerName}, 
             billedDate = #{billedDate}
         where id = #{id}
-    </update> -->
+    </update>
 
     <delete id="delete">
         delete from invoice where id = #{id}

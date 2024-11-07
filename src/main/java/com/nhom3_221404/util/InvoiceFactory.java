@@ -25,20 +25,10 @@ public class InvoiceFactory {
         idGenerator = new InvoiceIdGenerator();
     }
 
-    public static final Invoice createInvoice(InvoiceType invoiceType) {
-        switch (invoiceType) {
-            case Daily:
-                return new InvoiceHourly();
-            case Hourly:
-                return new InvoiceDaily();
-        }
-        return null;
-    }
-
     public Invoice seedInvoice(Invoice invoice) {
         LocalDate randomDate = faker
             .date()
-            .past(730, TimeUnit.DAYS)
+            .past(300, TimeUnit.DAYS)
             .toInstant()
             .atZone(ZoneId.systemDefault())
             .toLocalDate();

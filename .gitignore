@@ -5,6 +5,7 @@ target/
 !**/src/test/**/target/
 .env
 mysql-data
+personal-docs/
 
 ### STS ###
 .apt_generated

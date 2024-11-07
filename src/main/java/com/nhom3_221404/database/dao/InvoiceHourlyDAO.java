@@ -8,4 +8,6 @@ public interface InvoiceHourlyDAO {
     List<InvoiceHourly> selectAll();
 
     void insert(InvoiceHourly invoice);
+
+    void update(InvoiceHourly invoice);
 }
