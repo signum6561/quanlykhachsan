@@ -2,8 +2,6 @@ package com.nhom3_221404.entity;
 
 import java.time.LocalDate;
 
-import com.nhom3_221404.common.InvoiceType;
-
 public class InvoiceHourly extends Invoice {
 
     private Integer rentalHours;
@@ -27,12 +25,6 @@ public class InvoiceHourly extends Invoice {
             return 24 * price;
         }
         return rentalHours * price;
-    }
-
-    
-    @Override
-    public InvoiceType getInvoiceType() {
-        return InvoiceType.Hourly;
     }
 
     // #region getters and setters

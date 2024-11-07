@@ -5,7 +5,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.nhom3_221404.common.Errors;
-import com.nhom3_221404.common.InvoiceType;
 import com.nhom3_221404.dto.ViewInvoiceListResponse;
 import com.nhom3_221404.dto.ViewInvoiceOutputDTO;
 import com.nhom3_221404.entity.Invoice;
@@ -36,7 +35,7 @@ public class ViewInvoiceListUseCase implements ViewInvoiceListInputBoundary {
             Double price = invoice.getPrice();
             String roomId = invoice.getRoomId();
             Double total = invoice.getTotal();
-            InvoiceType invoiceType = invoice.getInvoiceType();
+            String invoiceType = invoice.getInvoiceType().getName();
             LocalDate billedDate = invoice.getBilledDate();
 
             ViewInvoiceOutputDTO viewInvoiceOutputDTO = 

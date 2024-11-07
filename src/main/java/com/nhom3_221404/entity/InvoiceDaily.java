@@ -2,8 +2,6 @@ package com.nhom3_221404.entity;
 
 import java.time.LocalDate;
 
-import com.nhom3_221404.common.InvoiceType;
-
 public class InvoiceDaily extends Invoice {
 
     private Integer rentalDays;
@@ -27,11 +25,6 @@ public class InvoiceDaily extends Invoice {
             return rentalDays * price;
         }
         return (1.4 + 0.8 * rentalDays) * price;
-    }
-
-    @Override
-    public InvoiceType getInvoiceType() {
-        return InvoiceType.Daily;
     }
 
     // #region getters and setters

@@ -1,23 +1,30 @@
 CREATE DATABASE IF NOT EXISTS quanlykhachsan;
 USE quanlykhachsan;
 
-CREATE TABLE Invoice (
+CREATE TABLE invoice (
     id VARCHAR(255) PRIMARY KEY,
-    invoiceType VARCHAR(10),
-    roomId VARCHAR(255) NOT NULL,
+    invoice_type VARCHAR(10) NOT NULL,
+    room_id VARCHAR(255) NOT NULL,
     price DECIMAL(12, 2) NOT NULL,
-    customerName VARCHAR(255) NOT NULL,
-    billedDate DATE NOT NULL
+    customer_name VARCHAR(255) NOT NULL,
+    billed_date DATE NOT NULL,
+    created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+    updated_at DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
 );
 
-CREATE TABLE InvoiceHourly (
-    invoiceId VARCHAR(255) PRIMARY KEY,
-    rentalHours BIGINT NOT NULL,
-    FOREIGN KEY (invoiceId) REFERENCES invoice(id)
+CREATE TABLE invoice_type (
+    code VARCHAR(10) PRIMARY KEY,
+    name_type VARCHAR(255) NOT NULL
 );
 
-CREATE TABLE InvoiceDaily (
-    invoiceId VARCHAR(255) PRIMARY KEY,
-    rentalDays BIGINT NOT NULL,
-    FOREIGN KEY (invoiceId) REFERENCES invoice(id)
+CREATE TABLE invoice_hourly (
+    invoice_id VARCHAR(255) PRIMARY KEY,
+    rental_hours BIGINT NOT NULL,
+    FOREIGN KEY (invoice_id) REFERENCES invoice(id)
+);
+
+CREATE TABLE invoice_daily (
+    invoice_id VARCHAR(255) PRIMARY KEY,
+    rental_days BIGINT NOT NULL,
+    FOREIGN KEY (invoice_id) REFERENCES invoice(id)
 );

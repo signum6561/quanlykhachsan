@@ -2,16 +2,13 @@ package com.nhom3_221404.dto;
 
 import java.time.LocalDate;
 
-import com.nhom3_221404.common.InvoiceType;
-
-
 public class UpdateInvoiceInputDTO {
     private String id; // New field for identifying the invoice to update
     private String roomId;
     private Double price;
     private String customerName;
     private LocalDate billedDate;
-    private InvoiceType invoiceType;
+    private String invoiceType;
     private int rentalDays;
     private int rentalHours;
 
@@ -27,11 +24,11 @@ public class UpdateInvoiceInputDTO {
         this.id = id;
     }
 
-    public InvoiceType getInvoiceType() {
+    public String getInvoiceType() {
         return invoiceType;
     }
 
-    public void setInvoiceType(InvoiceType invoiceType) {
+    public void setInvoiceType(String invoiceType) {
         this.invoiceType = invoiceType;
     }
 

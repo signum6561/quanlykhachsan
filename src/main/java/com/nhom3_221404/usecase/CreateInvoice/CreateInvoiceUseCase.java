@@ -3,12 +3,12 @@ package com.nhom3_221404.usecase.CreateInvoice;
 import java.time.LocalDate;
 
 import com.nhom3_221404.common.Errors;
-import com.nhom3_221404.common.InvoiceType;
 import com.nhom3_221404.dto.CreateInvoiceInputDTO;
 import com.nhom3_221404.dto.CreateInvoiceOutputDTO;
 import com.nhom3_221404.entity.Invoice;
 import com.nhom3_221404.entity.InvoiceDaily;
 import com.nhom3_221404.entity.InvoiceHourly;
+import com.nhom3_221404.entity.InvoiceType;
 
 public class CreateInvoiceUseCase implements CreateInvoiceInputBoundary {
     private CreateInvoiceOutputBoundary createIOutputB;
@@ -24,7 +24,7 @@ public class CreateInvoiceUseCase implements CreateInvoiceInputBoundary {
 
     @Override
     public void execute(CreateInvoiceInputDTO inputDTO) {
-        InvoiceType invoiceType = inputDTO.getInvoiceType();
+        String invoiceType = inputDTO.getInvoiceType();
         LocalDate billedDate = inputDTO.getBilledDate();
 
         // Validate billed date
@@ -34,7 +34,7 @@ public class CreateInvoiceUseCase implements CreateInvoiceInputBoundary {
         }
 
         // Validate invoice type
-        if (invoiceType == InvoiceType.Hourly) {
+        if (invoiceType.equalsIgnoreCase("daily")) {
             int rentalHours = inputDTO.getRentalHours();
             if(rentalHours > 30) {
                 createIOutputB.presentError(Errors.RentalHoursOutOfRange);
@@ -57,12 +57,14 @@ public class CreateInvoiceUseCase implements CreateInvoiceInputBoundary {
 
     private Invoice convertToEntity(CreateInvoiceInputDTO inputDto) {
         Invoice invoice = null;
-        switch (inputDto.getInvoiceType()) {
-            case Daily:
+        switch (inputDto.getInvoiceType().toLowerCase()) {
+            case "daily":
                 invoice = new InvoiceDaily(inputDto.getRentalDays());
+                invoice.setInvoiceType(new InvoiceType("dl"));
                 break;
-            case Hourly:
+            case "hourly":
                 invoice = new InvoiceHourly(inputDto.getRentalHours());
+                invoice.setInvoiceType(new InvoiceType("hl"));
                 break;
             default:
                 return null;
@@ -76,11 +78,12 @@ public class CreateInvoiceUseCase implements CreateInvoiceInputBoundary {
 
     private CreateInvoiceOutputDTO convertToOutputDto(Invoice invoice) {
         CreateInvoiceOutputDTO outputDto = new CreateInvoiceOutputDTO();
-        switch (invoice.getInvoiceType()) {
-            case Daily:
+        String invoiceType = invoice.getInvoiceType().getName();
+        switch (invoiceType.toLowerCase()) {
+            case "daily":
                 outputDto.setRentalDays(((InvoiceDaily)invoice).getRentalDays());
                 break;
-            case Hourly:
+            case "hourly":
                 outputDto.setRentalHours(((InvoiceHourly)invoice).getRentalHours());
                 break;
             default:
@@ -92,7 +95,7 @@ public class CreateInvoiceUseCase implements CreateInvoiceInputBoundary {
         outputDto.setPrice(invoice.getPrice());
         outputDto.setBilledDate(invoice.getBilledDate());
         outputDto.setTotal(invoice.getTotal());
-        outputDto.setInvoiceType(invoice.getInvoiceType());
+        outputDto.setInvoiceType(invoiceType);
         return outputDto;
     }
 

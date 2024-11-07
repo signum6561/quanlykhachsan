@@ -15,7 +15,6 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import com.github.javafaker.Faker;
-import com.nhom3_221404.common.InvoiceType;
 import com.nhom3_221404.database.CreateInvoiceDAOMySql;
 import com.nhom3_221404.dto.CreateInvoiceInputDTO;
 import com.nhom3_221404.dto.CreateInvoiceOutputDTO;
@@ -52,18 +51,21 @@ public class CreateInvoiceListUseCaseTest {
     private CreateInvoiceInputDTO convertToMockRequest(Invoice i) {
         CreateInvoiceInputDTO request = new CreateInvoiceInputDTO();
         request.setRoomId(i.getRoomId());
-        request.setInvoiceType(i.getInvoiceType());
         request.setPrice(i.getPrice());
         request.setCustomerName(i.getCustomerName());
         request.setBilledDate(i.getBilledDate());
-        switch (i.getInvoiceType()) {
-            case Daily:
+        String invoiceType = i.getInvoiceType().getName();
+        switch (invoiceType.toLowerCase()) {
+            case "daily":
                 request.setRentalDays(((InvoiceDaily)i).getRentalDays());
                 break;
-            case Hourly:
+            case "hourly":
                 request.setRentalHours(((InvoiceHourly)i).getRentalHours());
                 break;
+            default:
+                return null;
         }
+        request.setInvoiceType(invoiceType);
         return request;
     }
 
@@ -89,7 +91,7 @@ public class CreateInvoiceListUseCaseTest {
             Invoice mockI = invoiceFactory.seedRandomInvoice();
             mockI.setBilledDate(LocalDate.now());
             CreateInvoiceInputDTO request = convertToMockRequest(mockI);
-            request.setInvoiceType(InvoiceType.Hourly);
+            request.setInvoiceType("hourly");
             request.setRentalHours(31);
     
             createInvoiceUC.execute(request);

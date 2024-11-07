@@ -7,16 +7,21 @@ import java.time.ZoneId;
 import com.github.javafaker.Faker;
 import com.github.javafaker.Options;
 import com.github.javafaker.service.RandomService;
-import com.nhom3_221404.common.InvoiceType;
 import com.nhom3_221404.entity.Invoice;
 import com.nhom3_221404.entity.InvoiceDaily;
 import com.nhom3_221404.entity.InvoiceHourly;
+import com.nhom3_221404.entity.InvoiceType;
 
 public class InvoiceFactory {
     Faker faker;
     RandomService randomService;
     Options options;
     InvoiceIdGenerator idGenerator;
+
+    private enum Type {
+        DAILY,
+        HOURLY
+    }
 
     public InvoiceFactory(Faker faker) {
         this.faker = faker;
@@ -42,13 +47,13 @@ public class InvoiceFactory {
     }
 
     public Invoice seedRandomInvoice() {
-        InvoiceType randomType = options.nextElement(InvoiceType.values());
+        Type randomType = options.nextElement(Type.values());
         Invoice invoice = null;
         switch (randomType) {
-            case Daily:
+            case DAILY:
                 invoice = seedInvoiceDaily();
                 break;
-            case Hourly:
+            case HOURLY:
                 invoice = seedInvoiceHourly();
                 break;
         }
@@ -56,14 +61,16 @@ public class InvoiceFactory {
     }
 
     public InvoiceDaily seedInvoiceDaily() {
-        InvoiceDaily invoiceDaily = new InvoiceDaily();
-        invoiceDaily.setRentalDays(faker.random().nextInt(0, 20));
-        return (InvoiceDaily) seedInvoice(invoiceDaily);
+        InvoiceDaily invoice = new InvoiceDaily();
+        invoice.setInvoiceType(new InvoiceType("dl", "Daily"));
+        invoice.setRentalDays(faker.random().nextInt(1, 20));
+        return (InvoiceDaily) seedInvoice(invoice);
     }
 
     public InvoiceHourly seedInvoiceHourly() {
-        InvoiceHourly invoiceHourly = new InvoiceHourly();
-        invoiceHourly.setRentalHours(faker.random().nextInt(0, 30));
-        return (InvoiceHourly) seedInvoice(invoiceHourly);
+        InvoiceHourly invoice = new InvoiceHourly();
+        invoice.setInvoiceType(new InvoiceType("hl", "Hourly"));
+        invoice.setRentalHours(faker.random().nextInt(1, 30));
+        return (InvoiceHourly) seedInvoice(invoice);
     }
 }

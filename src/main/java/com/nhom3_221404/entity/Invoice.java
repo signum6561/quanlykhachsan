@@ -2,8 +2,6 @@ package com.nhom3_221404.entity;
 
 import java.time.LocalDate;
 
-import com.nhom3_221404.common.InvoiceType;
-
 public abstract class Invoice {
 
     protected String id;
@@ -11,6 +9,8 @@ public abstract class Invoice {
     protected String roomId;
 
     protected Double price;
+
+    protected InvoiceType invoiceType;
 
     protected String customerName;
 
@@ -27,9 +27,11 @@ public abstract class Invoice {
         this.billedDate = billedDate;
     }
 
-    public abstract Double getTotal();
+    public String getInvoiceTypeCode() {
+        return this.invoiceType.getCode();
+    }
 
-    public abstract InvoiceType getInvoiceType();
+    public abstract Double getTotal();
 
     // #region getters and setters
     public String getId() {
@@ -72,5 +74,12 @@ public abstract class Invoice {
         this.billedDate = billedDate;
     }
 
+    public InvoiceType getInvoiceType() {
+        return invoiceType;
+    }
+
+    public void setInvoiceType(InvoiceType invoiceType) {
+        this.invoiceType = invoiceType;
+    }
     // #endregion
 }

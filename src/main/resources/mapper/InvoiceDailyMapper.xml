@@ -21,7 +21,7 @@
     </select>
 
     <insert id="insert" parameterType="InvoiceDaily">
-        insert into InvoiceDaily(invoiceId, rentalDays) 
+        insert into invoice_daily(invoiceId, rentalDays) 
         values(#{id}, #{rentalDays});
     </insert>
 

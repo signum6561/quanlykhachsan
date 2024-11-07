@@ -5,7 +5,6 @@ import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.ResourceBundle;
 
-import com.nhom3_221404.common.InvoiceType;
 import com.nhom3_221404.database.SearchInvoiceDAOMySql;
 import com.nhom3_221404.database.ViewInvoiceListDAOMySql;
 import com.nhom3_221404.database.repository.InvoiceRepository;
@@ -148,11 +147,11 @@ public class MainController implements Initializable {
                 .build();
     }
 
-    private String localizeInvoiceType(InvoiceType type) {
-        switch (type) {
-            case Daily:
+    private String localizeInvoiceType(String type) {
+        switch (type.toLowerCase()) {
+            case "daily":
                 return "Theo ngày";
-            case Hourly:
+            case "hourly":
                 return "Theo giờ";
         }
         return null;

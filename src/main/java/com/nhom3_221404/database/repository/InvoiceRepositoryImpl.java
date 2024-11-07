@@ -11,6 +11,7 @@ import com.nhom3_221404.database.dao.InvoiceHourlyDAO;
 import com.nhom3_221404.entity.Invoice;
 import com.nhom3_221404.entity.InvoiceDaily;
 import com.nhom3_221404.entity.InvoiceHourly;
+import com.nhom3_221404.entity.InvoiceType;
 
 public class InvoiceRepositoryImpl implements InvoiceRepository {
     InvoiceDAO invoiceDAO;
@@ -36,7 +37,7 @@ public class InvoiceRepositoryImpl implements InvoiceRepository {
 
     @Override
     public List<Invoice> findByPattern(String pattern) {
-        return invoiceDAO.selectByPattern(pattern);
+        return invoiceDAO.selectLikes(pattern);
     }
 
     @Override
@@ -144,7 +145,8 @@ public class InvoiceRepositoryImpl implements InvoiceRepository {
 
     @Override
     public Invoice insert(Invoice invoice) {
-        switch (invoice.getInvoiceType()) {
+        InvoiceType invoiceType = invoice.getInvoiceType();
+        switch (invoiceType) {
             case Daily:
                 return insert((InvoiceDaily) invoice);
             case Hourly:

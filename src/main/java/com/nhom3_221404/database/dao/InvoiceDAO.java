@@ -7,7 +7,7 @@ import com.nhom3_221404.entity.Invoice;
 public interface InvoiceDAO {
     List<Invoice> selectAll();
 
-    List<Invoice> selectByPattern(String pattern);
+    List<Invoice> selectLikes(String pattern);
 
     Invoice selectById(String id);
 

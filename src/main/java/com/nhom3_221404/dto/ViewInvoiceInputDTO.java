@@ -1,7 +1,6 @@
 package com.nhom3_221404.dto;
 
 import java.time.LocalDateTime;
-import com.nhom3_221404.common.InvoiceType;
 
 public class ViewInvoiceInputDTO {
     private String id;
@@ -9,14 +8,14 @@ public class ViewInvoiceInputDTO {
     private Double price;
     private String customerName;
     private LocalDateTime billedDate;
-    private InvoiceType invoiceType;
+    private String invoiceType;
 
     private Integer rentalDays;
 
     private Integer rentalHours;
 
     public ViewInvoiceInputDTO(String id, String roomId, Double price, String customerName, LocalDateTime billedDate,
-            InvoiceType invoiceType) {
+            String invoiceType) {
         this.id = id;
         this.roomId = roomId;
         this.price = price;
@@ -26,13 +25,13 @@ public class ViewInvoiceInputDTO {
     }
 
     public ViewInvoiceInputDTO(String id, String roomId, Double price, String customerName, LocalDateTime billedDate,
-            InvoiceType invoiceType, Integer rentalDays) {
+            String invoiceType, Integer rentalDays) {
         this(id, roomId, price, customerName, billedDate, invoiceType);
         this.rentalDays = rentalDays;
     }
 
     public ViewInvoiceInputDTO(String id, String roomId, String customerName, Double price, LocalDateTime billedDate,
-            InvoiceType invoiceType, Integer rentalHours) {
+            String invoiceType, Integer rentalHours) {
         this(id, roomId, price, customerName, billedDate, invoiceType);
         this.rentalHours = rentalHours;
     }
@@ -77,11 +76,11 @@ public class ViewInvoiceInputDTO {
         this.billedDate = billedDate;
     }
 
-    public InvoiceType getInvoiceType() {
+    public String getInvoiceType() {
         return invoiceType;
     }
 
-    public void setInvoiceType(InvoiceType invoiceType) {
+    public void setInvoiceType(String invoiceType) {
         this.invoiceType = invoiceType;
     }
 

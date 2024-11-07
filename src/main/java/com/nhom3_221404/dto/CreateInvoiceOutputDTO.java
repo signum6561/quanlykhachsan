@@ -2,12 +2,10 @@ package com.nhom3_221404.dto;
 
 import java.time.LocalDate;
 
-import com.nhom3_221404.common.InvoiceType;
-
 public class CreateInvoiceOutputDTO {
     private String id;
     private String roomId;
-    private InvoiceType invoiceType;
+    private String invoiceType;
     private Double price;
     private String customerName;
     private LocalDate billedDate;
@@ -79,11 +77,11 @@ public class CreateInvoiceOutputDTO {
         this.total = total;
     }
 
-    public InvoiceType getInvoiceType() {
+    public String getInvoiceType() {
         return invoiceType;
     }
 
-    public void setInvoiceType(InvoiceType invoiceType) {
+    public void setInvoiceType(String invoiceType) {
         this.invoiceType = invoiceType;
     }
 

@@ -69,8 +69,8 @@ public class AddInvoiceFrmController {
     @FXML
     public void initialize() {
         List<Pair<String, InvoiceType>> invoiceTypeSelectItems = new ArrayList<>();
-        invoiceTypeSelectItems.add(new Pair<>("Theo ngày", InvoiceType.Daily));
-        invoiceTypeSelectItems.add(new Pair<>("Theo giờ", InvoiceType.Hourly));
+        invoiceTypeSelectItems.add(new Pair<>("Theo ngày", InvoiceType.DAILY));
+        invoiceTypeSelectItems.add(new Pair<>("Theo giờ", InvoiceType.HOURLY));
 
         sl_loaiHD.setItems(FXCollections.observableArrayList(invoiceTypeSelectItems));
         sl_loaiHD.getSelectionModel().selectFirst();;
@@ -88,7 +88,7 @@ public class AddInvoiceFrmController {
     @FXML
     void handleInvoiceTypeSelect() {
         selectedInvoiceType = sl_loaiHD.getValue().getValue();
-        boolean isDailyType = selectedInvoiceType == InvoiceType.Daily;
+        boolean isDailyType = selectedInvoiceType == InvoiceType.DAILY;
         f_soGioThue.setVisible(!isDailyType);
         f_soNgayThue.setVisible(isDailyType);
     }

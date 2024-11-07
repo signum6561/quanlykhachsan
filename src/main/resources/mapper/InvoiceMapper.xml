@@ -3,25 +3,41 @@
   PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
   "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="${ibatis.dao}.InvoiceDAO">
+
     <resultMap id="invoiceRM" type="Invoice">
         <id property="id" column="id"/>
-        <result property="roomId" column="roomId"/>
+        <result property="roomId" column="room_id"/>
         <result property="price" column="price"/>
-        <result property="customerName" column="customerName"/>
-        <result property="billedDate" column="billedDate"/>
-        <discriminator javaType="String" column="invoiceType">
+        <result property="customerName" column="customer_name"/>
+        <result property="billedDate" column="billed_date"/>
+        <association 
+            property="invoiceType" 
+            column="invoice_type" 
+            javaType="InvoiceType" 
+            select="${ibatis.dao}.InvoiceTypeDAO.selectAll" 
+        />
+        <discriminator javaType="String" column="invoice_type">
             <case value="dl" resultMap="invoiceDailyRM"/>
             <case value="hl" resultMap="invoiceHourlyRM"/>
         </discriminator>
     </resultMap>
 
     <resultMap id="invoiceDailyRM" type="InvoiceDaily" extends="invoiceRM">
-        <result property="rentalDays" column="rentalDays"/>
+        <result property="rentalDays" column="rental_days"/>
     </resultMap>
 
     <resultMap id="invoiceHourlyRM" type="InvoiceHourly" extends="invoiceRM">
-        <result property="rentalHours" column="rentalHours" />
+        <result property="rentalHours" column="rental_hours" />
     </resultMap>
+
+    <select 
+        id="selectAllTypes"
+        resultMap="invoiceTypeRM"
+        timeout="60000"
+        resultSetType="FORWARD_ONLY" 
+    >
+        select * from invoice_type
+    </select>
 
     <select 
         id="selectAll"
@@ -29,31 +45,31 @@
         timeout="60000"
         resultSetType="FORWARD_ONLY" 
     >
-        select i.*, d.rentalDays, h.rentalHours
+        select i.*, d.rental_days, h.rental_hours
         from invoice i
-        left outer join invoiceDaily d 
-            on i.id = d.invoiceId
-        left outer join invoiceHourly h
-            on i.id = h.invoiceId
-        order by billedDate desc
+        left outer join invoice_daily d 
+            on i.id = d.invoice_id
+        left outer join invoice_hourly h
+            on i.id = h.invoice_id
+        order by billed_date desc
     </select>
 
     <select 
-        id="selectByPattern"
+        id="selectLikes"
         resultMap="invoiceRM"
         timeout="60000"
         resultSetType="FORWARD_ONLY" 
     >
-        select i.*, d.rentalDays, h.rentalHours
+        select i.*, d.rental_days, h.rental_hours
         from invoice i
-        left outer join invoiceDaily d 
-            on i.id = d.invoiceId
-        left outer join invoiceHourly h
-            on i.id = h.invoiceId
+        left outer join invoice_daily d 
+            on i.id = d.invoice_id
+        left outer join invoice_hourly h
+            on i.id = h.invoice_id
         where i.id like '%${pattern}%'
-            or i.customerName like '%${pattern}%'
-            or i.roomId like '%${pattern}%'
-            or i.billedDate like '%${pattern}%'
+            or i.customer_name like '%${pattern}%'
+            or i.room_id like '%${pattern}%'
+            or i.billed_date like '%${pattern}%'
     </select>
 
     <select 
@@ -62,27 +78,27 @@
         timeout="60000"
         resultSetType="FORWARD_ONLY" 
     >
-        select i.*, d.rentalDays, h.rentalHours
+        select i.*, d.rental_days, h.rental_hours
         from invoice i
-        left outer join InvoiceDaily d 
-        on i.id = d.invoiceId
-        left outer join InvoiceHourly h
-        on i.id = h.invoiceId
+        left outer join invoice_daily d 
+        on i.id = d.invoice_id
+        left outer join invoice_hourly h
+        on i.id = h.invoice_id
         where i.id = #{id}
     </select>
 
     <insert id="insert" parameterType="Invoice"> 
-        insert into Invoice(id, invoiceType, roomId, price, customerName, billedDate) 
-        values(#{id}, #{invoiceType}, #{roomId}, #{price}, #{customerName}, #{billedDate});
+        insert into invoice(id, invoice_type, room_id, price, customer_name, billed_date)
+        values(#{id}, #{invoiceType.code}, #{roomId}, #{price}, #{customerName}, #{billedDate});
     </insert>
 
     <update id="update" parameterType="Invoice">
         update Invoice
         set
-            roomId = #{roomId}, 
+            room_id = #{room_id}, 
             price = #{price}, 
-            customerName = #{customerName}, 
-            billedDate = #{billedDate}
+            customer_name = #{customer_name}, 
+            billed_date = #{billed_date}
         where id = #{id}
     </update>
 

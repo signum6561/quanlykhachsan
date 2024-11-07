@@ -21,7 +21,7 @@
     </select>
 
     <insert id="insert" parameterType="InvoiceHourly"> 
-        insert into InvoiceHourly(invoiceId, rentalHours) 
+        insert into invoice_hourly(invoiceId, rentalHours) 
         values(#{id}, #{rentalHours})
     </insert>
 
