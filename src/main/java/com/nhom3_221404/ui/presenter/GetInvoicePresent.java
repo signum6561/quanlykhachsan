@@ -1,19 +1,14 @@
 package com.nhom3_221404.ui.presenter;
 
 import com.nhom3_221404.common.Result;
-import com.nhom3_221404.dto.ViewInvoiceOutputDTO;
+import com.nhom3_221404.dto.GetInvoiceOutputDTO;
 import com.nhom3_221404.exceptions.InvoiceNotFoundException;
-import com.nhom3_221404.usecase.ViewInvoice.ViewInvoiceOutputBoundary;
+import com.nhom3_221404.usecase.GetInvoice.GetInvoiceOutputBoundary;
 
-public class ViewInvoicePresent implements ViewInvoiceOutputBoundary {
-    private Result<ViewInvoiceOutputDTO> result = new Result<>();
+public class GetInvoicePresent implements GetInvoiceOutputBoundary {
+    private Result<GetInvoiceOutputDTO> result = new Result<>();
 
-    @Override
-    public void presentData(ViewInvoiceOutputDTO viewInvoiceOutputDTO) {
-        result.setSuccess(viewInvoiceOutputDTO);
-    }
-
-    public ViewInvoiceOutputDTO getViewInvoice()
+    public GetInvoiceOutputDTO getInvoice()
             throws InvoiceNotFoundException {
         if (!result.isSuccess()) {
             switch (result.getError()) {
@@ -25,5 +20,10 @@ public class ViewInvoicePresent implements ViewInvoiceOutputBoundary {
             }
         }
         return result.getValue();
+    }
+
+    @Override
+    public void presentData(GetInvoiceOutputDTO getInvoiceOutputDTO) {
+        result.setSuccess(getInvoiceOutputDTO);
     }
 }
