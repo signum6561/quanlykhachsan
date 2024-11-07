@@ -1,37 +1,46 @@
 package com.nhom3_221404.ui.controller;
 
 import java.net.URL;
-import java.text.SimpleDateFormat;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.ResourceBundle;
 
 import com.nhom3_221404.common.InvoiceType;
+import com.nhom3_221404.database.SearchInvoiceDAOMySql;
 import com.nhom3_221404.database.ViewInvoiceListDAOMySql;
 import com.nhom3_221404.database.repository.InvoiceRepository;
 import com.nhom3_221404.database.repository.InvoiceRepositoryImpl;
 import com.nhom3_221404.dto.ViewInvoiceOutputDTO;
 import com.nhom3_221404.exceptions.InternalDataAccessException;
 import com.nhom3_221404.ui.model.InvoiceVM;
+import com.nhom3_221404.ui.presenter.SearchInvoicePresenter;
 import com.nhom3_221404.ui.presenter.ViewInvoiceListPresenter;
+import com.nhom3_221404.ui.util.TableUtil;
+import com.nhom3_221404.usecase.SearchInvoice.SearchInvoiceInputBoundary;
+import com.nhom3_221404.usecase.SearchInvoice.SearchInvoiceUseCase;
 import com.nhom3_221404.usecase.ViewInvoiceList.ViewInvoiceListInputBoundary;
 import com.nhom3_221404.usecase.ViewInvoiceList.ViewInvoiceListUseCase;
 import com.nhom3_221404.util.IBatisUtil;
-import com.nhom3_221404.util.TableUtil;
 
 import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Alert;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
+import javafx.scene.control.TextField;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.stage.Stage;
 
-public class ViewInvoiceListController implements Initializable {
+public class MainController implements Initializable {
+
+    @FXML
+    private TextField searchBar;
 
     @FXML
     private TableColumn<InvoiceVM, String> col_donGia;
@@ -59,17 +68,25 @@ public class ViewInvoiceListController implements Initializable {
 
     ViewInvoiceListInputBoundary viewILInputB;
     ViewInvoiceListPresenter viewILPresenter;
-    ViewInvoiceListDAOMySql viewILDAOMySql;
+    ViewInvoiceListDAOMySql viewILDAO;
 
-    SimpleDateFormat dateFormatter;
+    SearchInvoiceInputBoundary searchInvoiceInputB;
+    SearchInvoicePresenter searchInvoicePresenterB;
+    SearchInvoiceDAOMySql searchInvoiceDAO;
+
+    DateTimeFormatter dateTimeFormatter;
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         InvoiceRepository invoiceRepository = new InvoiceRepositoryImpl(IBatisUtil.buildSqlSessionFactory());
-        viewILDAOMySql = new ViewInvoiceListDAOMySql(invoiceRepository);
+        viewILDAO = new ViewInvoiceListDAOMySql(invoiceRepository);
         viewILPresenter = new ViewInvoiceListPresenter();
-        viewILInputB = new ViewInvoiceListUseCase(viewILPresenter, viewILDAOMySql);
-        dateFormatter = new SimpleDateFormat("yyyy-MM-dd");
+        viewILInputB = new ViewInvoiceListUseCase(viewILPresenter, viewILDAO);
+        dateTimeFormatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
+
+        searchInvoicePresenterB = new SearchInvoicePresenter();
+        searchInvoiceDAO = new SearchInvoiceDAOMySql(invoiceRepository);
+        searchInvoiceInputB = new SearchInvoiceUseCase(searchInvoiceDAO, searchInvoicePresenterB);
 
         col_maHD.setCellValueFactory(new PropertyValueFactory<>("id"));
         col_hoTenKhachHang.setCellValueFactory(new PropertyValueFactory<>("customerName"));
@@ -104,6 +121,15 @@ public class ViewInvoiceListController implements Initializable {
         }
     }
 
+    private void fetchSearchResult(String value) {
+        searchInvoiceInputB.execute(value);
+        List<ViewInvoiceOutputDTO> invoiceData = searchInvoicePresenterB.getSearchResult();
+        List<InvoiceVM> invoiceVMs = convertDtoToVM(invoiceData);
+        ObservableList<InvoiceVM> invoiceList = FXCollections.observableList(invoiceVMs);
+        tb_invoice.setItems(invoiceList);
+        TableUtil.autoResizeColumns(tb_invoice);
+    }
+
     private List<InvoiceVM> convertDtoToVM(List<ViewInvoiceOutputDTO> dtoList) {
         return dtoList.stream()
                 .map(viewILDto -> convertToInvoiceVM(viewILDto))
@@ -116,7 +142,7 @@ public class ViewInvoiceListController implements Initializable {
                 .customerName(dto.getCustomerName())
                 .price(String.format("%.2f", dto.getPrice()))
                 .invoiceType(localizeInvoiceType(dto.getInvoiceType()))
-                .billedDate(dateFormatter.format(dto.getBilledDate()))
+                .billedDate(dto.getBilledDate().format(dateTimeFormatter))
                 .roomId(dto.getRoomId())
                 .total(String.format("%.2f", dto.getTotal()))
                 .build();
@@ -130,5 +156,15 @@ public class ViewInvoiceListController implements Initializable {
                 return "Theo giờ";
         }
         return null;
+    }
+
+    @FXML
+    void onSearchInput(ActionEvent event) {
+        String searchInputValue = searchBar.getText().trim();
+        if(searchInputValue.isEmpty()) {
+            fetchInvoiceTable();
+        } else {
+            fetchSearchResult(searchInputValue);
+        }
     }
 }

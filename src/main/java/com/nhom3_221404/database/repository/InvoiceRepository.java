@@ -3,15 +3,11 @@ package com.nhom3_221404.database.repository;
 import java.util.List;
 
 import com.nhom3_221404.entity.Invoice;
-import com.nhom3_221404.entity.InvoiceDaily;
-import com.nhom3_221404.entity.InvoiceHourly;
 
 public interface InvoiceRepository {
     List<Invoice> findAll();
 
-    List<InvoiceHourly> findAllHourly();
-
-    List<InvoiceDaily> findAllDaily();
+    List<Invoice> findByPattern(String pattern);
 
     Invoice findById(String id);
 

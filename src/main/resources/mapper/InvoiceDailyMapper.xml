@@ -25,9 +25,9 @@
         values(#{id}, #{rentalDays});
     </insert>
 
-    <!-- <update id="update" parameterType="InvoiceDaily">
+    <update id="update" parameterType="InvoiceDaily">
         update InvoiceDaily 
         set rentalDays = #{rentalDays}
         where invoiceId = #{id}
-    </update> -->
+    </update>
 </mapper>

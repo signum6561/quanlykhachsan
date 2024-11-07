@@ -15,7 +15,6 @@ public class ViewInvoiceOutputDTO {
     private Integer rentalDays;
     private Integer rentalHours;
 
-
     public ViewInvoiceOutputDTO() {
     }
 
@@ -114,6 +113,5 @@ public class ViewInvoiceOutputDTO {
     public void setRentalHours(Integer rentalHours) {
         this.rentalHours = rentalHours;
     }
-
     // #endregion
 }

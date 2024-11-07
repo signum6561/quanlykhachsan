@@ -9,16 +9,15 @@ public class InvoiceHourly extends Invoice {
     private Integer rentalHours;
 
     public InvoiceHourly() {
-        invoiceType = InvoiceType.Hourly;
     }
 
     public InvoiceHourly(Integer rentalHours) {
         this.rentalHours = rentalHours;
     }
 
-    public InvoiceHourly(String id, String roomId, InvoiceType invoiceType, Double price, String customerName,
+    public InvoiceHourly(String id, String roomId, Double price, String customerName,
             LocalDate billedDate, Integer rentalHours) {
-        super(id, roomId, invoiceType, price, customerName, billedDate);
+        super(id, roomId, price, customerName, billedDate);
         this.rentalHours = rentalHours;
     }
 
@@ -28,6 +27,12 @@ public class InvoiceHourly extends Invoice {
             return 24 * price;
         }
         return rentalHours * price;
+    }
+
+    
+    @Override
+    public InvoiceType getInvoiceType() {
+        return InvoiceType.Hourly;
     }
 
     // #region getters and setters

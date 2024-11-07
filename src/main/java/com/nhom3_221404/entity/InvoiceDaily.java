@@ -9,7 +9,6 @@ public class InvoiceDaily extends Invoice {
     private Integer rentalDays;
   
     public InvoiceDaily() {
-        invoiceType = InvoiceType.Daily;
     }
 
     public InvoiceDaily(Integer rentalDays) {
@@ -18,7 +17,7 @@ public class InvoiceDaily extends Invoice {
 
     public InvoiceDaily(String id, String roomId, Double price, String customerName,
             LocalDate billedDate, Integer rentalDays) {
-        super(id, roomId, InvoiceType.Daily, price, customerName, billedDate);
+        super(id, roomId, price, customerName, billedDate);
         this.rentalDays = rentalDays;
     }
 
@@ -28,6 +27,11 @@ public class InvoiceDaily extends Invoice {
             return rentalDays * price;
         }
         return (1.4 + 0.8 * rentalDays) * price;
+    }
+
+    @Override
+    public InvoiceType getInvoiceType() {
+        return InvoiceType.Daily;
     }
 
     // #region getters and setters
@@ -49,4 +53,5 @@ public class InvoiceDaily extends Invoice {
                 + ", customerName=" + customerName
                 + ", billedDate=" + billedDate + "]";
     }
+
 }

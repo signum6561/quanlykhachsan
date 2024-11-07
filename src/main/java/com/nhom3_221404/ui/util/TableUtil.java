@@ -1,4 +1,4 @@
-package com.nhom3_221404.util;
+package com.nhom3_221404.ui.util;
 
 import javafx.scene.control.TableView;
 import javafx.scene.text.Text;
