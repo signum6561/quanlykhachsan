@@ -1,48 +1,45 @@
 package com.nhom3_221404.usecase.Delete;
 
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertFalse;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.*;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.mockito.Mock;
+import org.mockito.MockitoAnnotations;
 import com.nhom3_221404.dto.DeleteInvoiceInputDTO;
-import com.nhom3_221404.ui.presenter.DeleteInvoicePresenter;
+import com.nhom3_221404.dto.DeleteInvoiceOutputDTO;
 import com.nhom3_221404.usecase.DeleteInvoice.DeleteInvoiceDatabaseBoundary;
+import com.nhom3_221404.usecase.DeleteInvoice.DeleteInvoiceOutputBoundary;
 import com.nhom3_221404.usecase.DeleteInvoice.DeleteInvoiceUseCase;
 
 public class DeleteInvoiceUseCasetest {
-    @Test
-    public void testDeleteInvoiceSuccess() {
-        TestDeleteInvoiceDatabase database = new TestDeleteInvoiceDatabase(true);
-        DeleteInvoicePresenter presenter = new DeleteInvoicePresenter();
-        DeleteInvoiceUseCase useCase = new DeleteInvoiceUseCase(database, presenter); 
-        DeleteInvoiceInputDTO input = new DeleteInvoiceInputDTO();
-        input.setInvoiceId("001");
-        useCase.execute(input);
-        assertTrue(presenter.getViewDelete().isSuccess());
-        assertEquals("invoice delete success", presenter.getViewDelete().getMessage());
+    @Mock
+    private DeleteInvoiceDatabaseBoundary databaseBoundary;
+    @Mock
+    private DeleteInvoiceOutputBoundary outputBoundary;
+    private DeleteInvoiceUseCase deleteInvoiceUseCase;
+    @BeforeEach
+    void setUp() {
+        MockitoAnnotations.openMocks(this);
+        deleteInvoiceUseCase = new DeleteInvoiceUseCase(databaseBoundary, outputBoundary);
     }
-
     @Test
-    public void testDeleteInvoiceFailure() {
-        TestDeleteInvoiceDatabase database = new TestDeleteInvoiceDatabase(false);
-        DeleteInvoicePresenter presenter = new DeleteInvoicePresenter();
-        DeleteInvoiceUseCase useCase = new DeleteInvoiceUseCase(database, presenter);
-        DeleteInvoiceInputDTO input = new DeleteInvoiceInputDTO();
-        input.setInvoiceId("002");
-        useCase.execute(input);
-        assertFalse(presenter.getViewDelete().isSuccess());
-        assertEquals("failure delete invoice", presenter.getViewDelete().getMessage());
+    void execute_SuccessfulDeletion() {
+        String invoiceId = "testId001";
+        DeleteInvoiceInputDTO input = new DeleteInvoiceInputDTO(invoiceId);
+        when(databaseBoundary.deleteInvoice(invoiceId)).thenReturn(true);
+        deleteInvoiceUseCase.execute(input);
+        verify(databaseBoundary, times(1)).deleteInvoice(invoiceId);
+        verify(outputBoundary, times(1)).presentDeleteResult(any(DeleteInvoiceOutputDTO.class));
     }
-    
-    private static class TestDeleteInvoiceDatabase implements DeleteInvoiceDatabaseBoundary {
-        private final boolean shouldSuccess;
-        public TestDeleteInvoiceDatabase(boolean shouldSuccess) {
-            this.shouldSuccess = shouldSuccess;
-        }
-        @Override
-        public boolean deleteInvoice(String invoiceId) {
-            return shouldSuccess;
-        }
+    @Test
+    void execute_FailedDeletion() {
+        String invoiceId = "testId002";
+        DeleteInvoiceInputDTO input = new DeleteInvoiceInputDTO(invoiceId);
+        when(databaseBoundary.deleteInvoice(invoiceId)).thenReturn(false);
+        deleteInvoiceUseCase.execute(input);
+        verify(databaseBoundary, times(1)).deleteInvoice(invoiceId);
+        verify(outputBoundary, times(1)).presentDeleteResult(any(DeleteInvoiceOutputDTO.class));
     }
 }
