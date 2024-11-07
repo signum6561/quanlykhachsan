@@ -61,7 +61,7 @@ public class UpdateInvoiceUseCaseTest {
         updateDTO.setId(originalInvoice.getId());
         updateDTO.setRoomId("B103");
         updateDTO.setPrice(60.0);
-        updateDTO.setCustomerName("Jane Doe");
+        updateDTO.setCustomerName("Jane Do");
         updateDTO.setBilledDate(LocalDate.now());
         updateDTO.setRentalHours(25);
 
@@ -69,7 +69,7 @@ public class UpdateInvoiceUseCaseTest {
 
         verify(database).updateInvoice(argThat(invoice -> invoice.getRoomId().equals("B103") &&
                 invoice.getPrice() == 60.0 &&
-                invoice.getCustomerName().equals("Jane Doe") &&
+                invoice.getCustomerName().equals("Jane Do") &&
                 ((InvoiceHourly) invoice).getRentalHours() == 25));
     }
 

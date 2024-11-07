@@ -19,52 +19,66 @@ public class UpdateInvoiceUseCase implements UpdateInvoiceInputBoundary {
         this.updateOutputBoundary = updateOutputBoundary;
         this.updateDatabaseBoundary = updateDatabaseBoundary;
     }
+
     @Override
     public void execute(UpdateInvoiceInputDTO updateInvoiceInputDTO) {
-        InvoiceType invoiceType = updateInvoiceInputDTO.getInvoiceType();
         String id = updateInvoiceInputDTO.getId();
         Invoice existingInvoice = updateDatabaseBoundary.getInvoiceById(id);
 
-        
-        LocalDate billedDate = updateInvoiceInputDTO.getBilledDate();
-        if (!isWithinTwelveMonths(billedDate)) {
-            updateOutputBoundary.presentError(Errors.DateOutOfRange);
-            return;
-        }
         if (existingInvoice == null) {
             updateOutputBoundary.presentError(Errors.InvoiceNotFound);
             return;
         }
 
-         if (invoiceType == InvoiceType.Hourly) {
+        LocalDate billedDate = updateInvoiceInputDTO.getBilledDate();
+
+        if (!isWithinTwelveMonths(billedDate)) {
+            updateOutputBoundary.presentError(Errors.DateOutOfRange);
+            return;
+        }
+
+        if (updateInvoiceInputDTO.getInvoiceType() == InvoiceType.Hourly) {
             int rentalHours = updateInvoiceInputDTO.getRentalHours();
-            if(rentalHours > 30) {
+            if (rentalHours > 30) {
                 updateOutputBoundary.presentError(Errors.RentalHoursOutOfRange);
                 return;
             }
         }
 
+        updateInvoiceDetails(existingInvoice, updateInvoiceInputDTO);
+
+        Invoice updatedInvoice = updateDatabaseBoundary.updateInvoice(existingInvoice);
+        if (updatedInvoice == null) {
+            updateOutputBoundary.presentError(Errors.InternalDataAccess);
+            return;
+        }
+        UpdateInvoiceOutputDTO response = UpdateOutputDto(updatedInvoice);
+        updateOutputBoundary.presentResult(response);
+    }
+
+    private void updateInvoiceDetails(Invoice existingInvoice, UpdateInvoiceInputDTO updateInvoiceInputDTO) {
         existingInvoice.setRoomId(updateInvoiceInputDTO.getRoomId());
         existingInvoice.setPrice(updateInvoiceInputDTO.getPrice());
         existingInvoice.setCustomerName(updateInvoiceInputDTO.getCustomerName());
-        existingInvoice.setBilledDate(billedDate);
+        existingInvoice.setBilledDate(updateInvoiceInputDTO.getBilledDate());
 
         if (existingInvoice instanceof InvoiceHourly) {
             ((InvoiceHourly) existingInvoice).setRentalHours(updateInvoiceInputDTO.getRentalHours());
         } else if (existingInvoice instanceof InvoiceDaily) {
             ((InvoiceDaily) existingInvoice).setRentalDays(updateInvoiceInputDTO.getRentalDays());
         }
+    }
 
-        Invoice updatedInvoice = updateDatabaseBoundary.updateInvoice(existingInvoice);
-        UpdateInvoiceOutputDTO response = new UpdateInvoiceOutputDTO();
-        response.setId(updatedInvoice.getId());
-        response.setRoomId(updatedInvoice.getRoomId());
-        response.setCustomerName(updatedInvoice.getCustomerName());
-        response.setPrice(updatedInvoice.getPrice());
-        response.setBilledDate(updatedInvoice.getBilledDate());
-        response.setTotal(updatedInvoice.getTotal());
-
-        updateOutputBoundary.presentResult(response);
+    private UpdateInvoiceOutputDTO UpdateOutputDto(Invoice invoice) {
+        UpdateInvoiceOutputDTO outputDto = new UpdateInvoiceOutputDTO();
+        outputDto.setId(invoice.getId());
+        outputDto.setRoomId(invoice.getRoomId());
+        outputDto.setCustomerName(invoice.getCustomerName());
+        outputDto.setPrice(invoice.getPrice());
+        outputDto.setBilledDate(invoice.getBilledDate());
+        outputDto.setTotal(invoice.getTotal());
+        outputDto.setInvoiceType(invoice.getInvoiceType());
+        return outputDto;
     }
 
     private boolean isWithinTwelveMonths(LocalDate date) {
