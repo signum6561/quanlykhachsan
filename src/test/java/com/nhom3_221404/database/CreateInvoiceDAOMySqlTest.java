@@ -1,6 +1,7 @@
 package com.nhom3_221404.database;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.util.Locale;
 
@@ -9,10 +10,11 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import com.github.javafaker.Faker;
+import com.google.inject.Guice;
+import com.google.inject.Injector;
 import com.nhom3_221404.database.repository.InvoiceRepository;
-import com.nhom3_221404.database.repository.InvoiceRepositoryImpl;
 import com.nhom3_221404.entity.Invoice;
-import com.nhom3_221404.util.IBatisUtil;
+import com.nhom3_221404.module.MyModule;
 import com.nhom3_221404.util.InvoiceFactory;
 
 public class CreateInvoiceDAOMySqlTest {
@@ -22,8 +24,9 @@ public class CreateInvoiceDAOMySqlTest {
 
     @BeforeEach
     void setUp() {
+        Injector injector = Guice.createInjector(new MyModule());
+        invoiceRepository = injector.getInstance(InvoiceRepository.class);
         invoiceFactory = new InvoiceFactory(new Faker(new Locale("vi")));
-        invoiceRepository = new InvoiceRepositoryImpl(IBatisUtil.buildSqlSessionFactoryTest());
         createInvoiceDB = new CreateInvoiceDAOMySql(invoiceRepository);
     }
 
@@ -33,11 +36,11 @@ public class CreateInvoiceDAOMySqlTest {
     }
 
     @Test
-    void addInvoice() {
+    void test_createInvoice() {
         Invoice invoice = invoiceFactory.seedRandomInvoice();
-        createInvoiceDB.addInvoice(invoice);
+        boolean isInsertSuccess = createInvoiceDB.createInvoice(invoice);
         Invoice inserted = invoiceRepository.findById(invoice.getId());
-        assertEquals(inserted.getId(), invoice.getId());
-        assertEquals(inserted.getCustomerName(), invoice.getCustomerName());
+        assertTrue(isInsertSuccess);
+        assertEquals(invoice.getInvoiceType().getCode(), inserted.getInvoiceType().getCode());
     }
 }

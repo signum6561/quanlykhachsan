@@ -7,26 +7,31 @@ import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import com.github.javafaker.Faker;
+import com.google.inject.Guice;
+import com.google.inject.Injector;
 import com.nhom3_221404.database.repository.InvoiceRepository;
-import com.nhom3_221404.database.repository.InvoiceRepositoryImpl;
 import com.nhom3_221404.entity.Invoice;
-import com.nhom3_221404.util.IBatisUtil;
+import com.nhom3_221404.module.MyModule;
 import com.nhom3_221404.util.InvoiceFactory;
 
 public class DeleteInvoiceDAOMySqlTest {
     InvoiceRepository invoiceRepository;
     InvoiceFactory invoiceFactory;
     DeleteInvoiceDAOMySql deleteInvoiceDB;
+
     @BeforeEach
     void setUp() {
-        invoiceFactory = new InvoiceFactory(new Faker(new Locale("vi")));
-        invoiceRepository = new InvoiceRepositoryImpl(IBatisUtil.buildSqlSessionFactoryTest());
+        Injector injector = Guice.createInjector(new MyModule());
+        invoiceRepository = injector.getInstance(InvoiceRepository.class);
         deleteInvoiceDB = new DeleteInvoiceDAOMySql(invoiceRepository);
+        invoiceFactory = new InvoiceFactory(new Faker(new Locale("vi")));
     }
+
     @AfterEach
     void clean() {
         invoiceRepository.deleteAll();
     }
+
     @Test
     void deleteInvoice_ExistingInvoice_ReturnsTrue() {
         Invoice invoice = invoiceFactory.seedRandomInvoice();

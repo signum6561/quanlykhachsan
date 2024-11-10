@@ -14,20 +14,20 @@
         resultMap="invoiceHourlyRM" 
         timeout="60000"
     >
-        select i.*, d.rentalDays
-        from Invoice i
-        join InvoiceDaily d 
-        on i.id = d.invoiceId
+        select i.*, d.rental_Hours
+        from invoice i
+        join invoice_hourly d 
+        on i.id = d.invoice_id
     </select>
 
     <insert id="insert" parameterType="InvoiceHourly"> 
-        insert into invoice_hourly(invoiceId, rentalHours) 
+        insert into invoice_hourly(invoice_id, rental_hours) 
         values(#{id}, #{rentalHours})
     </insert>
 
     <update id="update" parameterType="InvoiceHourly">
-        update InvoiceHourly
-        set rentalHours = #{rentalHours}
-        where invoiceId = #{id}
+        update invoice_hourly
+        set rental_hours = #{rentalHours}
+        where invoice_id = #{id}
     </update>
 </mapper>

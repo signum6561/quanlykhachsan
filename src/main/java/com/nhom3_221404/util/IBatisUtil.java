@@ -13,6 +13,14 @@ public final class IBatisUtil {
     private static String propertiesFile = "application.properties";
     private static SqlSessionFactoryBuilder sqlSessionFactoryBuilder = new SqlSessionFactoryBuilder();
 
+    public static Properties getProperties() {
+        try {
+            return Resources.getResourceAsProperties(propertiesFile);
+        } catch (Exception e) {
+            return null;
+        }
+    }
+
     public static final SqlSessionFactory buildSqlSessionFactory() {
         try {
             InputStream inputStream = Resources.getResourceAsStream(configFile);

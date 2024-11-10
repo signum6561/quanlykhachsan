@@ -3,7 +3,6 @@ package com.nhom3_221404.usecase.UpdateInvoice;
 import java.time.LocalDate;
 
 import com.nhom3_221404.common.Errors;
-import com.nhom3_221404.common.InvoiceType;
 import com.nhom3_221404.dto.UpdateInvoiceInputDTO;
 import com.nhom3_221404.dto.UpdateInvoiceOutputDTO;
 import com.nhom3_221404.entity.Invoice;
@@ -21,11 +20,10 @@ public class UpdateInvoiceUseCase implements UpdateInvoiceInputBoundary {
     }
     @Override
     public void execute(UpdateInvoiceInputDTO updateInvoiceInputDTO) {
-        InvoiceType invoiceType = updateInvoiceInputDTO.getInvoiceType();
+        String invoiceType = updateInvoiceInputDTO.getInvoiceType();
         String id = updateInvoiceInputDTO.getId();
         Invoice existingInvoice = updateDatabaseBoundary.getInvoiceById(id);
 
-        
         LocalDate billedDate = updateInvoiceInputDTO.getBilledDate();
         if (!isWithinTwelveMonths(billedDate)) {
             updateOutputBoundary.presentError(Errors.DateOutOfRange);
@@ -36,7 +34,7 @@ public class UpdateInvoiceUseCase implements UpdateInvoiceInputBoundary {
             return;
         }
 
-         if (invoiceType == InvoiceType.Hourly) {
+         if (invoiceType.equalsIgnoreCase("hourly")) {
             int rentalHours = updateInvoiceInputDTO.getRentalHours();
             if(rentalHours > 30) {
                 updateOutputBoundary.presentError(Errors.RentalHoursOutOfRange);

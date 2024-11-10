@@ -4,7 +4,6 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.nhom3_221404.common.InvoiceType;
 import com.nhom3_221404.database.CreateInvoiceDAOMySql;
 import com.nhom3_221404.database.repository.InvoiceRepository;
 import com.nhom3_221404.dto.CreateInvoiceInputDTO;
@@ -46,8 +45,8 @@ public class AddInvoiceFrmController {
     @FXML
     private TextField txt_hoTenKH;
     
-    @FXML
-    private ComboBox<Pair<String, InvoiceType>> sl_loaiHD;
+    // @FXML
+    // private ComboBox<Pair<String, InvoiceTypeConst>> sl_loaiHD;
 
     @FXML
     private TextField txt_maPhong;
@@ -62,18 +61,17 @@ public class AddInvoiceFrmController {
     CreateInvoicePresenter createInvoicePresenter;
     CreateInvoiceDAOMySql createInvoiceDB;
 
-    private InvoiceType selectedInvoiceType;
     private Stage currentStage;
 
 
     @FXML
     public void initialize() {
-        List<Pair<String, InvoiceType>> invoiceTypeSelectItems = new ArrayList<>();
-        invoiceTypeSelectItems.add(new Pair<>("Theo ngày", InvoiceType.DAILY));
-        invoiceTypeSelectItems.add(new Pair<>("Theo giờ", InvoiceType.HOURLY));
+        // List<Pair<String, InvoiceTypeConst>> invoiceTypeSelectItems = new ArrayList<>();
+        // invoiceTypeSelectItems.add(new Pair<>("Theo ngày", InvoiceTypeConst.DAILY));
+        // invoiceTypeSelectItems.add(new Pair<>("Theo giờ", InvoiceTypeConst.HOURLY));
 
-        sl_loaiHD.setItems(FXCollections.observableArrayList(invoiceTypeSelectItems));
-        sl_loaiHD.getSelectionModel().selectFirst();;
+        // sl_loaiHD.setItems(FXCollections.observableArrayList(invoiceTypeSelectItems));
+        // sl_loaiHD.getSelectionModel().selectFirst();
 
         dpk_ngayThanhToan.setValue(LocalDate.now());
         handleReset();
@@ -81,16 +79,16 @@ public class AddInvoiceFrmController {
 
     public void initDB(InvoiceRepository invoiceRepository) {
         createInvoicePresenter = new CreateInvoicePresenter();
-        createInvoiceDB = new CreateInvoiceDAOMySql(invoiceRepository);
+        // createInvoiceDB = new CreateInvoiceDAOMySql(invoiceRepository);
         createInvoiceInputB = new CreateInvoiceUseCase(createInvoicePresenter, createInvoiceDB, new InvoiceIdGenerator());
     }
 
     @FXML
     void handleInvoiceTypeSelect() {
-        selectedInvoiceType = sl_loaiHD.getValue().getValue();
-        boolean isDailyType = selectedInvoiceType == InvoiceType.DAILY;
-        f_soGioThue.setVisible(!isDailyType);
-        f_soNgayThue.setVisible(isDailyType);
+        // selectedInvoiceType = sl_loaiHD.getValue().getValue();
+        // boolean isDailyType = selectedInvoiceType == InvoiceTypeConst.DAILY;
+        // f_soGioThue.setVisible(!isDailyType);
+        // f_soNgayThue.setVisible(isDailyType);
     }
 
     @FXML
@@ -101,7 +99,6 @@ public class AddInvoiceFrmController {
         dpk_ngayThanhToan.setValue(LocalDate.now());
         txt_soGioThue.clear();
         txt_soNgayThue.clear();
-        sl_loaiHD.getSelectionModel().selectFirst();
     }
 
     @FXML
@@ -110,7 +107,6 @@ public class AddInvoiceFrmController {
             CreateInvoiceInputDTO inputDTO = new CreateInvoiceInputDTO();
             inputDTO.setRoomId(txt_maPhong.getText());
             inputDTO.setCustomerName(txt_hoTenKH.getText());
-            inputDTO.setInvoiceType(sl_loaiHD.getValue().getValue());
             inputDTO.setBilledDate(dpk_ngayThanhToan.getValue());
             inputDTO.setPrice(Double.parseDouble(txt_donGia.getText()));
             String soNgayThueStr = txt_soNgayThue.getText().trim();

@@ -6,6 +6,7 @@ public class StringConst {
     public static final String BILLED_DATE_OUT_OF_RANGE = "Billed date is out of 12 months from now";
     public static final String RENTAL_HOURS_OUT_OF_RANGE = "The rental hours of invoice must be less than 30";
     public static final String INVOICE_NOT_FOUND = "The invoice is not found";
+    public static final String SUCCESS_CREATE_INVOICE = "The date is out of 12 months from now";
 
     public static String INVOICE_NOT_FOUND(String id) {
         return PARAMETERIZED_INVOICE_NOT_FOUND.replaceAll("@id", id);

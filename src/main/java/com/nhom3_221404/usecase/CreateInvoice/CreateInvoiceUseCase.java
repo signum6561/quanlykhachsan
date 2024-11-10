@@ -3,8 +3,8 @@ package com.nhom3_221404.usecase.CreateInvoice;
 import java.time.LocalDate;
 
 import com.nhom3_221404.common.Errors;
+import com.nhom3_221404.constant.StringConst;
 import com.nhom3_221404.dto.CreateInvoiceInputDTO;
-import com.nhom3_221404.dto.CreateInvoiceOutputDTO;
 import com.nhom3_221404.entity.Invoice;
 import com.nhom3_221404.entity.InvoiceDaily;
 import com.nhom3_221404.entity.InvoiceHourly;
@@ -27,14 +27,12 @@ public class CreateInvoiceUseCase implements CreateInvoiceInputBoundary {
         String invoiceType = inputDTO.getInvoiceType();
         LocalDate billedDate = inputDTO.getBilledDate();
 
-        // Validate billed date
         if(!isWithinTwelveMonths(billedDate)) {
             createIOutputB.presentError(Errors.DateOutOfRange);
             return;
         }
 
-        // Validate invoice type
-        if (invoiceType.equalsIgnoreCase("daily")) {
+        if (invoiceType.equalsIgnoreCase("hourly")) {
             int rentalHours = inputDTO.getRentalHours();
             if(rentalHours > 30) {
                 createIOutputB.presentError(Errors.RentalHoursOutOfRange);
@@ -44,15 +42,13 @@ public class CreateInvoiceUseCase implements CreateInvoiceInputBoundary {
 
         Invoice invoice = convertToEntity(inputDTO);
         invoice.setId(idGeneratorB.generate());
-        Invoice newInvoice = createIDatabaseB.addInvoice(invoice);
+        boolean isInsertSuccess = createIDatabaseB.createInvoice(invoice);
 
-        if(newInvoice == null) {
+        if(!isInsertSuccess) {
             createIOutputB.presentError(Errors.InternalDataAccess);
-            return;
         }
 
-        CreateInvoiceOutputDTO outputDto = convertToOutputDto(newInvoice);
-        createIOutputB.presentResult(outputDto);
+        createIOutputB.presentSuccess(StringConst.SUCCESS_CREATE_INVOICE);
     }
 
     private Invoice convertToEntity(CreateInvoiceInputDTO inputDto) {
@@ -74,29 +70,6 @@ public class CreateInvoiceUseCase implements CreateInvoiceInputBoundary {
         invoice.setCustomerName(inputDto.getCustomerName());
         invoice.setBilledDate(inputDto.getBilledDate());
         return invoice;
-    }
-
-    private CreateInvoiceOutputDTO convertToOutputDto(Invoice invoice) {
-        CreateInvoiceOutputDTO outputDto = new CreateInvoiceOutputDTO();
-        String invoiceType = invoice.getInvoiceType().getName();
-        switch (invoiceType.toLowerCase()) {
-            case "daily":
-                outputDto.setRentalDays(((InvoiceDaily)invoice).getRentalDays());
-                break;
-            case "hourly":
-                outputDto.setRentalHours(((InvoiceHourly)invoice).getRentalHours());
-                break;
-            default:
-                return null;
-        }
-        outputDto.setId(invoice.getId());
-        outputDto.setRoomId(invoice.getRoomId());
-        outputDto.setCustomerName(invoice.getCustomerName());
-        outputDto.setPrice(invoice.getPrice());
-        outputDto.setBilledDate(invoice.getBilledDate());
-        outputDto.setTotal(invoice.getTotal());
-        outputDto.setInvoiceType(invoiceType);
-        return outputDto;
     }
 
     public boolean isWithinTwelveMonths(LocalDate date) {

@@ -10,12 +10,10 @@
         <result property="price" column="price"/>
         <result property="customerName" column="customer_name"/>
         <result property="billedDate" column="billed_date"/>
-        <association 
-            property="invoiceType" 
-            column="invoice_type" 
-            javaType="InvoiceType" 
-            select="${ibatis.dao}.InvoiceTypeDAO.selectAll" 
-        />
+        <association property="invoiceType" column="invoice_type" javaType="InvoiceType">
+            <result property="code" column="invoice_type"/>
+            <result property="name" column="name_type"/>
+        </association>
         <discriminator javaType="String" column="invoice_type">
             <case value="dl" resultMap="invoiceDailyRM"/>
             <case value="hl" resultMap="invoiceHourlyRM"/>
@@ -29,15 +27,6 @@
     <resultMap id="invoiceHourlyRM" type="InvoiceHourly" extends="invoiceRM">
         <result property="rentalHours" column="rental_hours" />
     </resultMap>
-
-    <select 
-        id="selectAllTypes"
-        resultMap="invoiceTypeRM"
-        timeout="60000"
-        resultSetType="FORWARD_ONLY" 
-    >
-        select * from invoice_type
-    </select>
 
     <select 
         id="selectAll"
@@ -60,12 +49,14 @@
         timeout="60000"
         resultSetType="FORWARD_ONLY" 
     >
-        select i.*, d.rental_days, h.rental_hours
+        select i.*, it.name_type, d.rental_days, h.rental_hours
         from invoice i
         left outer join invoice_daily d 
             on i.id = d.invoice_id
         left outer join invoice_hourly h
             on i.id = h.invoice_id
+        join invoice_type it
+            on i.invoice_type = it.code
         where i.id like '%${pattern}%'
             or i.customer_name like '%${pattern}%'
             or i.room_id like '%${pattern}%'
@@ -78,12 +69,14 @@
         timeout="60000"
         resultSetType="FORWARD_ONLY" 
     >
-        select i.*, d.rental_days, h.rental_hours
+        select i.*, it.name_type, d.rental_days, h.rental_hours
         from invoice i
         left outer join invoice_daily d 
         on i.id = d.invoice_id
         left outer join invoice_hourly h
         on i.id = h.invoice_id
+        join invoice_type it
+            on i.invoice_type = it.code
         where i.id = #{id}
     </select>
 

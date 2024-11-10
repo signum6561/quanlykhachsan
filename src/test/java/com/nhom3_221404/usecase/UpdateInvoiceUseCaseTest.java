@@ -19,6 +19,7 @@ import com.nhom3_221404.dto.UpdateInvoiceInputDTO;
 import com.nhom3_221404.entity.Invoice;
 import com.nhom3_221404.entity.InvoiceDaily;
 import com.nhom3_221404.entity.InvoiceHourly;
+import com.nhom3_221404.entity.InvoiceType;
 import com.nhom3_221404.exceptions.DateOutOfRangeException;
 import com.nhom3_221404.ui.presenter.UpdateInvoicePresenter;
 import com.nhom3_221404.usecase.UpdateInvoice.UpdateInvoiceInputBoundary;
@@ -50,6 +51,7 @@ public class UpdateInvoiceUseCaseTest {
         InvoiceHourly originalInvoice = new InvoiceHourly(20);
         originalInvoice.setId(faker.random().hex());
         originalInvoice.setRoomId("B103");
+        originalInvoice.setInvoiceType(new InvoiceType("hl", "Hourly"));
         originalInvoice.setPrice(50.0);
         originalInvoice.setCustomerName("John Doe");
         originalInvoice.setBilledDate(LocalDate.now());
@@ -61,6 +63,7 @@ public class UpdateInvoiceUseCaseTest {
         updateDTO.setId(originalInvoice.getId());
         updateDTO.setRoomId("B103");
         updateDTO.setPrice(60.0);
+        updateDTO.setInvoiceType("Hourly");
         updateDTO.setCustomerName("Jane Doe");
         updateDTO.setBilledDate(LocalDate.now());
         updateDTO.setRentalHours(25);
@@ -77,6 +80,7 @@ public class UpdateInvoiceUseCaseTest {
     void testUpdateDailyInvoice_Success() throws Exception {
         InvoiceDaily originalInvoice = new InvoiceDaily(5);
         originalInvoice.setId(faker.random().hex());
+        originalInvoice.setInvoiceType(new InvoiceType("dl", "Daily"));
         originalInvoice.setRoomId("Room201");
         originalInvoice.setPrice(100.0);
         originalInvoice.setCustomerName("Alice Smith");
@@ -89,6 +93,7 @@ public class UpdateInvoiceUseCaseTest {
         updateDTO.setId(originalInvoice.getId());
         updateDTO.setRoomId("Room202");
         updateDTO.setPrice(120.0);
+        updateDTO.setInvoiceType("Daily");
         updateDTO.setCustomerName("Bob Johnson");
         updateDTO.setBilledDate(LocalDate.now());
         updateDTO.setRentalDays(7);
@@ -104,6 +109,7 @@ public class UpdateInvoiceUseCaseTest {
     @Test
     void testUpdateInvoice_DateOutOfRange() {
         InvoiceDaily originalInvoice = new InvoiceDaily(5);
+        originalInvoice.setInvoiceType(new InvoiceType("dl", "Daily"));
         originalInvoice.setId(faker.random().hex());
         originalInvoice.setRoomId("Room201");
         originalInvoice.setPrice(100.0);

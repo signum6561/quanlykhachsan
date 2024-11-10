@@ -46,5 +46,4 @@ public class InvoiceDaily extends Invoice {
                 + ", customerName=" + customerName
                 + ", billedDate=" + billedDate + "]";
     }
-
 }

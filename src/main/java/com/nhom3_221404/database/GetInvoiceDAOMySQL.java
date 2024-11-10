@@ -12,7 +12,12 @@ public class GetInvoiceDAOMySQL implements GetInvoiceDatabaseBoundary {
     }
 
     @Override
-    public Invoice getInvoice(String getInvoiceInputDTO) {
-        return invoiceRepository.findById(getInvoiceInputDTO);
+    public Invoice getInvoice(String id) {
+        try {
+            return invoiceRepository.findById(id);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return null;
     }
 }

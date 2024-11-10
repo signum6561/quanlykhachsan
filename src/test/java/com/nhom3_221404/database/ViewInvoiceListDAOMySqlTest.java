@@ -10,21 +10,23 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import com.github.javafaker.Faker;
+import com.google.inject.Guice;
+import com.google.inject.Injector;
 import com.nhom3_221404.database.repository.InvoiceRepository;
-import com.nhom3_221404.database.repository.InvoiceRepositoryImpl;
 import com.nhom3_221404.entity.Invoice;
-import com.nhom3_221404.util.IBatisUtil;
+import com.nhom3_221404.module.MyModule;
 import com.nhom3_221404.util.InvoiceFactory;
 
-public class ViewInvoiceDAOMySqlTest {
+public class ViewInvoiceListDAOMySqlTest {
     InvoiceRepository invoiceRepository;
     InvoiceFactory invoiceFactory;
     ViewInvoiceListDAOMySql viewInvoiceListDB;
 
     @BeforeEach
     void setUp() {
+        Injector injector = Guice.createInjector(new MyModule());
+        invoiceRepository = injector.getInstance(InvoiceRepository.class);
         invoiceFactory = new InvoiceFactory(new Faker(new Locale("vi")));
-        invoiceRepository = new InvoiceRepositoryImpl(IBatisUtil.buildSqlSessionFactoryTest());
         viewInvoiceListDB = new ViewInvoiceListDAOMySql(invoiceRepository);
     }
 

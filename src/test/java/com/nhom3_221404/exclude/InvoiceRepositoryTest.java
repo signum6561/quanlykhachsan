@@ -14,11 +14,12 @@ import org.junit.jupiter.api.TestInstance;
 import org.junit.jupiter.api.TestInstance.Lifecycle;
 
 import com.github.javafaker.Faker;
+import com.google.inject.Guice;
+import com.google.inject.Injector;
 import com.nhom3_221404.database.repository.InvoiceRepository;
-import com.nhom3_221404.database.repository.InvoiceRepositoryImpl;
 import com.nhom3_221404.entity.Invoice;
 import com.nhom3_221404.entity.InvoiceDaily;
-import com.nhom3_221404.util.IBatisUtil;
+import com.nhom3_221404.module.MyModule;
 import com.nhom3_221404.util.InvoiceFactory;
 
 @TestInstance(Lifecycle.PER_CLASS)
@@ -28,8 +29,9 @@ public class InvoiceRepositoryTest {
 
     @BeforeAll
     void setUp() throws SQLException {
+        Injector injector = Guice.createInjector(new MyModule());
         invoiceFactory = new InvoiceFactory(new Faker(new Locale("vi")));
-        invoiceRepository = new InvoiceRepositoryImpl(IBatisUtil.buildSqlSessionFactoryTest());
+        invoiceRepository = injector.getInstance(InvoiceRepository.class);
         invoiceRepository.deleteAll();
     }
 

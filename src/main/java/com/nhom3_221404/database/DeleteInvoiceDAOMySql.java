@@ -1,13 +1,17 @@
 package com.nhom3_221404.database;
 
+import com.google.inject.Inject;
 import com.nhom3_221404.database.repository.InvoiceRepository;
 import com.nhom3_221404.usecase.DeleteInvoice.DeleteInvoiceDatabaseBoundary;
 
 public class DeleteInvoiceDAOMySql implements DeleteInvoiceDatabaseBoundary {
     private InvoiceRepository invoiceRepository;
+
+    @Inject
     public DeleteInvoiceDAOMySql(InvoiceRepository invoiceRepository) {
         this.invoiceRepository = invoiceRepository;
     }
+    
     @Override
     public boolean deleteInvoice(String invoiceId) {
         try {

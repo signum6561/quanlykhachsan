@@ -8,7 +8,7 @@ import com.nhom3_221404.usecase.GetInvoice.GetInvoiceOutputBoundary;
 public class GetInvoicePresent implements GetInvoiceOutputBoundary {
     private Result<GetInvoiceOutputDTO> result = new Result<>();
 
-    public GetInvoiceOutputDTO getInvoice()
+    public GetInvoiceOutputDTO getOutputDTO()
             throws InvoiceNotFoundException {
         if (!result.isSuccess()) {
             switch (result.getError()) {

@@ -5,12 +5,15 @@ import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.ResourceBundle;
 
+import com.google.inject.Guice;
+import com.google.inject.Injector;
 import com.nhom3_221404.database.SearchInvoiceDAOMySql;
 import com.nhom3_221404.database.ViewInvoiceListDAOMySql;
 import com.nhom3_221404.database.repository.InvoiceRepository;
 import com.nhom3_221404.database.repository.InvoiceRepositoryImpl;
 import com.nhom3_221404.dto.ViewInvoiceOutputDTO;
 import com.nhom3_221404.exceptions.InternalDataAccessException;
+import com.nhom3_221404.module.MyModule;
 import com.nhom3_221404.ui.model.InvoiceVM;
 import com.nhom3_221404.ui.presenter.SearchInvoicePresenter;
 import com.nhom3_221404.ui.presenter.ViewInvoiceListPresenter;
@@ -77,7 +80,8 @@ public class MainController implements Initializable {
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-        InvoiceRepository invoiceRepository = new InvoiceRepositoryImpl(IBatisUtil.buildSqlSessionFactory());
+        Injector injector = Guice.createInjector(new MyModule());
+        InvoiceRepository invoiceRepository = injector.getInstance(InvoiceRepository.class);
         viewILDAO = new ViewInvoiceListDAOMySql(invoiceRepository);
         viewILPresenter = new ViewInvoiceListPresenter();
         viewILInputB = new ViewInvoiceListUseCase(viewILPresenter, viewILDAO);
