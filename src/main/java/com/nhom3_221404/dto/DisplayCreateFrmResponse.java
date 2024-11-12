@@ -2,13 +2,13 @@ package com.nhom3_221404.dto;
 
 import java.util.List;
 
-public class GetInvoiceTypesResponse {
+public class DisplayCreateFrmResponse {
     private List<GetInvoiceTypesOutputDTO> invoiceTypes;
-    
-    public GetInvoiceTypesResponse() {
+
+    public DisplayCreateFrmResponse() {
     }
 
-    public GetInvoiceTypesResponse(List<GetInvoiceTypesOutputDTO> invoiceTypes) {
+    public DisplayCreateFrmResponse(List<GetInvoiceTypesOutputDTO> invoiceTypes) {
         this.invoiceTypes = invoiceTypes;
     }
 

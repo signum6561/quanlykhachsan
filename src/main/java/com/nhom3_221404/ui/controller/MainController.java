@@ -16,12 +16,12 @@ import com.nhom3_221404.exceptions.InternalDataAccessException;
 import com.nhom3_221404.module.MyModule;
 import com.nhom3_221404.ui.model.InvoiceVM;
 import com.nhom3_221404.ui.presenter.SearchInvoicePresenter;
-import com.nhom3_221404.ui.presenter.ViewInvoiceListPresenter;
+import com.nhom3_221404.ui.presenter.GetInvoiceListPresenter;
 import com.nhom3_221404.ui.util.TableUtil;
+import com.nhom3_221404.usecase.GetInvoiceList.GetInvoiceListInputBoundary;
+import com.nhom3_221404.usecase.GetInvoiceList.GetInvoiceListUseCase;
 import com.nhom3_221404.usecase.SearchInvoice.SearchInvoiceInputBoundary;
 import com.nhom3_221404.usecase.SearchInvoice.SearchInvoiceUseCase;
-import com.nhom3_221404.usecase.ViewInvoiceList.ViewInvoiceListInputBoundary;
-import com.nhom3_221404.usecase.ViewInvoiceList.ViewInvoiceListUseCase;
 import com.nhom3_221404.util.IBatisUtil;
 
 import javafx.application.Platform;
@@ -68,8 +68,8 @@ public class MainController implements Initializable {
     @FXML
     private TableView<InvoiceVM> tb_invoice;
 
-    ViewInvoiceListInputBoundary viewILInputB;
-    ViewInvoiceListPresenter viewILPresenter;
+    GetInvoiceListInputBoundary viewILInputB;
+    GetInvoiceListPresenter viewILPresenter;
     ViewInvoiceListDAOMySql viewILDAO;
 
     SearchInvoiceInputBoundary searchInvoiceInputB;
@@ -83,8 +83,8 @@ public class MainController implements Initializable {
         Injector injector = Guice.createInjector(new MyModule());
         InvoiceRepository invoiceRepository = injector.getInstance(InvoiceRepository.class);
         viewILDAO = new ViewInvoiceListDAOMySql(invoiceRepository);
-        viewILPresenter = new ViewInvoiceListPresenter();
-        viewILInputB = new ViewInvoiceListUseCase(viewILPresenter, viewILDAO);
+        viewILPresenter = new GetInvoiceListPresenter();
+        viewILInputB = new GetInvoiceListUseCase(viewILPresenter, viewILDAO);
         dateTimeFormatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
 
         searchInvoicePresenterB = new SearchInvoicePresenter();

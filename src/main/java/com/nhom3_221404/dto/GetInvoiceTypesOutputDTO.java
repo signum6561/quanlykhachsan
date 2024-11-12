@@ -1,13 +1,13 @@
 package com.nhom3_221404.dto;
 
-public class InvoiceTypesDTO {
+public class GetInvoiceTypesOutputDTO {
     private String code;
     private String name;
 
-    public InvoiceTypesDTO() {
+    public GetInvoiceTypesOutputDTO() {
     }
 
-    public InvoiceTypesDTO(String code, String name) {
+    public GetInvoiceTypesOutputDTO(String code, String name) {
         this.code = code;
         this.name = name;
     }

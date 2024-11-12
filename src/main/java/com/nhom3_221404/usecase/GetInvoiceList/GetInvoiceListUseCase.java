@@ -1,21 +1,21 @@
-package com.nhom3_221404.usecase.ViewInvoiceList;
+package com.nhom3_221404.usecase.GetInvoiceList;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
 import com.nhom3_221404.common.Errors;
-import com.nhom3_221404.dto.ViewInvoiceListResponse;
+import com.nhom3_221404.dto.GetInvoiceListResponse;
 import com.nhom3_221404.dto.ViewInvoiceOutputDTO;
 import com.nhom3_221404.entity.Invoice;
 
-public class ViewInvoiceListUseCase implements ViewInvoiceListInputBoundary {
+public class GetInvoiceListUseCase implements GetInvoiceListInputBoundary {
 
-    private ViewInvoiceListOutputBoundary viewILOutputB;
-    private ViewInvoiceListDatabaseBoundary viewILDatabaseB;
+    private GetInvoiceListOutputBoundary viewILOutputB;
+    private GetInvoiceListDatabaseBoundary viewILDatabaseB;
 
-    public ViewInvoiceListUseCase(ViewInvoiceListOutputBoundary viewILOutputB,
-            ViewInvoiceListDatabaseBoundary viewILDatabaseB) {
+    public GetInvoiceListUseCase(GetInvoiceListOutputBoundary viewILOutputB,
+            GetInvoiceListDatabaseBoundary viewILDatabaseB) {
         this.viewILOutputB = viewILOutputB;
         this.viewILDatabaseB = viewILDatabaseB;
     }
@@ -44,6 +44,6 @@ public class ViewInvoiceListUseCase implements ViewInvoiceListInputBoundary {
             outputDTOList.add(viewInvoiceOutputDTO);
         });
 
-        viewILOutputB.presentResult(new ViewInvoiceListResponse(outputDTOList));
+        viewILOutputB.presentResult(new GetInvoiceListResponse(outputDTOList));
     }
 }

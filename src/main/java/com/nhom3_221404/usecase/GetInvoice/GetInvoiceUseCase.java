@@ -30,6 +30,6 @@ public class GetInvoiceUseCase {
                 (invoice instanceof InvoiceDaily) ? ((InvoiceDaily) invoice).getRentalDays() : null,
                 (invoice instanceof InvoiceHourly) ? ((InvoiceHourly) invoice).getRentalHours() : null);
 
-        getInvoiceOutputBoundary.presentData(getInvoiceOutputDTO);
+        getInvoiceOutputBoundary.present(getInvoiceOutputDTO);
     }
 }

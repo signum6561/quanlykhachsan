@@ -10,9 +10,11 @@ import com.google.inject.Inject;
 import com.nhom3_221404.database.dao.InvoiceDAO;
 import com.nhom3_221404.database.dao.InvoiceDailyDAO;
 import com.nhom3_221404.database.dao.InvoiceHourlyDAO;
+import com.nhom3_221404.database.dao.InvoiceTypeDAO;
 import com.nhom3_221404.entity.Invoice;
 import com.nhom3_221404.entity.InvoiceDaily;
 import com.nhom3_221404.entity.InvoiceHourly;
+import com.nhom3_221404.entity.InvoiceType;
 
 public class InvoiceRepositoryImpl implements InvoiceRepository {
 
@@ -24,6 +26,9 @@ public class InvoiceRepositoryImpl implements InvoiceRepository {
 
     @Inject
     InvoiceDailyDAO invoiceDailyDAO;
+
+    @Inject
+    InvoiceTypeDAO invoiceTypeDAO;
 
     public List<Invoice> findAll() {
         return invoiceDAO.selectAll();
@@ -110,5 +115,10 @@ public class InvoiceRepositoryImpl implements InvoiceRepository {
             return insert((InvoiceHourly) invoice);
         }
         return null;
+    }
+
+    @Transactional
+    public List<InvoiceType> findAllTypes() {
+        return invoiceTypeDAO.selectAll();
     }
 }

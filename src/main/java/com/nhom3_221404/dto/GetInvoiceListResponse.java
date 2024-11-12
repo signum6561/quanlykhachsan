@@ -2,13 +2,13 @@ package com.nhom3_221404.dto;
 
 import java.util.List;
 
-public class ViewInvoiceListResponse {
+public class GetInvoiceListResponse {
     private List<ViewInvoiceOutputDTO> data;
 
-    public ViewInvoiceListResponse() {
+    public GetInvoiceListResponse() {
     }
 
-    public ViewInvoiceListResponse(List<ViewInvoiceOutputDTO> data) {
+    public GetInvoiceListResponse(List<ViewInvoiceOutputDTO> data) {
         this.data = data;
     }
 

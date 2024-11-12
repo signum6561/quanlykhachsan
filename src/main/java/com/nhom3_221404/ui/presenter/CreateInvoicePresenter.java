@@ -24,8 +24,4 @@ public class CreateInvoicePresenter implements CreateInvoiceOutputBoundary {
     public String getMessage() {
         return result.getValue();
     }
-
-    public Errors getError() {
-        return result.getError();
-    }
 }

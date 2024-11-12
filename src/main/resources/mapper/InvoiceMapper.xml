@@ -28,6 +28,11 @@
         <result property="rentalHours" column="rental_hours" />
     </resultMap>
 
+    <resultMap id="invoiceTypeRM" type="InvoiceType">
+        <id property="code" column="code" />
+        <result property="name" column="name_type" />
+    </resultMap>
+
     <select 
         id="selectAll"
         resultMap="invoiceRM"

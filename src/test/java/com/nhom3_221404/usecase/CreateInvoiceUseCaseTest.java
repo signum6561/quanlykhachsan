@@ -1,8 +1,7 @@
 package com.nhom3_221404.usecase;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertFalse;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 import java.time.LocalDate;
@@ -10,19 +9,19 @@ import java.time.LocalDate;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.ArgumentMatchers;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import com.github.javafaker.Faker;
 import com.nhom3_221404.common.Errors;
-import com.nhom3_221404.database.CreateInvoiceDAOMySql;
+import com.nhom3_221404.constant.StringConst;
 import com.nhom3_221404.dto.CreateInvoiceInputDTO;
 import com.nhom3_221404.entity.Invoice;
 import com.nhom3_221404.entity.InvoiceDaily;
 import com.nhom3_221404.entity.InvoiceHourly;
-import com.nhom3_221404.ui.presenter.CreateInvoicePresenter;
+import com.nhom3_221404.usecase.CreateInvoice.CreateInvoiceDatabaseBoundary;
 import com.nhom3_221404.usecase.CreateInvoice.CreateInvoiceInputBoundary;
+import com.nhom3_221404.usecase.CreateInvoice.CreateInvoiceOutputBoundary;
 import com.nhom3_221404.usecase.CreateInvoice.CreateInvoiceUseCase;
 import com.nhom3_221404.util.InvoiceFactory;
 import com.nhom3_221404.util.InvoiceIdGenerator;
@@ -30,16 +29,18 @@ import com.nhom3_221404.util.InvoiceIdGenerator;
 @ExtendWith(MockitoExtension.class)
 public class CreateInvoiceUseCaseTest {
     InvoiceFactory invoiceFactory;
-    CreateInvoicePresenter presenter;
+
+    @Mock
+    CreateInvoiceOutputBoundary presenter;
+
     CreateInvoiceInputBoundary createInvoiceUC;
 
     @Mock
-    CreateInvoiceDAOMySql database;
+    CreateInvoiceDatabaseBoundary database;
 
     @BeforeEach
     void setUp() {
         invoiceFactory = new InvoiceFactory(new Faker());
-        presenter = new CreateInvoicePresenter();
         createInvoiceUC = new CreateInvoiceUseCase(presenter, database, new InvoiceIdGenerator());
     }
 
@@ -70,11 +71,12 @@ public class CreateInvoiceUseCaseTest {
         mockI.setBilledDate(LocalDate.now());
         CreateInvoiceInputDTO request = convertToMockRequest(mockI);
 
-        when(database.createInvoice(ArgumentMatchers.any(Invoice.class)))
+        when(database.createInvoice(any(Invoice.class)))
             .thenReturn(true);
 
         createInvoiceUC.execute(request);
-        assertTrue(presenter.isSuccessCreateInvoice());
+
+        verify(presenter).presentSuccess(StringConst.SUCCESS_CREATE_INVOICE);
     }
 
     @Test
@@ -86,8 +88,8 @@ public class CreateInvoiceUseCaseTest {
         request.setRentalHours(31);
 
         createInvoiceUC.execute(request);
-        assertFalse(presenter.isSuccessCreateInvoice());
-        assertEquals(presenter.getError(), Errors.RentalHoursOutOfRange);
+
+        verify(presenter).presentError(Errors.RentalHoursOutOfRange);
     }
 
     @Test
@@ -97,8 +99,8 @@ public class CreateInvoiceUseCaseTest {
         request.setBilledDate(LocalDate.of(2022, 3, 1));
 
         createInvoiceUC.execute(request);
-        assertFalse(presenter.isSuccessCreateInvoice());
-        assertEquals(presenter.getError(), Errors.DateOutOfRange);         
+        
+        verify(presenter).presentError(Errors.DateOutOfRange);
     }
 
     @Test
@@ -107,11 +109,11 @@ public class CreateInvoiceUseCaseTest {
         mockI.setBilledDate(LocalDate.now());
         CreateInvoiceInputDTO request = convertToMockRequest(mockI);
 
-        when(database.createInvoice(ArgumentMatchers.any(Invoice.class)))
+        when(database.createInvoice(any(Invoice.class)))
             .thenReturn(false);
 
         createInvoiceUC.execute(request);
-        assertFalse(presenter.isSuccessCreateInvoice());
-        assertEquals(presenter.getError(), Errors.InternalDataAccess);   
+
+        verify(presenter).presentError(Errors.InternalDataAccess);
     }
 }

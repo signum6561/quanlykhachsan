@@ -13,20 +13,20 @@ import com.nhom3_221404.entity.Invoice;
 import com.nhom3_221404.entity.InvoiceDaily;
 import com.nhom3_221404.entity.InvoiceType;
 import com.nhom3_221404.exceptions.InvoiceNotFoundException;
-import com.nhom3_221404.ui.presenter.GetInvoicePresent;
+import com.nhom3_221404.ui.presenter.GetInvoicePresenter;
 import com.nhom3_221404.usecase.GetInvoice.GetInvoiceDatabaseBoundary;
 import com.nhom3_221404.usecase.GetInvoice.GetInvoiceUseCase;
 
-class GetInvoiceUseCaseTest {
+public class GetInvoiceUseCaseTest {
 
     private GetInvoiceUseCase getInvoiceUseCase;
     private TestGetInvoiceDatabaseB databaseBoundary;
-    private GetInvoicePresent getInvoicePresent;
+    private GetInvoicePresenter getInvoicePresent;
 
     @BeforeEach
     public void setUp() {
         databaseBoundary = new TestGetInvoiceDatabaseB();
-        getInvoicePresent = new GetInvoicePresent();
+        getInvoicePresent = new GetInvoicePresenter();
         getInvoiceUseCase = new GetInvoiceUseCase(databaseBoundary, getInvoicePresent);
     }
 
@@ -36,7 +36,7 @@ class GetInvoiceUseCaseTest {
         invoiceDaily.setInvoiceType(new InvoiceType("dl", "Daily"));
         databaseBoundary.setInvoice(invoiceDaily);
         getInvoiceUseCase.execute("1");
-        GetInvoiceOutputDTO outputDTO = getInvoicePresent.getOutputDTO();
+        GetInvoiceOutputDTO outputDTO = getInvoicePresent.getInvoice();
         assertEquals("1", outputDTO.getId());
         assertEquals("A101", outputDTO.getRoomId());
         assertEquals(100.0, outputDTO.getPrice());
