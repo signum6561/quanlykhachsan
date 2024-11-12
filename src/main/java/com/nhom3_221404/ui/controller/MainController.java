@@ -102,26 +102,7 @@ public class MainController implements Initializable {
     }
 
     private void fetchInvoiceTable() {
-        try {
-            viewILInputB.execute();
-            List<ViewInvoiceOutputDTO> invoiceData = viewILPresenter.getOutputDTOList();
-            List<InvoiceVM> invoiceVMs = convertDtoToVM(invoiceData);
-            ObservableList<InvoiceVM> invoiceList = FXCollections.observableList(invoiceVMs);
-            tb_invoice.setItems(invoiceList);
-            TableUtil.autoResizeColumns(tb_invoice);
-        } catch (InternalDataAccessException e) {
-            Alert alert = new Alert(AlertType.ERROR);
-            alert.setContentText(e.getMessage());
-            Stage alertStage = (Stage) alert.getDialogPane().getScene().getWindow();
-            alertStage.setAlwaysOnTop(true);
-            alert.setOnCloseRequest(event -> {
-                ButtonType result = alert.getResult();
-                if (result == ButtonType.OK) {
-                    Platform.exit();
-                }
-            });
-            alert.showAndWait();
-        }
+        
     }
 
     private void fetchSearchResult(String value) {
