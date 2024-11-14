@@ -20,14 +20,14 @@ import com.nhom3_221404.util.InvoiceFactory;
 public class CreateInvoiceDAOMySqlTest {
     InvoiceRepository invoiceRepository;
     InvoiceFactory invoiceFactory;
-    CreateInvoiceDAOMySql createInvoiceDB;
+    CreateInvoiceDAOMySQL createInvoiceDB;
 
     @BeforeEach
     void setUp() {
         Injector injector = Guice.createInjector(new MyModule());
         invoiceRepository = injector.getInstance(InvoiceRepository.class);
         invoiceFactory = new InvoiceFactory(new Faker(new Locale("vi")));
-        createInvoiceDB = new CreateInvoiceDAOMySql(invoiceRepository);
+        createInvoiceDB = new CreateInvoiceDAOMySQL(invoiceRepository);
     }
 
     @AfterEach

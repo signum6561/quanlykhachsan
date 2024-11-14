@@ -1,6 +1,5 @@
 package com.nhom3_221404.usecase;
 
-
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
 import org.junit.jupiter.api.BeforeEach;
@@ -28,6 +27,7 @@ public class DeleteInvoiceUseCaseTest {
         MockitoAnnotations.openMocks(this);
         deleteInvoiceUseCase = new DeleteInvoiceUseCase(database, presenter);
     }
+
     @Test
     void execute_SuccessfulDeletion() {
         String invoiceId = "testId001";
@@ -39,6 +39,7 @@ public class DeleteInvoiceUseCaseTest {
         verify(database).deleteInvoice(invoiceId);
         verify(presenter).presentDeleteResult(any(DeleteInvoiceOutputDTO.class));
     }
+
     @Test
     void execute_FailedDeletion() {
         String invoiceId = "testId002";
@@ -46,7 +47,7 @@ public class DeleteInvoiceUseCaseTest {
         when(database.deleteInvoice(invoiceId)).thenReturn(false);
 
         deleteInvoiceUseCase.execute(input);
-        
+
         verify(database).deleteInvoice(invoiceId);
         verify(presenter).presentDeleteResult(any(DeleteInvoiceOutputDTO.class));
     }

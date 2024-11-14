@@ -4,7 +4,7 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.nhom3_221404.database.CreateInvoiceDAOMySql;
+import com.nhom3_221404.database.CreateInvoiceDAOMySQL;
 import com.nhom3_221404.database.repository.InvoiceRepository;
 import com.nhom3_221404.dto.CreateInvoiceInputDTO;
 import com.nhom3_221404.ui.presenter.CreateInvoicePresenter;
@@ -59,7 +59,7 @@ public class AddInvoiceFrmController {
 
     CreateInvoiceInputBoundary createInvoiceInputB;
     CreateInvoicePresenter createInvoicePresenter;
-    CreateInvoiceDAOMySql createInvoiceDB;
+    CreateInvoiceDAOMySQL createInvoiceDB;
 
     private Stage currentStage;
 
