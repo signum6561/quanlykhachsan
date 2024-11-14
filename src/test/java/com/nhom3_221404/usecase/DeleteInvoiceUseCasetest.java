@@ -14,7 +14,7 @@ import com.nhom3_221404.usecase.DeleteInvoice.DeleteInvoiceInputBoundary;
 import com.nhom3_221404.usecase.DeleteInvoice.DeleteInvoiceOutputBoundary;
 import com.nhom3_221404.usecase.DeleteInvoice.DeleteInvoiceUseCase;
 
-public class DeleteInvoiceUseCaseTest {
+public class DeleteInvoiceUseCasetest {
     @Mock
     private DeleteInvoiceDatabaseBoundary database;
 
