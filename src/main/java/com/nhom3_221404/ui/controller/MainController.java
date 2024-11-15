@@ -102,7 +102,7 @@ public class MainController implements Initializable {
     }
 
     private void fetchInvoiceTable() {
-        
+
     }
 
     private void fetchSearchResult(String value) {
@@ -145,7 +145,7 @@ public class MainController implements Initializable {
     @FXML
     void onSearchInput(ActionEvent event) {
         String searchInputValue = searchBar.getText().trim();
-        if(searchInputValue.isEmpty()) {
+        if (searchInputValue.isEmpty()) {
             fetchInvoiceTable();
         } else {
             fetchSearchResult(searchInputValue);

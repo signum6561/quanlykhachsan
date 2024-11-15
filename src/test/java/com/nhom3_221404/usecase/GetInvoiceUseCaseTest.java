@@ -57,6 +57,5 @@ public class GetInvoiceUseCaseTest {
         public Invoice getInvoice(String getInvoice) {
             return invoice;
         }
-
     }
 }
