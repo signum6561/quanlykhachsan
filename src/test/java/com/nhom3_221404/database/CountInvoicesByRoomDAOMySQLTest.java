@@ -18,13 +18,13 @@ import com.nhom3_221404.util.InvoiceFactory;
 public class CountInvoicesByRoomDAOMySQLTest {
     InvoiceRepository invoiceRepository;
     InvoiceFactory invoiceFactory;
-    CountInvoicesByRoomDAOMySQL countInvoicesByRoomDB;
+    CountInvoicesByTypeDAOMySQL countInvoicesByRoomDB;
 
     @BeforeEach
     void setUp() {
         invoiceFactory = new InvoiceFactory(new Faker(new Locale("vi")));
         invoiceRepository = new InvoiceRepositoryImpl(IBatisUtil.buildSqlSessionFactoryTest());
-        countInvoicesByRoomDB = new CountInvoicesByRoomDAOMySQL(invoiceRepository);
+        countInvoicesByRoomDB = new CountInvoicesByTypeDAOMySQL(invoiceRepository);
     }
 
     @AfterEach
@@ -47,13 +47,13 @@ public class CountInvoicesByRoomDAOMySQLTest {
         invoice3.setRoomId("room2");
         invoiceRepository.insert(invoice3);
 
-        int countRoom1 = countInvoicesByRoomDB.countInvoicesByRoom("room1");
+        int countRoom1 = countInvoicesByRoomDB.countInvoicesByType("room1");
         assertEquals(2, countRoom1);
 
-        int countRoom2 = countInvoicesByRoomDB.countInvoicesByRoom("room2");
+        int countRoom2 = countInvoicesByRoomDB.countInvoicesByType("room2");
         assertEquals(1, countRoom2);
 
-        int countRoom3 = countInvoicesByRoomDB.countInvoicesByRoom("room3");
+        int countRoom3 = countInvoicesByRoomDB.countInvoicesByType("room3");
         assertEquals(0, countRoom3);
     }
 }
