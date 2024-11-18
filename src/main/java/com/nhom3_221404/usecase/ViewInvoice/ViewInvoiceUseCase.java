@@ -1,7 +1,5 @@
 package com.nhom3_221404.usecase.ViewInvoice;
 
-import java.util.List;
-
 import com.nhom3_221404.dto.GetInvoiceOutputDTO;
 import com.nhom3_221404.dto.ViewInvoiceReponse;
 import com.nhom3_221404.usecase.GetInvoice.GetInvoiceInputBoundary;
@@ -24,7 +22,7 @@ public class ViewInvoiceUseCase implements ViewInvoiceInputBoundary {
         getInvoiceInputBoundary.execute(invoiceIds);
         GetInvoiceOutputDTO outputDTO = getInvoiceOutputBoundary.getInvoice();
         if (outputDTO != null) {
-            viewInvoiceOutputBoundary.prensent(new ViewInvoiceReponse(List.of(outputDTO)));
+            viewInvoiceOutputBoundary.prensent(new ViewInvoiceReponse(outputDTO));
         }
     }
 }

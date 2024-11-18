@@ -1,22 +1,20 @@
 package com.nhom3_221404.dto;
 
-import java.util.List;
-
 public class ViewInvoiceReponse {
-    private List<GetInvoiceOutputDTO> getInvoiceOutputDTOs;
+    private GetInvoiceOutputDTO getInvoiceOutputDTOs;
 
     public ViewInvoiceReponse() {
     }
 
-    public ViewInvoiceReponse(List<GetInvoiceOutputDTO> getInvoiceOutputDTOs) {
+    public ViewInvoiceReponse(GetInvoiceOutputDTO getInvoiceOutputDTOs) {
         this.getInvoiceOutputDTOs = getInvoiceOutputDTOs;
     }
 
-    public List<GetInvoiceOutputDTO> getGetInvoiceOutputDTOs() {
+    public GetInvoiceOutputDTO getGetInvoiceOutputDTOs() {
         return getInvoiceOutputDTOs;
     }
 
-    public void setGetInvoiceOutputDTOs(List<GetInvoiceOutputDTO> getInvoiceOutputDTOs) {
+    public void setGetInvoiceOutputDTOs(GetInvoiceOutputDTO getInvoiceOutputDTOs) {
         this.getInvoiceOutputDTOs = getInvoiceOutputDTOs;
     }
 

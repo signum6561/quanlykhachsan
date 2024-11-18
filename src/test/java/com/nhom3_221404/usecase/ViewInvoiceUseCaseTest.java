@@ -51,7 +51,7 @@ public class ViewInvoiceUseCaseTest {
         viewInvoiceUseCase.execute(invoiceId);
         ViewInvoiceReponse response = viewInvoiceOutputBoundary.getResponse();
 
-        GetInvoiceOutputDTO responseInvoice = response.getGetInvoiceOutputDTOs().get(0);
+        GetInvoiceOutputDTO responseInvoice = response.getGetInvoiceOutputDTOs();
         assertEquals(invoiceId, responseInvoice.getId());
         assertEquals(roomId, responseInvoice.getRoomId());
         assertEquals(price, responseInvoice.getPrice());
