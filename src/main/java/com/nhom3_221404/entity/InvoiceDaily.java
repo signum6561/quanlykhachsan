@@ -2,6 +2,9 @@ package com.nhom3_221404.entity;
 
 import java.time.LocalDate;
 
+import com.nhom3_221404.common.InvoiceConstantType;
+import com.nhom3_221404.database.repository.InvoiceArchiver;
+
 public class InvoiceDaily extends Invoice {
 
     private Integer rentalDays;
@@ -27,6 +30,21 @@ public class InvoiceDaily extends Invoice {
         return (1.4 + 0.8 * rentalDays) * price;
     }
 
+    @Override
+    public InvoiceConstantType getType() {
+        return InvoiceConstantType.DAILY;
+    }
+
+    @Override
+    public void acceptInsert(InvoiceArchiver archiver) {
+        archiver.insert(this);
+    }
+
+    @Override
+    public void acceptUpdate(InvoiceArchiver archiver) {
+        archiver.update(this);
+    }
+
     // #region getters and setters
     public Integer getRentalDays() {
         return rentalDays;
@@ -46,4 +64,5 @@ public class InvoiceDaily extends Invoice {
                 + ", customerName=" + customerName
                 + ", billedDate=" + billedDate + "]";
     }
+
 }

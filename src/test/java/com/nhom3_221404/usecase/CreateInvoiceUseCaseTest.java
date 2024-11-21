@@ -2,7 +2,6 @@ package com.nhom3_221404.usecase;
 
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
 
 import java.time.LocalDate;
 
@@ -13,18 +12,20 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import com.github.javafaker.Faker;
-import com.nhom3_221404.common.Errors;
 import com.nhom3_221404.constant.StringConst;
 import com.nhom3_221404.dto.CreateInvoiceInputDTO;
 import com.nhom3_221404.entity.Invoice;
 import com.nhom3_221404.entity.InvoiceDaily;
 import com.nhom3_221404.entity.InvoiceHourly;
+import com.nhom3_221404.exceptions.DateOutOfRangeException;
+import com.nhom3_221404.exceptions.RentalHoursOutOfRangeException;
 import com.nhom3_221404.usecase.CreateInvoice.CreateInvoiceDatabaseBoundary;
 import com.nhom3_221404.usecase.CreateInvoice.CreateInvoiceInputBoundary;
 import com.nhom3_221404.usecase.CreateInvoice.CreateInvoiceOutputBoundary;
 import com.nhom3_221404.usecase.CreateInvoice.CreateInvoiceUseCase;
+import com.nhom3_221404.usecase.GenerateId.GenerateIdInputBoundary;
+import com.nhom3_221404.usecase.GenerateId.GenerateIdOutputBoundary;
 import com.nhom3_221404.util.InvoiceFactory;
-import com.nhom3_221404.util.InvoiceIdGenerator;
 
 @ExtendWith(MockitoExtension.class)
 public class CreateInvoiceUseCaseTest {
@@ -38,10 +39,16 @@ public class CreateInvoiceUseCaseTest {
     @Mock
     CreateInvoiceDatabaseBoundary database;
 
+    @Mock
+    GenerateIdInputBoundary generateIdInput;
+
+    @Mock
+    GenerateIdOutputBoundary generateIdOutput;
+
     @BeforeEach
     void setUp() {
         invoiceFactory = new InvoiceFactory(new Faker());
-        createInvoiceUC = new CreateInvoiceUseCase(presenter, database, new InvoiceIdGenerator());
+        createInvoiceUC = new CreateInvoiceUseCase(presenter, database, generateIdInput, generateIdOutput);
     }
 
     private CreateInvoiceInputDTO convertToMockRequest(Invoice i) {
@@ -71,9 +78,6 @@ public class CreateInvoiceUseCaseTest {
         mockI.setBilledDate(LocalDate.now());
         CreateInvoiceInputDTO request = convertToMockRequest(mockI);
 
-        when(database.createInvoice(any(Invoice.class)))
-            .thenReturn(true);
-
         createInvoiceUC.execute(request);
 
         verify(presenter).presentSuccess(StringConst.SUCCESS_CREATE_INVOICE);
@@ -89,7 +93,7 @@ public class CreateInvoiceUseCaseTest {
 
         createInvoiceUC.execute(request);
 
-        verify(presenter).presentError(Errors.RentalHoursOutOfRange);
+        verify(presenter).presentError(any(RentalHoursOutOfRangeException.class));
     }
 
     @Test
@@ -100,20 +104,6 @@ public class CreateInvoiceUseCaseTest {
 
         createInvoiceUC.execute(request);
         
-        verify(presenter).presentError(Errors.DateOutOfRange);
-    }
-
-    @Test
-    void testCreateInvoice_dataAccessError() {
-        Invoice mockI = invoiceFactory.seedRandomInvoice();
-        mockI.setBilledDate(LocalDate.now());
-        CreateInvoiceInputDTO request = convertToMockRequest(mockI);
-
-        when(database.createInvoice(any(Invoice.class)))
-            .thenReturn(false);
-
-        createInvoiceUC.execute(request);
-
-        verify(presenter).presentError(Errors.InternalDataAccess);
+        verify(presenter).presentError(any(DateOutOfRangeException.class));
     }
 }

@@ -7,6 +7,9 @@ public class StringConst {
     public static final String RENTAL_HOURS_OUT_OF_RANGE = "The rental hours of invoice must be less than 30";
     public static final String INVOICE_NOT_FOUND = "The invoice is not found";
     public static final String SUCCESS_CREATE_INVOICE = "The date is out of 12 months from now";
+    public static final String SUCCESS_UPDATE_INVOICE = "Invoice updated successfully";
+    public static final String SUCCESS_DELETE_INVOICE = "The invoice is deleted";
+    public static final String FAILED_DELETE_INVOICE = "Something is wrong, failed to delete invoice";
 
     public static String INVOICE_NOT_FOUND(String id) {
         return PARAMETERIZED_INVOICE_NOT_FOUND.replaceAll("@id", id);

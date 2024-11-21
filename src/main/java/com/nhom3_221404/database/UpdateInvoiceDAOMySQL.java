@@ -1,5 +1,7 @@
 package com.nhom3_221404.database;
 
+import org.mybatis.guice.transactional.Transactional;
+
 import com.google.inject.Inject;
 import com.nhom3_221404.database.repository.InvoiceRepository;
 import com.nhom3_221404.entity.Invoice;
@@ -13,23 +15,13 @@ public class UpdateInvoiceDAOMySQL implements UpdateInvoiceDatabaseBoundary {
         this.invoiceRepository = invoiceRepository;
     }
 
-    @Override
-    public Invoice updateInvoice(Invoice invoice) {
-        try {
-            return invoiceRepository.save(invoice);
-        } catch (Exception e) {
-            e.printStackTrace();
-            return null; 
-        }
+    @Transactional
+    public void updateInvoice(Invoice invoice) {
+        invoiceRepository.save(invoice);
     }
 
-    @Override
+    @Transactional
     public Invoice getInvoiceById(String id) {
-        try {
-            return invoiceRepository.findById(id); 
-        } catch (Exception e) {
-            e.printStackTrace();
-            return null; 
-        }
+        return invoiceRepository.findById(id);
     }
 }

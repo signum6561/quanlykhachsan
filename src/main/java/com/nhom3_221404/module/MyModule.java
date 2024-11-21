@@ -5,7 +5,7 @@ import com.google.inject.AbstractModule;
 public class MyModule extends AbstractModule {
     @Override
     protected void configure() {
-        install(new XMLMySqlModule());
+        install(new MySqlModule());
 
     }
 }

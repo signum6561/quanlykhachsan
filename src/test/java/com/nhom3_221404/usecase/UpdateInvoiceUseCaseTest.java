@@ -1,6 +1,5 @@
 package com.nhom3_221404.usecase;
 
-import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.argThat;
 import static org.mockito.Mockito.*;
 
@@ -14,7 +13,6 @@ import org.mockito.junit.jupiter.MockitoExtension;
 
 import com.github.javafaker.Faker;
 import com.nhom3_221404.dto.UpdateInvoiceInputDTO;
-import com.nhom3_221404.entity.Invoice;
 import com.nhom3_221404.entity.InvoiceDaily;
 import com.nhom3_221404.entity.InvoiceHourly;
 import com.nhom3_221404.entity.InvoiceType;
@@ -57,7 +55,6 @@ public class UpdateInvoiceUseCaseTest {
         originalInvoice.setBilledDate(LocalDate.now());
 
         when(database.getInvoiceById(originalInvoice.getId())).thenReturn(originalInvoice);
-        when(database.updateInvoice(any(Invoice.class))).thenReturn(originalInvoice);
 
         UpdateInvoiceInputDTO updateDTO = new UpdateInvoiceInputDTO();
         updateDTO.setId(originalInvoice.getId());
@@ -88,7 +85,6 @@ public class UpdateInvoiceUseCaseTest {
         originalInvoice.setBilledDate(LocalDate.now());
 
         when(database.getInvoiceById(originalInvoice.getId())).thenReturn(originalInvoice);
-        when(database.updateInvoice(any(Invoice.class))).thenReturn(originalInvoice);
 
         UpdateInvoiceInputDTO updateDTO = new UpdateInvoiceInputDTO();
         updateDTO.setId(originalInvoice.getId());

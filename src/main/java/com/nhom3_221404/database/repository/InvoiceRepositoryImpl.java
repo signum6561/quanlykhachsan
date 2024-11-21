@@ -2,19 +2,13 @@ package com.nhom3_221404.database.repository;
 
 import java.util.List;
 
-import org.apache.ibatis.session.ExecutorType;
-import org.mybatis.guice.transactional.Isolation;
-import org.mybatis.guice.transactional.Transactional;
-
 import com.google.inject.Inject;
 import com.nhom3_221404.database.dao.InvoiceDAO;
-import com.nhom3_221404.database.dao.InvoiceDailyDAO;
-import com.nhom3_221404.database.dao.InvoiceHourlyDAO;
 import com.nhom3_221404.database.dao.InvoiceTypeDAO;
 import com.nhom3_221404.entity.Invoice;
-import com.nhom3_221404.entity.InvoiceDaily;
-import com.nhom3_221404.entity.InvoiceHourly;
 import com.nhom3_221404.entity.InvoiceType;
+import com.nhom3_221404.util.Page;
+import com.nhom3_221404.util.Pageable;
 
 public class InvoiceRepositoryImpl implements InvoiceRepository {
 
@@ -22,102 +16,52 @@ public class InvoiceRepositoryImpl implements InvoiceRepository {
     InvoiceDAO invoiceDAO;
 
     @Inject
-    InvoiceHourlyDAO invoiceHourlyDAO;
-
-    @Inject
-    InvoiceDailyDAO invoiceDailyDAO;
-
-    @Inject
     InvoiceTypeDAO invoiceTypeDAO;
 
-    public List<Invoice> findAll() {
-        return invoiceDAO.selectAll();
+    @Inject
+    InvoiceArchiver invoiceArchiver;
+
+    public Page<Invoice> findAll(Pageable pageable) {
+        List<Invoice> invoices = invoiceDAO.selectAll(pageable);
+        int total = invoiceDAO.countAll();
+        return new Page<>(invoices, total);
     }
 
-    public List<Invoice> findByPattern(String pattern) {
-        return invoiceDAO.selectLikes(pattern);
+    public Page<Invoice> findByPattern(String pattern, Pageable pageable) {
+        List<Invoice> invoices = invoiceDAO.selectLikes(pattern, pageable);
+        int total = invoiceDAO.countLikes(pattern);
+        return new Page<>(invoices, total);
     }
 
     public Invoice findById(String id) {
         return invoiceDAO.selectById(id);
     }
 
-    @Transactional(
-        executorType = ExecutorType.BATCH,
-        isolation = Isolation.READ_UNCOMMITTED
-    )
-    public Invoice insert(InvoiceDaily invoice) {
-        invoiceDAO.insert(invoice);
-        invoiceDailyDAO.insert(invoice);
-        return invoiceDAO.selectById(invoice.getId());
+    public void delete(Invoice invoice) {
+        invoiceDAO.delete(invoice);
     }
 
-    @Transactional(
-        executorType = ExecutorType.BATCH,
-        isolation = Isolation.READ_UNCOMMITTED
-    )
-    public Invoice insert(InvoiceHourly invoice) {
-        invoiceDAO.insert(invoice);
-        invoiceHourlyDAO.insert(invoice);
-        return invoiceDAO.selectById(invoice.getId());
-    }
-
-    @Transactional(
-        executorType = ExecutorType.BATCH,
-        isolation = Isolation.READ_UNCOMMITTED
-    )
-    public Invoice save(InvoiceDaily invoice) {
-        String id = invoice.getId();
-        invoiceDAO.delete(id);
-        invoiceDailyDAO.insert(invoice);
-        return invoiceDAO.selectById(id);
-    }
-
-    @Transactional(
-        executorType = ExecutorType.BATCH,
-        isolation = Isolation.READ_UNCOMMITTED
-    )
-    public Invoice save(InvoiceHourly invoice) {
-        String id = invoice.getId();
-        invoiceDAO.delete(id);
-        invoiceHourlyDAO.insert(invoice);
-        return invoiceDAO.selectById(id);
-    }
-
-    @Transactional
-    public void delete(String id) {
-        invoiceDAO.delete(id);
-    }
-
-    @Transactional
-    public boolean isExists(String id) {
-        return invoiceDAO.selectById(id) != null;
-    }
-
-    @Transactional
     public void deleteAll() {
         invoiceDAO.deleteAll();
     }
 
-    public Invoice insert(Invoice invoice) {
-        if(invoice instanceof InvoiceDaily) {        
-            return insert((InvoiceDaily) invoice);
-        } else if(invoice instanceof InvoiceHourly) {        
-            return insert((InvoiceHourly) invoice);
-        }
-        return null;
+    public void insert(Invoice invoice) {
+        invoiceDAO.insert(invoice);
+        invoice.acceptInsert(invoiceArchiver);
     }
 
-    public Invoice save(Invoice invoice) {
-        if(invoice instanceof InvoiceDaily) {        
-            return insert((InvoiceDaily) invoice);
-        } else if(invoice instanceof InvoiceHourly) {        
-            return insert((InvoiceHourly) invoice);
+    public void save(Invoice invoice) {
+        invoiceDAO.update(invoice);
+        boolean isTypeUpdate = !invoiceDAO.checkExistsByType(invoice);
+        if(isTypeUpdate) {
+            invoiceDAO.deleteTypeRecord(invoice);
+            invoice.acceptInsert(invoiceArchiver);
         }
-        return null;
+        else {
+            invoice.acceptUpdate(invoiceArchiver);
+        }
     }
 
-    @Transactional
     public List<InvoiceType> findAllTypes() {
         return invoiceTypeDAO.selectAll();
     }

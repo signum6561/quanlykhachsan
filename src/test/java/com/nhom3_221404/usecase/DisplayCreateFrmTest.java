@@ -14,7 +14,7 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
-import com.nhom3_221404.dto.GetInvoiceTypesOutputDTO;
+import com.nhom3_221404.dto.InvoiceTypesOutputDTO;
 import com.nhom3_221404.usecase.DisplayCreateFrm.DisplayCreateFrmInputBoundary;
 import com.nhom3_221404.usecase.DisplayCreateFrm.DisplayCreateFrmOutputBoundary;
 import com.nhom3_221404.usecase.DisplayCreateFrm.DisplayCreateFrmUseCase;
@@ -41,9 +41,9 @@ public class DisplayCreateFrmTest {
 
     @Test
     void testDisplayCreateFrm_valid() {
-        List<GetInvoiceTypesOutputDTO> expected = new ArrayList<>();
-        expected.add(new GetInvoiceTypesOutputDTO("dl", "Daily"));
-        expected.add(new GetInvoiceTypesOutputDTO("hl", "Hourly"));
+        List<InvoiceTypesOutputDTO> expected = new ArrayList<>();
+        expected.add(new InvoiceTypesOutputDTO("dl", "Daily"));
+        expected.add(new InvoiceTypesOutputDTO("hl", "Hourly"));
         
         when(getInvoiceTypesOutputB.getInvoiceTypes()).thenReturn(expected);
         

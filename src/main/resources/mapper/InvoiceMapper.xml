@@ -3,7 +3,6 @@
   PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
   "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="${ibatis.dao}.InvoiceDAO">
-
     <resultMap id="invoiceRM" type="Invoice">
         <id property="id" column="id"/>
         <result property="roomId" column="room_id"/>
@@ -33,6 +32,10 @@
         <result property="name" column="name_type" />
     </resultMap>
 
+    <resultMap id="existsResultMap" type="java.lang.Boolean">
+        <result column="res" property="value" />
+    </resultMap>
+
     <select 
         id="selectAll"
         resultMap="invoiceRM"
@@ -45,7 +48,12 @@
             on i.id = d.invoice_id
         left outer join invoice_hourly h
             on i.id = h.invoice_id
-        order by billed_date desc
+        order by created_at desc
+        limit #{page.offset}, #{page.pageSize}
+    </select>
+
+    <select id="countAll" resultType="int">
+        select count(1) from invoice
     </select>
 
     <select 
@@ -56,16 +64,20 @@
     >
         select i.*, it.name_type, d.rental_days, h.rental_hours
         from invoice i
-        left outer join invoice_daily d 
-            on i.id = d.invoice_id
-        left outer join invoice_hourly h
-            on i.id = h.invoice_id
-        join invoice_type it
-            on i.invoice_type = it.code
-        where i.id like '%${pattern}%'
-            or i.customer_name like '%${pattern}%'
-            or i.room_id like '%${pattern}%'
-            or i.billed_date like '%${pattern}%'
+        where i.id like '%${p}%'
+            or i.customer_name like '%${p}%'
+            or i.room_id like '%${p}%'
+            or i.billed_date like '%${p}%'
+        order by created_at desc
+        limit #{page.offset}, #{page.limit}
+    </select>
+
+    <select id="countLikes" resultType="int">
+        select count(1) from invoice
+        where id like '%${p}%'
+            or customer_name like '%${p}%'
+            or room_id like '%${p}%'
+            or billed_date like '%${p}%'
     </select>
 
     <select 
@@ -87,16 +99,17 @@
 
     <insert id="insert" parameterType="Invoice"> 
         insert into invoice(id, invoice_type, room_id, price, customer_name, billed_date)
-        values(#{id}, #{invoiceType.code}, #{roomId}, #{price}, #{customerName}, #{billedDate});
+        values(#{id}, #{invoiceType.code}, #{roomId}, #{price}, #{customerName}, #{billedDate})
     </insert>
 
     <update id="update" parameterType="Invoice">
         update Invoice
         set
-            room_id = #{room_id}, 
+            room_id = #{roomId}, 
             price = #{price}, 
-            customer_name = #{customer_name}, 
-            billed_date = #{billed_date}
+            customer_name = #{customerName}, 
+            billed_date = #{billedDate}
+            invoice_type = #{invoiceType.code}
         where id = #{id}
     </update>
 
@@ -104,7 +117,17 @@
         delete from invoice where id = #{id}
     </delete>
 
+    <delete id="deleteTypeRecord">
+        delete from invoice_#{invoiceType.code} where id = #{id}
+    </delete>
+
     <delete id="deleteAll">
         delete from invoice
     </delete>
+
+    <select id="checkExistsByType" resultMap="existsResultMap">
+        select count(1) > 0 as res
+        from invoice
+        where id = #{id} and invoice_type = #{invoiceType.code}
+    </select>
 </mapper>

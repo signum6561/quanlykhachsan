@@ -2,6 +2,9 @@ package com.nhom3_221404.entity;
 
 import java.time.LocalDate;
 
+import com.nhom3_221404.common.InvoiceConstantType;
+import com.nhom3_221404.database.repository.InvoiceArchiver;
+
 public abstract class Invoice {
 
     protected String id;
@@ -27,11 +30,13 @@ public abstract class Invoice {
         this.billedDate = billedDate;
     }
 
-    public String getInvoiceTypeCode() {
-        return this.invoiceType.getCode();
-    }
-
     public abstract Double getTotal();
+
+    public abstract InvoiceConstantType getType();
+
+    public abstract void acceptInsert(InvoiceArchiver archiver);
+
+    public abstract void acceptUpdate(InvoiceArchiver archiver);
 
     // #region getters and setters
     public String getId() {

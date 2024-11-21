@@ -13,7 +13,6 @@ public class Pair<T, K> {
         return this.key;
     }
 
-
     public K getValue() {
         return this.value;
     }

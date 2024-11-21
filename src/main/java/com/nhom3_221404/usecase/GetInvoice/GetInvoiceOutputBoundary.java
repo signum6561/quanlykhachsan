@@ -1,9 +1,9 @@
 package com.nhom3_221404.usecase.GetInvoice;
 
-import com.nhom3_221404.dto.GetInvoiceOutputDTO;
+import com.nhom3_221404.dto.InvoiceOutputDTO;
 
 public interface GetInvoiceOutputBoundary {
-    void present(GetInvoiceOutputDTO getInvoiceOutputDTO);
+    void present(InvoiceOutputDTO getInvoiceOutputDTO);
 
-    GetInvoiceOutputDTO getInvoice();
+    InvoiceOutputDTO getInvoice();
 }

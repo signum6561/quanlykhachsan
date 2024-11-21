@@ -7,6 +7,7 @@ import java.time.ZoneId;
 import com.github.javafaker.Faker;
 import com.github.javafaker.Options;
 import com.github.javafaker.service.RandomService;
+import com.nhom3_221404.common.InvoiceConstantType;
 import com.nhom3_221404.entity.Invoice;
 import com.nhom3_221404.entity.InvoiceDaily;
 import com.nhom3_221404.entity.InvoiceHourly;
@@ -17,11 +18,6 @@ public class InvoiceFactory {
     RandomService randomService;
     Options options;
     InvoiceIdGenerator idGenerator;
-
-    private enum Type {
-        DAILY,
-        HOURLY
-    }
 
     public InvoiceFactory(Faker faker) {
         this.faker = faker;
@@ -47,7 +43,7 @@ public class InvoiceFactory {
     }
 
     public Invoice seedRandomInvoice() {
-        Type randomType = options.nextElement(Type.values());
+        InvoiceConstantType randomType = options.nextElement(InvoiceConstantType.values());
         Invoice invoice = null;
         switch (randomType) {
             case DAILY:

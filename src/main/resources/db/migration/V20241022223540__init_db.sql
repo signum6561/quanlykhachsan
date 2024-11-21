@@ -12,19 +12,24 @@ CREATE TABLE invoice (
     updated_at DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
 );
 
+CREATE TABLE users(
+    username VARCHAR(255) PRIMARY KEY,
+    password VARCHAR(255) NOT NULL,
+    created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+    updated_at DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+);
+
 CREATE TABLE invoice_type (
     code VARCHAR(10) PRIMARY KEY,
     name_type VARCHAR(255) NOT NULL
 );
 
-CREATE TABLE invoice_hourly (
+CREATE TABLE invoice_hl (
     invoice_id VARCHAR(255) PRIMARY KEY,
     rental_hours BIGINT NOT NULL,
-    FOREIGN KEY (invoice_id) REFERENCES invoice(id)
 );
 
-CREATE TABLE invoice_daily (
+CREATE TABLE invoice_dl (
     invoice_id VARCHAR(255) PRIMARY KEY,
     rental_days BIGINT NOT NULL,
-    FOREIGN KEY (invoice_id) REFERENCES invoice(id)
 );

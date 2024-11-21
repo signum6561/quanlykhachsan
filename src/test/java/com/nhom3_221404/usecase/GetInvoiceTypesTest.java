@@ -14,7 +14,6 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
-import com.nhom3_221404.common.Errors;
 import com.nhom3_221404.entity.InvoiceType;
 import com.nhom3_221404.usecase.GetInvoiceTypes.GetInvoiceTypesDatabaseBoundary;
 import com.nhom3_221404.usecase.GetInvoiceTypes.GetInvoiceTypesInputBoundary;
@@ -46,17 +45,8 @@ public class GetInvoiceTypesTest {
         
         getInvoiceTypesUC.execute();
 
-        verify(presenter).presentResult(assertArg(response -> {
+        verify(presenter).present(assertArg(response -> {
             assertEquals(response.getInvoiceTypes().size(), 2);
         }));
-    }
-
-    @Test
-    void testGetInvoiceTypes_dataAccessError() {
-        when(database.getInvoiceTypes()).thenReturn(null);
-
-        getInvoiceTypesUC.execute();
-
-        verify(presenter).presentError(Errors.InternalDataAccess);
     }
 }

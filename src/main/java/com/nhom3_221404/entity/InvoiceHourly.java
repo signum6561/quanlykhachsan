@@ -2,6 +2,9 @@ package com.nhom3_221404.entity;
 
 import java.time.LocalDate;
 
+import com.nhom3_221404.common.InvoiceConstantType;
+import com.nhom3_221404.database.repository.InvoiceArchiver;
+
 public class InvoiceHourly extends Invoice {
 
     private Integer rentalHours;
@@ -25,6 +28,21 @@ public class InvoiceHourly extends Invoice {
             return 24 * price;
         }
         return rentalHours * price;
+    }
+
+    @Override
+    public InvoiceConstantType getType() {
+        return InvoiceConstantType.HOURLY;
+    }
+
+    @Override
+    public void acceptInsert(InvoiceArchiver archiver) {
+        archiver.insert(this);
+    }
+
+    @Override
+    public void acceptUpdate(InvoiceArchiver archiver) {
+        archiver.update(this);
     }
 
     // #region getters and setters

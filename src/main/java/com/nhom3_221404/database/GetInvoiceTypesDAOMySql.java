@@ -2,6 +2,8 @@ package com.nhom3_221404.database;
 
 import java.util.List;
 
+import org.mybatis.guice.transactional.Transactional;
+
 import com.google.inject.Inject;
 import com.nhom3_221404.database.repository.InvoiceRepository;
 import com.nhom3_221404.entity.InvoiceType;
@@ -16,13 +18,8 @@ public class GetInvoiceTypesDAOMySql implements GetInvoiceTypesDatabaseBoundary 
         this.invoiceRepository = invoiceRepository;
     }
 
-    @Override
+    @Transactional
     public List<InvoiceType> getInvoiceTypes() {
-        try {
-            return invoiceRepository.findAllTypes();
-        } catch(Exception e) {
-            e.printStackTrace();
-        }
-        return null;
+        return invoiceRepository.findAllTypes();
     }
 }

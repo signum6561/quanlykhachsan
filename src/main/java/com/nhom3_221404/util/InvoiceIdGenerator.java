@@ -1,9 +1,8 @@
 package com.nhom3_221404.util;
 
-import com.nhom3_221404.usecase.CreateInvoice.IdGeneratorBoundary;
 import java.util.Random;
 
-public class InvoiceIdGenerator implements IdGeneratorBoundary {
+public class InvoiceIdGenerator {
     final static String ALPHABET = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
     final static int DEFAULT_LENGTH = 6;
     final static String PREFIX = "IV";
@@ -19,7 +18,6 @@ public class InvoiceIdGenerator implements IdGeneratorBoundary {
         return sb.toString();
     }
 
-    @Override
     public String generate() {
         String randomString1 = generateFromPattern(ALPHABET);
         String randomString2 = generateFromPattern(ALPHABET);

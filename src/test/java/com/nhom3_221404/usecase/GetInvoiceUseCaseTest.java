@@ -8,7 +8,7 @@ import java.time.LocalDate;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import com.nhom3_221404.dto.GetInvoiceOutputDTO;
+import com.nhom3_221404.dto.InvoiceOutputDTO;
 import com.nhom3_221404.entity.Invoice;
 import com.nhom3_221404.entity.InvoiceDaily;
 import com.nhom3_221404.entity.InvoiceType;
@@ -36,7 +36,7 @@ public class GetInvoiceUseCaseTest {
         invoiceDaily.setInvoiceType(new InvoiceType("dl", "Daily"));
         databaseBoundary.setInvoice(invoiceDaily);
         getInvoiceUseCase.execute("1");
-        GetInvoiceOutputDTO outputDTO = getInvoicePresent.getInvoice();
+        InvoiceOutputDTO outputDTO = getInvoicePresent.getInvoice();
         assertEquals("1", outputDTO.getId());
         assertEquals("A101", outputDTO.getRoomId());
         assertEquals(100.0, outputDTO.getPrice());

@@ -2,24 +2,31 @@ package com.nhom3_221404.usecase.CreateInvoice;
 
 import java.time.LocalDate;
 
-import com.nhom3_221404.common.Errors;
 import com.nhom3_221404.constant.StringConst;
 import com.nhom3_221404.dto.CreateInvoiceInputDTO;
 import com.nhom3_221404.entity.Invoice;
 import com.nhom3_221404.entity.InvoiceDaily;
 import com.nhom3_221404.entity.InvoiceHourly;
-import com.nhom3_221404.entity.InvoiceType;
+import com.nhom3_221404.exceptions.DateOutOfRangeException;
+import com.nhom3_221404.exceptions.RentalHoursOutOfRangeException;
+import com.nhom3_221404.usecase.GenerateId.GenerateIdInputBoundary;
+import com.nhom3_221404.usecase.GenerateId.GenerateIdOutputBoundary;
 
 public class CreateInvoiceUseCase implements CreateInvoiceInputBoundary {
-    private CreateInvoiceOutputBoundary createIOutputB;
-    private CreateInvoiceDatabaseBoundary createIDatabaseB;
-    private IdGeneratorBoundary idGeneratorB;
+    private final CreateInvoiceOutputBoundary createIOutputB;
+    private final CreateInvoiceDatabaseBoundary createIDatabaseB;
+    private final GenerateIdInputBoundary generateIdInputB;
+    private final GenerateIdOutputBoundary generateIdOutputB;
+
+    private static final String PREFIX = "IV";
 
     public CreateInvoiceUseCase(CreateInvoiceOutputBoundary createIOutputB,
-            CreateInvoiceDatabaseBoundary createIDatabaseB, IdGeneratorBoundary idGeneratorB) {
-        this.createIOutputB = createIOutputB;
-        this.createIDatabaseB = createIDatabaseB;
-        this.idGeneratorB = idGeneratorB;
+        CreateInvoiceDatabaseBoundary createIDatabaseB, GenerateIdInputBoundary generateIdInputB,
+        GenerateIdOutputBoundary generateIdOutputB) {   
+            this.createIOutputB = createIOutputB;
+            this.createIDatabaseB = createIDatabaseB;
+            this.generateIdInputB = generateIdInputB;
+            this.generateIdOutputB = generateIdOutputB;
     }
 
     @Override
@@ -27,40 +34,38 @@ public class CreateInvoiceUseCase implements CreateInvoiceInputBoundary {
         String invoiceType = inputDTO.getInvoiceType();
         LocalDate billedDate = inputDTO.getBilledDate();
 
-        if(!isWithinTwelveMonths(billedDate)) {
-            createIOutputB.presentError(Errors.DateOutOfRange);
+        if (!isWithinTwelveMonths(billedDate)) {
+            createIOutputB.presentError(new DateOutOfRangeException());
             return;
         }
 
         if (invoiceType.equalsIgnoreCase("hourly")) {
             int rentalHours = inputDTO.getRentalHours();
-            if(rentalHours > 30) {
-                createIOutputB.presentError(Errors.RentalHoursOutOfRange);
+            if (rentalHours > 30) {
+                createIOutputB.presentError(new RentalHoursOutOfRangeException());
                 return;
             }
         }
 
+        generateIdInputB.execute(PREFIX);
+        String generatedId = generateIdOutputB.getGeneratedId();
         Invoice invoice = convertToEntity(inputDTO);
-        invoice.setId(idGeneratorB.generate());
-        boolean isInsertSuccess = createIDatabaseB.createInvoice(invoice);
-
-        if(!isInsertSuccess) {
-            createIOutputB.presentError(Errors.InternalDataAccess);
-        }
+        invoice.setId(generatedId);
+        
+        createIDatabaseB.createInvoice(invoice);
 
         createIOutputB.presentSuccess(StringConst.SUCCESS_CREATE_INVOICE);
     }
 
     private Invoice convertToEntity(CreateInvoiceInputDTO inputDto) {
-        Invoice invoice = null;
-        switch (inputDto.getInvoiceType().toLowerCase()) {
+        String invoiceType = inputDto.getInvoiceType();
+        Invoice invoice;
+        switch (invoiceType.toLowerCase()) {
             case "daily":
                 invoice = new InvoiceDaily(inputDto.getRentalDays());
-                invoice.setInvoiceType(new InvoiceType("dl"));
                 break;
             case "hourly":
                 invoice = new InvoiceHourly(inputDto.getRentalHours());
-                invoice.setInvoiceType(new InvoiceType("hl"));
                 break;
             default:
                 return null;

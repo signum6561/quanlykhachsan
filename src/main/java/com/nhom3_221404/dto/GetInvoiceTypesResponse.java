@@ -3,20 +3,20 @@ package com.nhom3_221404.dto;
 import java.util.List;
 
 public class GetInvoiceTypesResponse {
-    private List<GetInvoiceTypesOutputDTO> invoiceTypes;
+    private List<InvoiceTypesOutputDTO> invoiceTypes;
     
     public GetInvoiceTypesResponse() {
     }
 
-    public GetInvoiceTypesResponse(List<GetInvoiceTypesOutputDTO> invoiceTypes) {
+    public GetInvoiceTypesResponse(List<InvoiceTypesOutputDTO> invoiceTypes) {
         this.invoiceTypes = invoiceTypes;
     }
 
-    public List<GetInvoiceTypesOutputDTO> getInvoiceTypes() {
+    public List<InvoiceTypesOutputDTO> getInvoiceTypes() {
         return invoiceTypes;
     }
 
-    public void setInvoiceTypes(List<GetInvoiceTypesOutputDTO> invoiceTypes) {
+    public void setInvoiceTypes(List<InvoiceTypesOutputDTO> invoiceTypes) {
         this.invoiceTypes = invoiceTypes;
     }
 }

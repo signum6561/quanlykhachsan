@@ -1,5 +1,7 @@
 package com.nhom3_221404.database;
 
+import org.mybatis.guice.transactional.Transactional;
+
 import com.google.inject.Inject;
 import com.nhom3_221404.database.repository.InvoiceRepository;
 import com.nhom3_221404.entity.Invoice;
@@ -13,13 +15,8 @@ public class CreateInvoiceDAOMySql implements CreateInvoiceDatabaseBoundary {
         this.invoiceRepository = invoiceRepository;
     }
 
-    public boolean createInvoice(Invoice invoice) {
-        try {
-            invoiceRepository.insert(invoice);
-            return true;
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        return false;
+    @Transactional
+    public void createInvoice(Invoice invoice) {
+        invoiceRepository.insert(invoice);
     } 
 }

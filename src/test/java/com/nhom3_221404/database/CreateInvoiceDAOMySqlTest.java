@@ -1,7 +1,6 @@
 package com.nhom3_221404.database;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.util.Locale;
 
@@ -38,9 +37,8 @@ public class CreateInvoiceDAOMySqlTest {
     @Test
     void test_createInvoice() {
         Invoice invoice = invoiceFactory.seedRandomInvoice();
-        boolean isInsertSuccess = createInvoiceDB.createInvoice(invoice);
+        createInvoiceDB.createInvoice(invoice);
         Invoice inserted = invoiceRepository.findById(invoice.getId());
-        assertTrue(isInsertSuccess);
         assertEquals(invoice.getInvoiceType().getCode(), inserted.getInvoiceType().getCode());
     }
 }

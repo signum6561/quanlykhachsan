@@ -1,13 +1,13 @@
 package com.nhom3_221404.usecase.GetInvoice;
 
-import com.nhom3_221404.dto.GetInvoiceOutputDTO;
+import com.nhom3_221404.dto.InvoiceOutputDTO;
 import com.nhom3_221404.entity.Invoice;
 import com.nhom3_221404.entity.InvoiceDaily;
 import com.nhom3_221404.entity.InvoiceHourly;
 
-public class GetInvoiceUseCase {
-    private GetInvoiceDatabaseBoundary getInvoiceDatabaseBoundary;
-    private GetInvoiceOutputBoundary getInvoiceOutputBoundary;
+public class GetInvoiceUseCase implements GetInvoiceInputBoundary {
+    private final GetInvoiceDatabaseBoundary getInvoiceDatabaseBoundary;
+    private final GetInvoiceOutputBoundary getInvoiceOutputBoundary;
 
     public GetInvoiceUseCase(GetInvoiceDatabaseBoundary getInvoiceDatabaseBoundary,
             GetInvoiceOutputBoundary getInvoiceOutputBoundary) {
@@ -16,19 +16,27 @@ public class GetInvoiceUseCase {
     }
 
     public void execute(String invoiceId) {
-
         Invoice invoice = getInvoiceDatabaseBoundary.getInvoice(invoiceId);
 
-        GetInvoiceOutputDTO getInvoiceOutputDTO = new GetInvoiceOutputDTO(
-                invoice.getId(),
-                invoice.getInvoiceType().getName(),
-                invoice.getRoomId(),
-                invoice.getPrice(),
-                invoice.getCustomerName(),
-                invoice.getBilledDate(),
-                invoice.getTotal(),
-                (invoice instanceof InvoiceDaily) ? ((InvoiceDaily) invoice).getRentalDays() : null,
-                (invoice instanceof InvoiceHourly) ? ((InvoiceHourly) invoice).getRentalHours() : null);
+        InvoiceOutputDTO getInvoiceOutputDTO = new InvoiceOutputDTO();
+        getInvoiceOutputDTO.setId(invoice.getId());
+        getInvoiceOutputDTO.setCustomerName(invoice.getCustomerName());
+        getInvoiceOutputDTO.setBilledDate(invoice.getBilledDate());
+        getInvoiceOutputDTO.setInvoiceType(invoice.getInvoiceType().getName());
+        getInvoiceOutputDTO.setRoomId(invoice.getRoomId());
+        getInvoiceOutputDTO.setPrice(invoice.getPrice());
+        getInvoiceOutputDTO.setTotal(invoice.getTotal());
+        
+        switch (invoice.getType()) {
+            case DAILY:
+                InvoiceDaily invoiceDaily = (InvoiceDaily) invoice;
+                getInvoiceOutputDTO.setRentalDays(invoiceDaily.getRentalDays());
+                break;
+            case HOURLY:
+                InvoiceHourly invoiceHourly = (InvoiceHourly) invoice;
+                getInvoiceOutputDTO.setRentalDays(invoiceHourly.getRentalHours());
+                break;
+        }
 
         getInvoiceOutputBoundary.present(getInvoiceOutputDTO);
     }

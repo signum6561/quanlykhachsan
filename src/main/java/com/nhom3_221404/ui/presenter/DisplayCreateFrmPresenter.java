@@ -3,11 +3,11 @@ package com.nhom3_221404.ui.presenter;
 import java.util.List;
 
 import com.nhom3_221404.dto.DisplayCreateFrmResponse;
-import com.nhom3_221404.dto.GetInvoiceTypesOutputDTO;
+import com.nhom3_221404.dto.InvoiceTypeOutputDTO;
 import com.nhom3_221404.usecase.DisplayCreateFrm.DisplayCreateFrmOutputBoundary;
 
 public class DisplayCreateFrmPresenter implements DisplayCreateFrmOutputBoundary {
-    private List<GetInvoiceTypesOutputDTO> invoiceTypes;
+    private List<InvoiceTypeOutputDTO> invoiceTypes;
 
     @Override
     public void present(DisplayCreateFrmResponse response) {

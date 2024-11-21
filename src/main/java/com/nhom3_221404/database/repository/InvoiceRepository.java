@@ -4,23 +4,23 @@ import java.util.List;
 
 import com.nhom3_221404.entity.Invoice;
 import com.nhom3_221404.entity.InvoiceType;
+import com.nhom3_221404.util.Page;
+import com.nhom3_221404.util.Pageable;
 
 public interface InvoiceRepository {
-    List<Invoice> findAll();
+    Page<Invoice> findAll(Pageable pageable);
 
-    List<Invoice> findByPattern(String pattern);
+    Page<Invoice> findByPattern(String pattern, Pageable pageable);
 
     List<InvoiceType> findAllTypes();
 
     Invoice findById(String id);
 
-    Invoice insert(Invoice invoice);
+    void insert(Invoice invoice);
 
-    Invoice save(Invoice invoice);
+    void save(Invoice invoice);
 
-    boolean isExists(String id);
-
-    void delete(String id);
+    void delete(Invoice invoice);
 
     void deleteAll();
 }

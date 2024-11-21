@@ -4,9 +4,8 @@ package com.nhom3_221404.usecase.GetInvoiceTypes;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.nhom3_221404.common.Errors;
+import com.nhom3_221404.dto.InvoiceTypeOutputDTO;
 import com.nhom3_221404.dto.GetInvoiceTypesResponse;
-import com.nhom3_221404.dto.GetInvoiceTypesOutputDTO;
 import com.nhom3_221404.entity.InvoiceType;
 
 public class GetInvoiceTypesUseCase implements GetInvoiceTypesInputBoundary {
@@ -22,19 +21,16 @@ public class GetInvoiceTypesUseCase implements GetInvoiceTypesInputBoundary {
     @Override
     public void execute() {
         List<InvoiceType> invoiceTypes = getInvoiceTypesDatabaseB.getInvoiceTypes();
-
-        List<GetInvoiceTypesOutputDTO> outputDTOs = new ArrayList<>();
-
         if(invoiceTypes == null) {
-            getInvoiceTypesOutputB.presentError(Errors.InternalDataAccess);
             return;
         }
-
+        
+        List<InvoiceTypeOutputDTO> outputDTOs = new ArrayList<>();
         invoiceTypes.forEach(invoiceType -> {
-            GetInvoiceTypesOutputDTO invoiceTypesDTO = new GetInvoiceTypesOutputDTO(invoiceType.getCode(), invoiceType.getName());
+            InvoiceTypeOutputDTO invoiceTypesDTO = new InvoiceTypeOutputDTO(invoiceType.getCode(), invoiceType.getName());
             outputDTOs.add(invoiceTypesDTO);
         });
 
-        getInvoiceTypesOutputB.presentResult(new GetInvoiceTypesResponse(outputDTOs));
+        getInvoiceTypesOutputB.present(new GetInvoiceTypesResponse(outputDTOs));
     }
 }
