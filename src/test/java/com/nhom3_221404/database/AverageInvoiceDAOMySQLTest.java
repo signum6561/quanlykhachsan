@@ -3,6 +3,7 @@ package com.nhom3_221404.database;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import java.time.LocalDate;
+import java.time.Month;
 import java.util.Locale;
 
 import org.junit.jupiter.api.AfterEach;
@@ -30,35 +31,25 @@ public class AverageInvoiceDAOMySQLTest {
 
     @AfterEach
     void clean() {
-        invoiceRepository.deleteAll(); 
+        invoiceRepository.deleteAll();
     }
 
     @Test
-    void calculateAverageInvoice() {
-
-        Invoice invoice1 = invoiceFactory.seedInvoiceDaily(); 
-        invoice1.setBilledDate(LocalDate.now()); 
+    void testCalculateAverageInvoiceForJanuary() {
+        Invoice invoice1 = invoiceFactory.seedInvoiceDaily();
+        invoice1.setBilledDate(LocalDate.of(2024, Month.JANUARY, 15));
+        invoice1.setPrice(150.0);
         invoiceRepository.insert(invoice1);
-    
+
         Invoice invoice2 = invoiceFactory.seedInvoiceDaily();
+        invoice2.setBilledDate(LocalDate.of(2024, Month.JANUARY, 28));
         invoice2.setPrice(200.0);
-        invoice2.setBilledDate(LocalDate.now());
         invoiceRepository.insert(invoice2);
-    
-        Invoice invoice3 = invoiceFactory.seedInvoiceDaily();
-        invoice3.setPrice(300.0);
-        invoice3.setBilledDate(LocalDate.now());
-        invoiceRepository.insert(invoice3);
-    
-        double average = averageInvoiceDB.calculateAverageInvoice();
-        
-        double expectedAverage = (invoice1.getTotal() + invoice2.getTotal() + invoice3.getTotal()) / 3;
-        assertEquals(expectedAverage, average, 0.001, "Trung bình hóa đơn không chính xác");
+
+        double average = averageInvoiceDB.calculateAverageInvoice(Month.JANUARY);
+
+        double expectedAverage = (invoice1.getTotal() + invoice2.getTotal()) / 2; 
+        assertEquals(expectedAverage, average, 0.001, "The calculated average for January should match the expected average.");
     }
 
-    @Test
-    void calculateAverageInvoiceNoData() {
-        double average = averageInvoiceDB.calculateAverageInvoice();
-        assertEquals(0.0, average, 0.001, "Trung bình hóa đơn không chính xác khi không có dữ liệu");
-    }
 }

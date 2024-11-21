@@ -1,5 +1,6 @@
 package com.nhom3_221404.usecase.AverageInvoice;
 
+import com.nhom3_221404.common.Errors;
 import com.nhom3_221404.database.AverageInvoiceDAOMySQL;
 import com.nhom3_221404.dto.AverageInvoiceInputDTO;
 import com.nhom3_221404.dto.AverageInvoiceOutputDTO;
@@ -15,8 +16,14 @@ public class AverageInvoiceUseCase implements AverageInvoiceInputBoundary {
 
     @Override
     public void execute(AverageInvoiceInputDTO inputDTO) {
-        double averageAmount = averageInvoiceDB.calculateAverageInvoice();
-        AverageInvoiceOutputDTO outputDTO = new AverageInvoiceOutputDTO(averageAmount);
-        outputBoundary.showResult(outputDTO); 
+       
+        double averageAmount = averageInvoiceDB.calculateAverageInvoice(inputDTO.getMonth());
+
+        if (averageAmount <= 0) { 
+            outputBoundary.presentError(Errors.InvoiceNotFound);
+        } else {
+            AverageInvoiceOutputDTO outputDTO = new AverageInvoiceOutputDTO(averageAmount);
+            outputBoundary.presentResult(outputDTO);
+        }
     }
 }
