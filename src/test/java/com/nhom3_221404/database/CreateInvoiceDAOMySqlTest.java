@@ -4,7 +4,6 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import java.util.Locale;
 
-import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -29,16 +28,11 @@ public class CreateInvoiceDAOMySqlTest {
         createInvoiceDB = new CreateInvoiceDAOMySql(invoiceRepository);
     }
 
-    @AfterEach
-    void clean() {
-        invoiceRepository.deleteAll();
-    }
-
     @Test
     void test_createInvoice() {
         Invoice invoice = invoiceFactory.seedRandomInvoice();
         createInvoiceDB.createInvoice(invoice);
         Invoice inserted = invoiceRepository.findById(invoice.getId());
-        assertEquals(invoice.getInvoiceType().getCode(), inserted.getInvoiceType().getCode());
+        assertEquals(inserted, invoice);
     }
 }

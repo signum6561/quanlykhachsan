@@ -45,6 +45,31 @@ public class InvoiceHourly extends Invoice {
         archiver.update(this);
     }
 
+    @Override
+    public int hashCode() {
+        final int prime = 31;
+        int result = super.hashCode();
+        result = prime * result + ((rentalHours == null) ? 0 : rentalHours.hashCode());
+        return result;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj)
+            return true;
+        if (!super.equals(obj))
+            return false;
+        if (getClass() != obj.getClass())
+            return false;
+        InvoiceHourly other = (InvoiceHourly) obj;
+        if (rentalHours == null) {
+            if (other.rentalHours != null)
+                return false;
+        } else if (!rentalHours.equals(other.rentalHours))
+            return false;
+        return true;
+    }
+
     // #region getters and setters
     public Integer getRentalHours() {
         return rentalHours;

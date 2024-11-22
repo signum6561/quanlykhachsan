@@ -51,8 +51,8 @@ public class InvoiceRepositoryImpl implements InvoiceRepository {
     }
 
     public void save(Invoice invoice) {
+        Boolean isTypeUpdate = !invoiceDAO.checkExistsByType(invoice);
         invoiceDAO.update(invoice);
-        boolean isTypeUpdate = !invoiceDAO.checkExistsByType(invoice);
         if(isTypeUpdate) {
             invoiceDAO.deleteTypeRecord(invoice);
             invoice.acceptInsert(invoiceArchiver);

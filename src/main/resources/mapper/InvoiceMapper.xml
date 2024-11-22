@@ -62,14 +62,13 @@
         timeout="60000"
         resultSetType="FORWARD_ONLY" 
     >
-        select i.*, it.name_type, d.rental_days, h.rental_hours
-        from invoice i
+        select i.* from invoice i
         where i.id like '%${p}%'
             or i.customer_name like '%${p}%'
             or i.room_id like '%${p}%'
             or i.billed_date like '%${p}%'
         order by created_at desc
-        limit #{page.offset}, #{page.limit}
+        limit #{page.offset}, #{page.pageSize}
     </select>
 
     <select id="countLikes" resultType="int">
@@ -108,7 +107,7 @@
             room_id = #{roomId}, 
             price = #{price}, 
             customer_name = #{customerName}, 
-            billed_date = #{billedDate}
+            billed_date = #{billedDate},
             invoice_type = #{invoiceType.code}
         where id = #{id}
     </update>
@@ -118,7 +117,7 @@
     </delete>
 
     <delete id="deleteTypeRecord">
-        delete from invoice_#{invoiceType.code} where id = #{id}
+        delete from invoice_${invoiceType.name} where invoice_id = #{id}
     </delete>
 
     <delete id="deleteAll">

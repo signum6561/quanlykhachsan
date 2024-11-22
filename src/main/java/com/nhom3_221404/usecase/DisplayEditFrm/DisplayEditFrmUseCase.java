@@ -2,6 +2,7 @@ package com.nhom3_221404.usecase.DisplayEditFrm;
 
 import java.util.List;
 
+import com.google.inject.Inject;
 import com.nhom3_221404.dto.DisplayEditFrmResponse;
 import com.nhom3_221404.dto.InvoiceOutputDTO;
 import com.nhom3_221404.dto.InvoiceTypeOutputDTO;
@@ -17,6 +18,7 @@ public class DisplayEditFrmUseCase implements DisplayEditFrmInputBoundary {
     private final GetInvoiceInputBoundary getInvoiceInputB; 
     private final GetInvoiceOutputBoundary getInvoiceOutputB; 
 
+    @Inject
     public DisplayEditFrmUseCase(DisplayEditFrmOutputBoundary displayFrmOutputB, 
                                   GetInvoiceTypesInputBoundary getInvoiceTypesInputB, 
                                   GetInvoiceTypesOutputBoundary getInvoiceTypesOutputB,

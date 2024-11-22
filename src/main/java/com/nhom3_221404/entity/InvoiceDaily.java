@@ -45,6 +45,31 @@ public class InvoiceDaily extends Invoice {
         archiver.update(this);
     }
 
+    @Override
+    public int hashCode() {
+        final int prime = 31;
+        int result = super.hashCode();
+        result = prime * result + ((rentalDays == null) ? 0 : rentalDays.hashCode());
+        return result;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj)
+            return true;
+        if (!super.equals(obj))
+            return false;
+        if (getClass() != obj.getClass())
+            return false;
+        InvoiceDaily other = (InvoiceDaily) obj;
+        if (rentalDays == null) {
+            if (other.rentalDays != null)
+                return false;
+        } else if (!rentalDays.equals(other.rentalDays))
+            return false;
+        return true;
+    }
+
     // #region getters and setters
     public Integer getRentalDays() {
         return rentalDays;
@@ -57,7 +82,7 @@ public class InvoiceDaily extends Invoice {
 
     @Override
     public String toString() {
-        return "InvocieDaily [id=" + id
+        return "InvoiceDaily [id=" + id
                 + ", rentalDays=" + rentalDays
                 + ", roomId=" + roomId
                 + ", price=" + price

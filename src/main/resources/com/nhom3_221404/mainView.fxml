@@ -1,50 +1,88 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import java.lang.String?>
+<?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.Pagination?>
 <?import javafx.scene.control.TableColumn?>
 <?import javafx.scene.control.TableView?>
 <?import javafx.scene.control.TextField?>
-<?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="1000.0" xmlns="http://javafx.com/javafx/20.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.nhom3_221404.ui.controller.MainController">
-  <children>
-      <VBox alignment="TOP_CENTER" layoutX="20.0" layoutY="250.0" AnchorPane.bottomAnchor="20.0" AnchorPane.leftAnchor="20.0" AnchorPane.rightAnchor="20.0" AnchorPane.topAnchor="20.0">
+<VBox alignment="TOP_CENTER" prefHeight="600.0" prefWidth="1200.0" xmlns="http://javafx.com/javafx/20.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.nhom3_221404.ui.controller.ManageInvoiceController">
+   <children>
+      <HBox alignment="CENTER_LEFT">
          <children>
-            <HBox alignment="CENTER_LEFT" prefHeight="50.0" prefWidth="200.0" spacing="20.0">
+            <HBox alignment="CENTER_LEFT" prefHeight="50.0" prefWidth="200.0" spacing="20.0" HBox.hgrow="ALWAYS">
                <children>
-                  <TextField fx:id="searchBar" onAction="#onSearchInput" prefWidth="300.0" />
-                  <Button mnemonicParsing="false" prefWidth="80.0" text="Add">
+                  <Button fx:id="btn_add" mnemonicParsing="false" onAction="#handleAdd" prefWidth="80.0" styleClass="success" text="Add">
                      <font>
-                        <Font name="System Bold" size="13.0" />
+                        <Font name="System Bold" size="12.0" />
                      </font>
                   </Button>
-                  <Button mnemonicParsing="false" prefWidth="80.0" text="Update">
+                  <Button fx:id="btn_edit" mnemonicParsing="false" onAction="#handleEdit" prefWidth="80.0" text="Edit">
                      <font>
-                        <Font name="System Bold" size="13.0" />
+                        <Font name="System Bold" size="12.0" />
+                     </font>
+                     <styleClass>
+                        <String fx:value="button-outlined" />
+                        <String fx:value="accent" />
+                     </styleClass>
+                  </Button>
+                  <Button fx:id="btn_delete" mnemonicParsing="false" onAction="#handleDelete" prefWidth="80.0" styleClass="danger" text="Delete">
+                     <font>
+                        <Font name="System Bold" size="12.0" />
                      </font>
                   </Button>
-                  <Button mnemonicParsing="false" prefWidth="80.0" text="Delete">
-                     <font>
-                        <Font name="System Bold" size="13.0" />
-                     </font>
-                  </Button>
+                  <HBox alignment="CENTER" spacing="5.0">
+                     <children>
+                        <Label text="Search by:">
+                           <font>
+                              <Font name="System Bold" size="13.0" />
+                           </font>
+                        </Label>
+                        <TextField fx:id="txt_searchBar" prefHeight="26.0" prefWidth="398.0" promptText="ex: Mã sách, tên sách, nhà xuất bản, ngày nhập" />
+                     </children>
+                  </HBox>
                </children>
             </HBox>
-          <TableView fx:id="tb_invoice" prefHeight="200.0" prefWidth="200.0" VBox.vgrow="ALWAYS">
-            <columns>
-              <TableColumn fx:id="col_maHD" prefWidth="75.0" text="Mã HĐ" />
-              <TableColumn fx:id="col_hoTenKhachHang" prefWidth="150.4000244140625" text="Họ tên khách hàng" />
-                  <TableColumn fx:id="col_maPhong" prefWidth="75.0" text="Mã phòng" />
-              <TableColumn fx:id="col_loaiHoaDon" prefWidth="98.4000244140625" text="Loại hóa đơn" />
-              <TableColumn fx:id="col_donGia" prefWidth="75.0" text="Đơn giá" />
-              <TableColumn fx:id="col_thanhTien" prefWidth="75.0" text="Thành tiền" />
-              <TableColumn fx:id="col_ngayThanhToan" prefWidth="137.5999755859375" text="Ngày thanh toán" />
-            </columns>
-          </TableView>
+            <Button fx:id="btn_refresh" mnemonicParsing="false" onAction="#handleRefresh" prefWidth="80.0" styleClass="button-outlined" text="Refresh">
+               <font>
+                  <Font name="System Bold" size="12.0" />
+               </font>
+            </Button>
          </children>
-      </VBox>
-  </children>
-</AnchorPane>
+      </HBox>
+      <TableView fx:id="tb_invoice" prefHeight="300.0" prefWidth="200.0" styleClass="bordered" VBox.vgrow="ALWAYS">
+         <columns>
+            <TableColumn fx:id="col_id" editable="false" prefWidth="75.0" sortable="false" text="Invoice ID" />
+            <TableColumn fx:id="col_invoiceType" editable="false" prefWidth="119.20004272460938" styleClass="align-center" text="Invoice Type" />
+            <TableColumn fx:id="col_customerName" editable="false" prefWidth="107.19999694824219" text="Customer Name" />
+            <TableColumn fx:id="col_donGia" editable="false" prefWidth="75.0" text="Price" />
+            <TableColumn fx:id="col_roomId" editable="false" prefWidth="130.39996337890625" styleClass="align-center" text="Room ID" />
+            <TableColumn fx:id="col_billedDate" editable="false" prefWidth="129.60003662109375" text="Billed Date" />
+         </columns>
+      </TableView>
+      <HBox alignment="CENTER_LEFT" prefWidth="200.0">
+         <children>
+            <Pagination fx:id="pg_invoice" maxPageIndicatorCount="6" pageCount="10" prefHeight="11.0">
+               <HBox.margin>
+                  <Insets right="20.0" />
+               </HBox.margin>
+            </Pagination>
+            <ComboBox fx:id="sl_pageSize" styleClass="split-menu-btn">
+               <HBox.margin>
+                  <Insets />
+               </HBox.margin>
+            </ComboBox>
+         </children>
+      </HBox>
+   </children>
+   <padding>
+      <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
+   </padding>
+</VBox>

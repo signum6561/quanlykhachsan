@@ -58,17 +58,17 @@ public class CreateInvoiceUseCaseTest {
         request.setCustomerName(i.getCustomerName());
         request.setBilledDate(i.getBilledDate());
         String invoiceType = i.getInvoiceType().getName();
-        switch (invoiceType.toLowerCase()) {
-            case "daily":
+        request.setInvoiceType(invoiceType);
+        switch (i.getType()) {
+            case DAILY :
                 request.setRentalDays(((InvoiceDaily)i).getRentalDays());
                 break;
-            case "hourly":
+            case HOURLY:
                 request.setRentalHours(((InvoiceHourly)i).getRentalHours());
                 break;
             default:
                 return null;
         }
-        request.setInvoiceType(invoiceType);
         return request;
     }
 

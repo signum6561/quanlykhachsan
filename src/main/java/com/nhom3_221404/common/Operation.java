@@ -4,5 +4,6 @@ public enum Operation {
     CREATE_INVOICE,
     UPDATE_INVOICE,
     DELETE_INVOICE,
+    VIEW_INVOICE,
     DEFAULT,
 }

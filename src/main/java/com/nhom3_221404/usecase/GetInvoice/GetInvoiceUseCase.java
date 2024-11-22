@@ -1,5 +1,6 @@
 package com.nhom3_221404.usecase.GetInvoice;
 
+import com.google.inject.Inject;
 import com.nhom3_221404.dto.InvoiceOutputDTO;
 import com.nhom3_221404.entity.Invoice;
 import com.nhom3_221404.entity.InvoiceDaily;
@@ -9,6 +10,7 @@ public class GetInvoiceUseCase implements GetInvoiceInputBoundary {
     private final GetInvoiceDatabaseBoundary getInvoiceDatabaseBoundary;
     private final GetInvoiceOutputBoundary getInvoiceOutputBoundary;
 
+    @Inject
     public GetInvoiceUseCase(GetInvoiceDatabaseBoundary getInvoiceDatabaseBoundary,
             GetInvoiceOutputBoundary getInvoiceOutputBoundary) {
         this.getInvoiceDatabaseBoundary = getInvoiceDatabaseBoundary;

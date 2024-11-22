@@ -2,19 +2,20 @@ package com.nhom3_221404.usecase.UpdateInvoice;
 
 import java.time.LocalDate;
 
+import com.google.inject.Inject;
 import com.nhom3_221404.constant.StringConst;
 import com.nhom3_221404.dto.UpdateInvoiceInputDTO;
 import com.nhom3_221404.entity.Invoice;
 import com.nhom3_221404.entity.InvoiceDaily;
 import com.nhom3_221404.entity.InvoiceHourly;
 import com.nhom3_221404.exceptions.DateOutOfRangeException;
-import com.nhom3_221404.exceptions.InvoiceNotFoundException;
 import com.nhom3_221404.exceptions.RentalHoursOutOfRangeException;
 
 public class UpdateInvoiceUseCase implements UpdateInvoiceInputBoundary {
     private final UpdateInvoiceOutputBoundary updateOutputBoundary;
     private final UpdateInvoiceDatabaseBoundary updateDatabaseBoundary;
 
+    @Inject
     public UpdateInvoiceUseCase(UpdateInvoiceOutputBoundary updateOutputBoundary,
             UpdateInvoiceDatabaseBoundary updateDatabaseBoundary) {
         this.updateOutputBoundary = updateOutputBoundary;
@@ -24,12 +25,6 @@ public class UpdateInvoiceUseCase implements UpdateInvoiceInputBoundary {
     @Override
     public void execute(UpdateInvoiceInputDTO inputDto) {
         String invoiceType = inputDto.getInvoiceType();
-        String id = inputDto.getId();
-        Invoice invoice = updateDatabaseBoundary.getInvoiceById(id);
-        if (invoice == null) {
-            updateOutputBoundary.presentError(new InvoiceNotFoundException(id));
-            return;
-        }
 
         LocalDate billedDate = inputDto.getBilledDate();
         if (!isWithinTwelveMonths(billedDate)) {
@@ -45,21 +40,23 @@ public class UpdateInvoiceUseCase implements UpdateInvoiceInputBoundary {
             }
         }
 
+        Invoice invoice;
+        switch (invoiceType.toLowerCase()) {
+            case "daily":
+                invoice = new InvoiceDaily(inputDto.getRentalDays());
+                break;
+            case "hourly":
+                invoice = new InvoiceHourly(inputDto.getRentalHours());
+                break;
+            default:
+                return;
+        }
+        invoice.setId(inputDto.getId());
         invoice.setRoomId(inputDto.getRoomId());
         invoice.setPrice(inputDto.getPrice());
         invoice.setCustomerName(inputDto.getCustomerName());
         invoice.setBilledDate(billedDate);
 
-        switch (invoiceType) {
-            case "daily":
-                InvoiceDaily invoiceDaily = (InvoiceDaily) invoice;
-                invoiceDaily.setRentalDays(inputDto.getRentalDays());
-                break;
-            case "hourly":
-                InvoiceHourly invoiceHourly = (InvoiceHourly) invoice;
-                invoiceHourly.setRentalHours(inputDto.getRentalHours());
-                break;
-        }
         updateDatabaseBoundary.updateInvoice(invoice);
 
         updateOutputBoundary.presentResult(StringConst.SUCCESS_UPDATE_INVOICE);

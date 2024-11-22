@@ -2,12 +2,15 @@ package com.nhom3_221404.usecase.GenerateId;
 
 import java.util.Random;
 
+import com.google.inject.Inject;
+
 public class GenerateIdUseCase implements GenerateIdInputBoundary {
     private final GenerateIdOutputBoundary generateIdOutputB;
 
     public static final String ALPHABET = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
     public static final int DEFAULT_LENGTH = 6;
 
+    @Inject
     public GenerateIdUseCase(GenerateIdOutputBoundary generateIdOutputB) {
         this.generateIdOutputB = generateIdOutputB;
     }

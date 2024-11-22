@@ -1,6 +1,6 @@
 package com.nhom3_221404.usecase;
 
-import static org.mockito.ArgumentMatchers.argThat;
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
 
 import java.time.LocalDate;
@@ -12,10 +12,13 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import com.github.javafaker.Faker;
+import com.nhom3_221404.constant.StringConst;
 import com.nhom3_221404.dto.UpdateInvoiceInputDTO;
+import com.nhom3_221404.entity.Invoice;
 import com.nhom3_221404.entity.InvoiceDaily;
 import com.nhom3_221404.entity.InvoiceHourly;
-import com.nhom3_221404.entity.InvoiceType;
+import com.nhom3_221404.exceptions.DateOutOfRangeException;
+import com.nhom3_221404.exceptions.RentalHoursOutOfRangeException;
 import com.nhom3_221404.usecase.UpdateInvoice.UpdateInvoiceDatabaseBoundary;
 import com.nhom3_221404.usecase.UpdateInvoice.UpdateInvoiceInputBoundary;
 import com.nhom3_221404.usecase.UpdateInvoice.UpdateInvoiceOutputBoundary;
@@ -33,92 +36,64 @@ public class UpdateInvoiceUseCaseTest {
     InvoiceFactory invoiceFactory;
 
     @Mock
-    private UpdateInvoiceDatabaseBoundary database;
-
-    private Faker faker;
+    UpdateInvoiceDatabaseBoundary database;
 
     @BeforeEach
     void setUp() {
-        faker = new Faker();
-        invoiceFactory = new InvoiceFactory(faker);
+        invoiceFactory = new InvoiceFactory(new Faker());
         updateInvoiceUC = new UpdateInvoiceUseCase(presenter, database);
     }
 
+    private UpdateInvoiceInputDTO convertToMockRequest(Invoice i) {
+        UpdateInvoiceInputDTO request = new UpdateInvoiceInputDTO();
+        request.setRoomId(i.getRoomId());
+        request.setPrice(i.getPrice());
+        request.setCustomerName(i.getCustomerName());
+        request.setBilledDate(i.getBilledDate());
+        request.setInvoiceType(i.getInvoiceType().getName());
+        switch (i.getType()) {
+            case DAILY :
+                request.setRentalDays(((InvoiceDaily)i).getRentalDays());
+                break;
+            case HOURLY:
+                request.setRentalHours(((InvoiceHourly)i).getRentalHours());
+                break;
+            default:
+                return null;
+        }
+        return request;
+    }
+
     @Test
-    void testUpdateHourlyInvoice_Success() throws Exception {
-        InvoiceHourly originalInvoice = new InvoiceHourly(20);
-        originalInvoice.setId(faker.random().hex());
-        originalInvoice.setRoomId("B103");
-        originalInvoice.setInvoiceType(new InvoiceType("hl", "Hourly"));
-        originalInvoice.setPrice(50.0);
-        originalInvoice.setCustomerName("John Doe");
-        originalInvoice.setBilledDate(LocalDate.now());
-
-        when(database.getInvoiceById(originalInvoice.getId())).thenReturn(originalInvoice);
-
-        UpdateInvoiceInputDTO updateDTO = new UpdateInvoiceInputDTO();
-        updateDTO.setId(originalInvoice.getId());
-        updateDTO.setRoomId("B103");
-        updateDTO.setPrice(60.0);
-        updateDTO.setInvoiceType("Hourly");
-        updateDTO.setCustomerName("Jane Doe");
-        updateDTO.setBilledDate(LocalDate.now());
-        updateDTO.setRentalHours(25);
-
-        updateInvoiceUC.execute(updateDTO);
-
-        // verify(database).updateInvoice(argThat(invoice -> invoice.getRoomId().equals("B103") &&
-        //         invoice.getPrice() == 60.0 &&
-        //         invoice.getCustomerName().equals("Jane Doe") &&
-        //         ((InvoiceHourly) invoice).getRentalHours() == 25));
+    void testUpdateInvoice_valid() {
+        Invoice mockI = invoiceFactory.seedRandomInvoice();
+        UpdateInvoiceInputDTO request = convertToMockRequest(mockI);
+        updateInvoiceUC.execute(request);
+        verify(presenter).presentResult(StringConst.SUCCESS_UPDATE_INVOICE);
 
     }
 
     @Test
-    void testUpdateDailyInvoice_Success() throws Exception {
-        InvoiceDaily originalInvoice = new InvoiceDaily(5);
-        originalInvoice.setId(faker.random().hex());
-        originalInvoice.setInvoiceType(new InvoiceType("dl", "Daily"));
-        originalInvoice.setRoomId("Room201");
-        originalInvoice.setPrice(100.0);
-        originalInvoice.setCustomerName("Alice Smith");
-        originalInvoice.setBilledDate(LocalDate.now());
+    void testUpdateInvoice_invoiceMoreThan30RentalHours() {
+        InvoiceHourly mockI = invoiceFactory.seedInvoiceHourly();
+        UpdateInvoiceInputDTO request = convertToMockRequest(mockI);
+        request.setInvoiceType("hourly");
+        request.setRentalHours(31);
 
-        when(database.getInvoiceById(originalInvoice.getId())).thenReturn(originalInvoice);
-
-        UpdateInvoiceInputDTO updateDTO = new UpdateInvoiceInputDTO();
-        updateDTO.setId(originalInvoice.getId());
-        updateDTO.setRoomId("Room202");
-        updateDTO.setPrice(120.0);
-        updateDTO.setInvoiceType("Daily");
-        updateDTO.setCustomerName("Bob Johnson");
-        updateDTO.setBilledDate(LocalDate.now());
-        updateDTO.setRentalDays(7);
-
-        updateInvoiceUC.execute(updateDTO);
-
-        verify(database).updateInvoice(argThat(invoice -> invoice.getRoomId().equals("Room202") &&
-                invoice.getPrice() == 120.0 &&
-                invoice.getCustomerName().equals("Bob Johnson") &&
-                ((InvoiceDaily) invoice).getRentalDays() == 7));
+        updateInvoiceUC.execute(request);
+        
+        verify(presenter).presentError(any(RentalHoursOutOfRangeException.class));
     }
 
+    
     @Test
-    void testUpdateInvoice_DateOutOfRange() {
-        InvoiceDaily originalInvoice = new InvoiceDaily(5);
-        originalInvoice.setInvoiceType(new InvoiceType("dl", "Daily"));
-        originalInvoice.setId(faker.random().hex());
-        originalInvoice.setRoomId("Room201");
-        originalInvoice.setPrice(100.0);
-        originalInvoice.setCustomerName("Alice Smith");
-        originalInvoice.setBilledDate(LocalDate.now());
+    void testUpdateInvoice_billedDateOutOfRange() {
+        Invoice mockI = invoiceFactory.seedRandomInvoice();
+        UpdateInvoiceInputDTO request = convertToMockRequest(mockI);
+        request.setBilledDate(LocalDate.of(2004, 3, 1));
 
-        when(database.getInvoiceById(originalInvoice.getId())).thenReturn(originalInvoice);
-
-        UpdateInvoiceInputDTO updateDTO = new UpdateInvoiceInputDTO();
-        updateDTO.setId(originalInvoice.getId());
-        updateDTO.setBilledDate(LocalDate.now().minusMonths(13));
-
- 
+        updateInvoiceUC.execute(request);
+        
+        verify(presenter).presentError(any(DateOutOfRangeException.class));
     }
-}
+} 

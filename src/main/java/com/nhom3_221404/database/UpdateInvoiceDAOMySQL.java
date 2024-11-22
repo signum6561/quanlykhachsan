@@ -19,9 +19,4 @@ public class UpdateInvoiceDAOMySQL implements UpdateInvoiceDatabaseBoundary {
     public void updateInvoice(Invoice invoice) {
         invoiceRepository.save(invoice);
     }
-
-    @Transactional
-    public Invoice getInvoiceById(String id) {
-        return invoiceRepository.findById(id);
-    }
 }
