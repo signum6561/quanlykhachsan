@@ -20,6 +20,6 @@ public class DeleteInvoiceUseCase implements DeleteInvoiceInputBoundary {
         } else {
             output = new DeleteInvoiceOutputDTO(false, "Failure delete invoice");
         }
-        outputBoundary.presentDeleteResult(output);
+        outputBoundary.DeleteResult(output);
     }
 }

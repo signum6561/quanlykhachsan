@@ -5,7 +5,7 @@ import com.nhom3_221404.usecase.DeleteInvoice.DeleteInvoiceOutputBoundary;
 
 public class DeleteInvoicePresenter implements DeleteInvoiceOutputBoundary {
     @Override
-    public void presentDeleteResult(DeleteInvoiceOutputDTO output) {
+    public void DeleteResult(DeleteInvoiceOutputDTO output) {
         if (output.isSuccess()) {
             System.out.println("Success: " + output.getMessage());
         } else {

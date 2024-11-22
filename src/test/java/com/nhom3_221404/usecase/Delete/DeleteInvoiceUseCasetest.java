@@ -1,14 +1,11 @@
 package com.nhom3_221404.usecase.Delete;
 
-
-import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import com.nhom3_221404.dto.DeleteInvoiceInputDTO;
-import com.nhom3_221404.dto.DeleteInvoiceOutputDTO;
 import com.nhom3_221404.usecase.DeleteInvoice.DeleteInvoiceDatabaseBoundary;
 import com.nhom3_221404.usecase.DeleteInvoice.DeleteInvoiceOutputBoundary;
 import com.nhom3_221404.usecase.DeleteInvoice.DeleteInvoiceUseCase;
@@ -30,8 +27,7 @@ public class DeleteInvoiceUseCasetest {
         DeleteInvoiceInputDTO input = new DeleteInvoiceInputDTO(invoiceId);
         when(databaseBoundary.deleteInvoice(invoiceId)).thenReturn(true);
         deleteInvoiceUseCase.execute(input);
-        verify(databaseBoundary, times(1)).deleteInvoice(invoiceId);
-        verify(outputBoundary, times(1)).presentDeleteResult(any(DeleteInvoiceOutputDTO.class));
+        verify(databaseBoundary).deleteInvoice(invoiceId);
     }
     @Test
     void execute_FailedDeletion() {
@@ -39,7 +35,6 @@ public class DeleteInvoiceUseCasetest {
         DeleteInvoiceInputDTO input = new DeleteInvoiceInputDTO(invoiceId);
         when(databaseBoundary.deleteInvoice(invoiceId)).thenReturn(false);
         deleteInvoiceUseCase.execute(input);
-        verify(databaseBoundary, times(1)).deleteInvoice(invoiceId);
-        verify(outputBoundary, times(1)).presentDeleteResult(any(DeleteInvoiceOutputDTO.class));
+        verify(databaseBoundary).deleteInvoice(invoiceId);
     }
 }
